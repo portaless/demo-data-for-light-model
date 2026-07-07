@@ -1,0 +1,40 @@
+{
+  "Architecture logique": {
+    "layer": "L",
+    "mode": "arch",
+    "name": "Architecture logique",
+    "nodes": [],
+    "pan": {
+      "x": 40.0,
+      "y": 20.0
+    },
+    "positions": {
+      "Logical::Aocs": {
+        "x": 480.0,
+        "y": 560.0
+      },
+      "Logical::CommSubsystem": {
+        "x": 620.0,
+        "y": 320.0
+      },
+      "Logical::OnboardComputer": {
+        "x": 340.0,
+        "y": 320.0
+      },
+      "Logical::PayloadModule": {
+        "x": 60.0,
+        "y": 320.0
+      },
+      "Logical::PowerSubsystem": {
+        "x": 200.0,
+        "y": 560.0
+      },
+      "Logical::Satellite": {
+        "x": 420.0,
+        "y": 40.0
+      }
+    },
+    "updated_at": "",
+    "zoom": 0.85
+  }
+}

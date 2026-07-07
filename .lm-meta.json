@@ -1,0 +1,78 @@
+{
+  "Logical::Satellite": {
+    "milestone": "PDR",
+    "owner": "marc",
+    "priority": "P0",
+    "status": "in_review"
+  },
+  "Physical::CameraAssembly": {
+    "milestone": "CDR",
+    "owner": "sophie",
+    "priority": "P0",
+    "status": "approved"
+  },
+  "Requirements::Imaging::DailyImagingCapacity": {
+    "milestone": "PDR",
+    "owner": "karim",
+    "priority": "P1",
+    "status": "in_review"
+  },
+  "Requirements::Imaging::DownlinkBand": {
+    "milestone": "PDR",
+    "owner": "karim",
+    "priority": "P1",
+    "status": "approved",
+    "verification_method": "Demonstration",
+    "verification_verdict": "pass"
+  },
+  "Requirements::Imaging::ImageResolution": {
+    "milestone": "PDR",
+    "owner": "sophie",
+    "priority": "P0",
+    "status": "approved",
+    "verification_method": "Test",
+    "verification_verdict": "pass"
+  },
+  "Requirements::MissionAvailability": {
+    "milestone": "SRR",
+    "owner": "sophie",
+    "priority": "P0",
+    "status": "approved"
+  },
+  "Requirements::Platform::AttitudeAccuracy": {
+    "milestone": "CDR",
+    "owner": "marc",
+    "priority": "P1",
+    "status": "approved",
+    "verification_method": "Test",
+    "verification_verdict": "inconclusive"
+  },
+  "Requirements::Platform::PowerBudget": {
+    "milestone": "CDR",
+    "owner": "lena",
+    "priority": "P0",
+    "status": "approved",
+    "verification_method": "Analysis",
+    "verification_verdict": "not_run"
+  },
+  "Requirements::Platform::SafeMode": {
+    "milestone": "SRR",
+    "owner": "marc",
+    "priority": "P0",
+    "status": "draft"
+  },
+  "Requirements::Platform::ThermalRange": {
+    "milestone": "CDR",
+    "owner": "lena",
+    "priority": "P2",
+    "status": "in_review"
+  },
+  "Requirements::Platform::TotalMass": {
+    "milestone": "CDR",
+    "owner": "lena",
+    "priority": "P0",
+    "status": "approved",
+    "verification_method": "Test",
+    "verification_verdict": "fail"
+  }
+}
