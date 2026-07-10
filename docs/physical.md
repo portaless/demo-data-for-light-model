@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-07T13:05:42+00:00
+generated_at: 2026-07-10T15:45:03+00:00
 layer: P
 ---
 
@@ -8,9 +8,9 @@ layer: P
 
 29 élément(s).
 
-## Physical
+## MsatPhysical
 
-<!-- lm:id=Physical -->
+<!-- lm:id=MsatPhysical -->
 
 `package`
 
@@ -18,209 +18,209 @@ Architecture physique : équipements et budgets.
 
 ### CameraAssembly
 
-<!-- lm:id=Physical::CameraAssembly -->
+<!-- lm:id=MsatPhysical::CameraAssembly -->
 
 `part_def`
 
 Ensemble caméra : télescope + plan focal.
 
-- **Satisfait** : `Requirements::Imaging::ImageResolution`
-- **Alloué depuis** : `Logical::PayloadModule`, `Requirements::MissionAvailability::testreq2`, `Requirements::Imaging::DailyImagingCapacity`, `Requirements::Platform::AttitudeAccuracy`
+- **Satisfait** : `MsatRequirements::Imaging::ImageResolution`
+- **Alloué depuis** : `PayloadModule`, `MsatRequirements::MissionAvailability::testreq2`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Platform::AttitudeAccuracy`
 
 #### mass
 
-<!-- lm:id=Physical::CameraAssembly::mass -->
+<!-- lm:id=MsatPhysical::CameraAssembly::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::CameraAssembly::power -->
+<!-- lm:id=MsatPhysical::CameraAssembly::power -->
 
 `attribute` · type : `Real`
 
 ### ObcBoard
 
-<!-- lm:id=Physical::ObcBoard -->
+<!-- lm:id=MsatPhysical::ObcBoard -->
 
 `part_def`
 
 Carte calculateur durcie.
 
-- **Alloué depuis** : `Logical::OnboardComputer`, `Requirements::Platform::TotalMass`, `Requirements::Platform::AttitudeAccuracy`
+- **Alloué depuis** : `MsatLogical::OnboardComputer`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::AttitudeAccuracy`, `MsatRequirements::MissionAvailability`
 
 #### mass
 
-<!-- lm:id=Physical::ObcBoard::mass -->
+<!-- lm:id=MsatPhysical::ObcBoard::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::ObcBoard::power -->
+<!-- lm:id=MsatPhysical::ObcBoard::power -->
 
 `attribute` · type : `Real`
 
 ### XBandTransmitter
 
-<!-- lm:id=Physical::XBandTransmitter -->
+<!-- lm:id=MsatPhysical::XBandTransmitter -->
 
 `part_def`
 
 Émetteur bande X 150 Mbit/s.
 
-- **Alloué depuis** : `Logical::CommSubsystem`, `Requirements::Platform::TotalMass`
+- **Alloué depuis** : `MsatLogical::PayloadModule::CommSubsystem`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::MissionAvailability`, `MsatRequirements::MissionAvailability::testreq`
 
 #### mass
 
-<!-- lm:id=Physical::XBandTransmitter::mass -->
+<!-- lm:id=MsatPhysical::XBandTransmitter::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::XBandTransmitter::power -->
+<!-- lm:id=MsatPhysical::XBandTransmitter::power -->
 
 `attribute` · type : `Real`
 
 ### SolarArray
 
-<!-- lm:id=Physical::SolarArray -->
+<!-- lm:id=MsatPhysical::SolarArray -->
 
 `part_def`
 
 Générateur solaire déployable.
 
-- **Satisfait** : `Requirements::Platform::PowerBudget`
-- **Alloué depuis** : `Logical::PowerSubsystem`, `Requirements::MissionAvailability::testreq`, `Requirements::Platform::TotalMass`
+- **Satisfait** : `MsatRequirements::Platform::PowerBudget`
+- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::TotalMass`
 
 #### mass
 
-<!-- lm:id=Physical::SolarArray::mass -->
+<!-- lm:id=MsatPhysical::SolarArray::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::SolarArray::power -->
+<!-- lm:id=MsatPhysical::SolarArray::power -->
 
 `attribute` · type : `Real`
 
 ### Battery
 
-<!-- lm:id=Physical::Battery -->
+<!-- lm:id=MsatPhysical::Battery -->
 
 `part_def`
 
 Batterie Li-ion 40 Ah.
 
-- **Alloué depuis** : `Logical::PowerSubsystem`, `Requirements::Platform::SafeMode`
+- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::SafeMode`, `MsatRequirements::Platform::ThermalRange`, `MsatRequirements::Platform::PowerBudget`
 
 #### mass
 
-<!-- lm:id=Physical::Battery::mass -->
+<!-- lm:id=MsatPhysical::Battery::mass -->
 
 `attribute` · type : `Real`
 
 ### ReactionWheel
 
-<!-- lm:id=Physical::ReactionWheel -->
+<!-- lm:id=MsatPhysical::ReactionWheel -->
 
 `part_def`
 
 Roue à réaction 0.1 Nm.
 
-- **Alloué depuis** : `Logical::Aocs`, `Requirements::Imaging::ImageResolution`, `Requirements::Platform::TotalMass`
+- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::PowerBudget`
 
 #### mass
 
-<!-- lm:id=Physical::ReactionWheel::mass -->
+<!-- lm:id=MsatPhysical::ReactionWheel::mass -->
 
 `attribute` · type : `Real`
 
 ### StarTracker
 
-<!-- lm:id=Physical::StarTracker -->
+<!-- lm:id=MsatPhysical::StarTracker -->
 
 `part_def`
 
 Senseur stellaire.
 
-- **Alloué depuis** : `Logical::Aocs`, `Requirements::Platform::TotalMass`, `Requirements::Platform::TotalMass`, `Requirements::Platform::TotalMass`, `Requirements::Imaging::DailyImagingCapacity`, `Requirements::Imaging::ImageResolution`, `Requirements::Platform::SafeMode`
+- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::SafeMode`
 
 #### mass
 
-<!-- lm:id=Physical::StarTracker::mass -->
+<!-- lm:id=MsatPhysical::StarTracker::mass -->
 
 `attribute` · type : `Real`
 
 ### Structure
 
-<!-- lm:id=Physical::Structure -->
+<!-- lm:id=MsatPhysical::Structure -->
 
 `part_def`
 
 Structure primaire et thermique.
 
-- **Satisfait** : `Requirements::Platform::TotalMass`, `Requirements::Platform::ThermalRange`
-- **Alloué depuis** : `Requirements::Platform::TotalMass`, `Requirements::Platform::SafeMode`
+- **Satisfait** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::ThermalRange`
+- **Alloué depuis** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::SafeMode`
 
 #### mass
 
-<!-- lm:id=Physical::Structure::mass -->
+<!-- lm:id=MsatPhysical::Structure::mass -->
 
 `attribute` · type : `Real`
 
 ### camera
 
-<!-- lm:id=Physical::camera -->
+<!-- lm:id=MsatPhysical::camera -->
 
 `part` · type : `CameraAssembly`
 
-- **Alloué depuis** : `Requirements::Imaging::ImageResolution`, `Requirements::Imaging::DownlinkBand`, `Requirements::Platform::PowerBudget`
+- **Alloué depuis** : `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Imaging::DownlinkBand`, `MsatRequirements::Platform::PowerBudget`
 
 ### obcBoard
 
-<!-- lm:id=Physical::obcBoard -->
+<!-- lm:id=MsatPhysical::obcBoard -->
 
 `part` · type : `ObcBoard`
 
 ### transmitter
 
-<!-- lm:id=Physical::transmitter -->
+<!-- lm:id=MsatPhysical::transmitter -->
 
 `part` · type : `XBandTransmitter`
 
-- **Alloué depuis** : `Requirements::Platform::ThermalRange`
+- **Alloué depuis** : `MsatRequirements::Platform::ThermalRange`
 
 ### solarArray
 
-<!-- lm:id=Physical::solarArray -->
+<!-- lm:id=MsatPhysical::solarArray -->
 
 `part` · type : `SolarArray`
 
 ### battery
 
-<!-- lm:id=Physical::battery -->
+<!-- lm:id=MsatPhysical::battery -->
 
 `part` · type : `Battery`
 
 ### wheels
 
-<!-- lm:id=Physical::wheels -->
+<!-- lm:id=MsatPhysical::wheels -->
 
 `part` · type : `ReactionWheel`
 
-- **Alloué depuis** : `Requirements::Platform::PowerBudget`
+- **Alloué depuis** : `MsatRequirements::Platform::PowerBudget`
 
 ### starTracker
 
-<!-- lm:id=Physical::starTracker -->
+<!-- lm:id=MsatPhysical::starTracker -->
 
 `part` · type : `StarTracker`
 
 ### structure
 
-<!-- lm:id=Physical::structure -->
+<!-- lm:id=MsatPhysical::structure -->
 
 `part` · type : `Structure`

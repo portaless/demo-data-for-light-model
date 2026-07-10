@@ -1,174 +1,195 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-07T13:05:42+00:00
+generated_at: 2026-07-10T15:45:03+00:00
 ---
 
 # Modèle — document global
 
 # Couche Requirements (R)
 
-17 élément(s).
+19 élément(s).
 
-## Requirements
+## MsatRequirements
 
-<!-- lm:id=Requirements -->
+<!-- lm:id=MsatRequirements -->
 
 `package`
 
 Exigences du mini-satellite d'observation MSAT.
 
+- **Vérifie** : `MsatRequirements::Imaging`
+
 ### MSAT-REQ-001 — MissionAvailability
 
-<!-- lm:id=Requirements::MissionAvailability -->
+<!-- lm:id=MsatRequirements::MissionAvailability -->
 
 `requirement_def` · spécialise : `ROFLP::StakeholderRequirement`
 
 Le service d'imagerie doit être disponible 95 % du temps
 sur une année d'exploitation.
 
+- **Vérifiée par** : `MsatLogical`
+- **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::XBandTransmitter`
+
 #### testreq
 
-<!-- lm:id=Requirements::MissionAvailability::testreq -->
+<!-- lm:id=MsatRequirements::MissionAvailability::testreq -->
 
 `requirement` · spécialise : `ROFLP::FunctionalRequirement`
 
-- **Alloué à** : `Physical::SolarArray`
+- **Alloué à** : `MsatPhysical::XBandTransmitter`
 
 #### testreq2
 
-<!-- lm:id=Requirements::MissionAvailability::testreq2 -->
+<!-- lm:id=MsatRequirements::MissionAvailability::testreq2 -->
 
 `requirement` · spécialise : `ROFLP::FunctionalRequirement`
 
-- **Alloué à** : `Physical::CameraAssembly`
+- **Vérifie** : `MsatLogical`
+- **Alloué à** : `MsatPhysical::CameraAssembly`
 
 ### Imaging
 
-<!-- lm:id=Requirements::Imaging -->
+<!-- lm:id=MsatRequirements::Imaging -->
 
 `package`
 
+- **Vérifiée par** : `MsatRequirements`
+
 #### MSAT-REQ-010 — ImageResolution
 
-<!-- lm:id=Requirements::Imaging::ImageResolution -->
+<!-- lm:id=MsatRequirements::Imaging::ImageResolution -->
 
 `requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
 
 La résolution au sol (GSD) doit être inférieure ou égale
 à 3.5 m au nadir.
 
-- **Satisfaite par** : `Physical::CameraAssembly`
-- **Vérifiée par** : `IVVQ::VerifyImageResolution`
-- **Alloué à** : `Physical::ReactionWheel`, `Physical::camera`, `Physical::StarTracker`
+- **Satisfaite par** : `MsatPhysical::CameraAssembly`
+- **Vérifiée par** : `MsatIvvq::VerifyImageResolution`
+- **Alloué à** : `MsatPhysical::ReactionWheel`, `MsatPhysical::camera`, `MsatPhysical::StarTracker`
 
 ##### gsd
 
-<!-- lm:id=Requirements::Imaging::ImageResolution::gsd -->
+<!-- lm:id=MsatRequirements::Imaging::ImageResolution::gsd -->
 
 `attribute` · type : `Real`
 
 #### MSAT-REQ-011 — DailyImagingCapacity
 
-<!-- lm:id=Requirements::Imaging::DailyImagingCapacity -->
+<!-- lm:id=MsatRequirements::Imaging::DailyImagingCapacity -->
 
 `requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
 
 Le système doit acquérir au moins 40 scènes par jour.
 
-- **Satisfaite par** : `Logical::PayloadModule`
-- **Alloué à** : `Physical::StarTracker`, `Physical::CameraAssembly`
+- **Satisfaite par** : `PayloadModule`
+- **Vérifie** : `MsatRequirements::Imaging::DownlinkBand`
+- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::CameraAssembly`
 
 #### MSAT-REQ-020 — DownlinkBand
 
-<!-- lm:id=Requirements::Imaging::DownlinkBand -->
+<!-- lm:id=MsatRequirements::Imaging::DownlinkBand -->
 
 `requirement_def` · spécialise : `ROFLP::InterfaceRequirement`
 
 La télémesure image doit être transmise en bande X
 (8.0 - 8.4 GHz).
 
-- **Satisfaite par** : `Logical::CommSubsystem`
-- **Vérifiée par** : `IVVQ::VerifyDownlink`
-- **Alloué à** : `Physical::camera`
+- **Satisfaite par** : `MsatLogical::PayloadModule::CommSubsystem`
+- **Vérifiée par** : `MsatIvvq::VerifyDownlink`, `MsatRequirements::Imaging::DailyImagingCapacity`
+- **Alloué à** : `MsatPhysical::camera`
 
 ### Platform
 
-<!-- lm:id=Requirements::Platform -->
+<!-- lm:id=MsatRequirements::Platform -->
 
 `package`
 
 #### MSAT-REQ-030 — TotalMass
 
-<!-- lm:id=Requirements::Platform::TotalMass -->
+<!-- lm:id=MsatRequirements::Platform::TotalMass -->
 
 `requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
 La masse totale au lancement ne doit pas dépasser 120 kg.
 
-- **Satisfaite par** : `Physical::Structure`
-- **Vérifiée par** : `IVVQ::VerifyMassBudget`
-- **Alloué à** : `Physical::StarTracker`, `Physical::StarTracker`, `Physical::StarTracker`, `Physical::ReactionWheel`, `Physical::SolarArray`, `Physical::Structure`, `Physical::XBandTransmitter`, `Physical::ObcBoard`
+- **Satisfaite par** : `MsatPhysical::Structure`
+- **Vérifiée par** : `MsatIvvq::VerifyMassBudget`
+- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::StarTracker`, `MsatPhysical::StarTracker`, `MsatPhysical::ReactionWheel`, `MsatPhysical::SolarArray`, `MsatPhysical::Structure`, `MsatPhysical::XBandTransmitter`, `MsatPhysical::ObcBoard`
 
 ##### maxMass
 
-<!-- lm:id=Requirements::Platform::TotalMass::maxMass -->
+<!-- lm:id=MsatRequirements::Platform::TotalMass::maxMass -->
 
 `attribute` · type : `Real`
 
 #### MSAT-REQ-031 — PowerBudget
 
-<!-- lm:id=Requirements::Platform::PowerBudget -->
+<!-- lm:id=MsatRequirements::Platform::PowerBudget -->
 
 `requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
 La puissance générée en fin de vie doit être supérieure
 à 400 W.
 
-- **Satisfaite par** : `Physical::SolarArray`
-- **Vérifiée par** : `IVVQ::VerifyPowerBudget`
-- **Alloué à** : `Physical::camera`, `Physical::wheels`
+- **Satisfaite par** : `MsatPhysical::SolarArray`
+- **Vérifiée par** : `MsatIvvq::VerifyPowerBudget`
+- **Alloué à** : `MsatPhysical::camera`, `MsatPhysical::wheels`, `MsatPhysical::Battery`, `MsatPhysical::ReactionWheel`
 
 ##### minPower
 
-<!-- lm:id=Requirements::Platform::PowerBudget::minPower -->
+<!-- lm:id=MsatRequirements::Platform::PowerBudget::minPower -->
 
 `attribute` · type : `Real`
 
-#### MSAT-REQ-040 — ThermalRange
-
-<!-- lm:id=Requirements::Platform::ThermalRange -->
-
-`requirement_def` · spécialise : `ROFLP::DesignConstraint`
-
-Les équipements doivent fonctionner entre -20 et +50 °C.
-
-- **Satisfaite par** : `Physical::Structure`
-- **Alloué à** : `Physical::transmitter`
-
 #### MSAT-REQ-050 — AttitudeAccuracy
 
-<!-- lm:id=Requirements::Platform::AttitudeAccuracy -->
+<!-- lm:id=MsatRequirements::Platform::AttitudeAccuracy -->
 
 `requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
 
 La précision de pointage doit être meilleure que 0.05 deg.
 
-- **Satisfaite par** : `Logical::Aocs`
-- **Vérifiée par** : `IVVQ::VerifyAttitude`
-- **Alloué à** : `Physical::ObcBoard`, `Physical::CameraAssembly`
+- **Satisfaite par** : `MsatLogical::Aocs`
+- **Vérifiée par** : `MsatIvvq::VerifyAttitude`
+- **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::CameraAssembly`
 
 #### MSAT-REQ-060 — SafeMode
 
-<!-- lm:id=Requirements::Platform::SafeMode -->
+<!-- lm:id=MsatRequirements::Platform::SafeMode -->
 
 `requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
 
 Le satellite doit rejoindre un mode sûr de façon autonome
 sur détection d'anomalie critique.
 
-- **Satisfaite par** : `Logical::OnboardComputer`
-- **Vérifiée par** : `IVVQ::VerifySafeMode`
-- **Alloué à** : `Physical::Battery`, `Physical::StarTracker`, `Physical::Structure`
+- **Satisfaite par** : `MsatLogical::OnboardComputer`
+- **Vérifiée par** : `MsatIvvq::VerifySafeMode`
+- **Alloué à** : `MsatPhysical::Battery`, `MsatPhysical::StarTracker`, `MsatPhysical::Structure`
+
+#### MSAT-REQ-040 — ThermalRange
+
+<!-- lm:id=MsatRequirements::Platform::ThermalRange -->
+
+`requirement_def` · spécialise : `ROFLP::DesignConstraint`
+
+Les équipements doivent fonctionner entre -20 et +50 °C.
+
+- **Satisfaite par** : `MsatPhysical::Structure`
+- **Alloué à** : `MsatPhysical::transmitter`, `MsatPhysical::Battery`
+
+### NewPart2
+
+<!-- lm:id=MsatRequirements::NewPart2 -->
+
+`part_def`
+
+### NewPart3
+
+<!-- lm:id=MsatRequirements::NewPart3 -->
+
+`action_def`
 
 ---
 
@@ -176,9 +197,9 @@ sur détection d'anomalie critique.
 
 12 élément(s).
 
-## Operational
+## MsatOperational
 
-<!-- lm:id=Operational -->
+<!-- lm:id=MsatOperational -->
 
 `package`
 
@@ -186,7 +207,7 @@ Contexte opérationnel : acteurs et cas d'usage de la mission.
 
 ### GroundOperator
 
-<!-- lm:id=Operational::GroundOperator -->
+<!-- lm:id=MsatOperational::GroundOperator -->
 
 `part_def`
 
@@ -194,7 +215,7 @@ Opérateur du segment sol.
 
 ### ImageAnalyst
 
-<!-- lm:id=Operational::ImageAnalyst -->
+<!-- lm:id=MsatOperational::ImageAnalyst -->
 
 `part_def`
 
@@ -202,7 +223,7 @@ Analyste exploitant les images livrées.
 
 ### AcquireImagery
 
-<!-- lm:id=Operational::AcquireImagery -->
+<!-- lm:id=MsatOperational::AcquireImagery -->
 
 `use_case_def`
 
@@ -210,19 +231,19 @@ Programmer et acquérir des images d'une zone d'intérêt.
 
 #### operator
 
-<!-- lm:id=Operational::AcquireImagery::operator -->
+<!-- lm:id=MsatOperational::AcquireImagery::operator -->
 
 `actor` · type : `GroundOperator`
 
 #### satellite
 
-<!-- lm:id=Operational::AcquireImagery::satellite -->
+<!-- lm:id=MsatOperational::AcquireImagery::satellite -->
 
 `subject` · type : `Satellite`
 
 ### DownlinkImagery
 
-<!-- lm:id=Operational::DownlinkImagery -->
+<!-- lm:id=MsatOperational::DownlinkImagery -->
 
 `use_case_def`
 
@@ -230,13 +251,13 @@ Transmettre les images acquises vers la station sol.
 
 #### operator
 
-<!-- lm:id=Operational::DownlinkImagery::operator -->
+<!-- lm:id=MsatOperational::DownlinkImagery::operator -->
 
 `actor` · type : `GroundOperator`
 
 ### ExploitImagery
 
-<!-- lm:id=Operational::ExploitImagery -->
+<!-- lm:id=MsatOperational::ExploitImagery -->
 
 `use_case_def`
 
@@ -244,13 +265,13 @@ Analyser et distribuer les produits image.
 
 #### analyst
 
-<!-- lm:id=Operational::ExploitImagery::analyst -->
+<!-- lm:id=MsatOperational::ExploitImagery::analyst -->
 
 `actor` · type : `ImageAnalyst`
 
 ### RecoverFromAnomaly
 
-<!-- lm:id=Operational::RecoverFromAnomaly -->
+<!-- lm:id=MsatOperational::RecoverFromAnomaly -->
 
 `use_case_def`
 
@@ -258,7 +279,7 @@ Ramener le satellite en service après une anomalie.
 
 #### operator
 
-<!-- lm:id=Operational::RecoverFromAnomaly::operator -->
+<!-- lm:id=MsatOperational::RecoverFromAnomaly::operator -->
 
 `actor` · type : `GroundOperator`
 
@@ -268,9 +289,9 @@ Ramener le satellite en service après une anomalie.
 
 23 élément(s).
 
-## Functional
+## MsatFunctional
 
-<!-- lm:id=Functional -->
+<!-- lm:id=MsatFunctional -->
 
 `package`
 
@@ -278,137 +299,137 @@ Architecture fonctionnelle : chaîne image et fonctions plateforme.
 
 ### ImagingCommand
 
-<!-- lm:id=Functional::ImagingCommand -->
+<!-- lm:id=MsatFunctional::ImagingCommand -->
 
 `item_def`
 
 ### RawImage
 
-<!-- lm:id=Functional::RawImage -->
+<!-- lm:id=MsatFunctional::RawImage -->
 
 `item_def`
 
 ### CompressedImage
 
-<!-- lm:id=Functional::CompressedImage -->
+<!-- lm:id=MsatFunctional::CompressedImage -->
 
 `item_def`
 
 ### Telemetry
 
-<!-- lm:id=Functional::Telemetry -->
+<!-- lm:id=MsatFunctional::Telemetry -->
 
 `item_def`
 
 ### PlanAcquisition
 
-<!-- lm:id=Functional::PlanAcquisition -->
+<!-- lm:id=MsatFunctional::PlanAcquisition -->
 
 `action_def`
 
 Transformer une demande utilisateur en plan d'acquisition.
 
-- **Alloué à** : `Logical::OnboardComputer`
+- **Alloué à** : `MsatLogical::OnboardComputer`
 
 #### plan
 
-<!-- lm:id=Functional::PlanAcquisition::plan -->
+<!-- lm:id=MsatFunctional::PlanAcquisition::plan -->
 
 `item` · type : `ImagingCommand`
 
 ### CaptureImage
 
-<!-- lm:id=Functional::CaptureImage -->
+<!-- lm:id=MsatFunctional::CaptureImage -->
 
 `action_def`
 
 Acquérir une scène avec l'instrument optique.
 
-- **Alloué à** : `Logical::PayloadModule`
+- **Alloué à** : `PayloadModule`
 
 #### cmd
 
-<!-- lm:id=Functional::CaptureImage::cmd -->
+<!-- lm:id=MsatFunctional::CaptureImage::cmd -->
 
 `item` · type : `ImagingCommand`
 
 #### raw
 
-<!-- lm:id=Functional::CaptureImage::raw -->
+<!-- lm:id=MsatFunctional::CaptureImage::raw -->
 
 `item` · type : `RawImage`
 
 ### CompressImage
 
-<!-- lm:id=Functional::CompressImage -->
+<!-- lm:id=MsatFunctional::CompressImage -->
 
 `action_def`
 
 Compresser l'image brute (CCSDS 122).
 
-- **Alloué à** : `Logical::OnboardComputer`
+- **Alloué à** : `MsatLogical::OnboardComputer`
 
 #### raw
 
-<!-- lm:id=Functional::CompressImage::raw -->
+<!-- lm:id=MsatFunctional::CompressImage::raw -->
 
 `item` · type : `RawImage`
 
 #### compressed
 
-<!-- lm:id=Functional::CompressImage::compressed -->
+<!-- lm:id=MsatFunctional::CompressImage::compressed -->
 
 `item` · type : `CompressedImage`
 
 ### StoreImage
 
-<!-- lm:id=Functional::StoreImage -->
+<!-- lm:id=MsatFunctional::StoreImage -->
 
 `action_def`
 
 Stocker l'image compressée en mémoire de masse.
 
-- **Alloué à** : `Logical::OnboardComputer`
+- **Alloué à** : `MsatLogical::OnboardComputer`
 
 ### TransmitData
 
-<!-- lm:id=Functional::TransmitData -->
+<!-- lm:id=MsatFunctional::TransmitData -->
 
 `action_def`
 
 Transmettre images et télémesure vers le sol.
 
-- **Alloué à** : `Logical::CommSubsystem`
+- **Alloué à** : `MsatLogical::PayloadModule::CommSubsystem`
 
 ### MonitorHealth
 
-<!-- lm:id=Functional::MonitorHealth -->
+<!-- lm:id=MsatFunctional::MonitorHealth -->
 
 `action_def`
 
 Surveiller la santé du satellite et détecter les anomalies.
 
-- **Alloué à** : `Logical::OnboardComputer`
+- **Alloué à** : `MsatLogical::OnboardComputer`
 
 #### tm
 
-<!-- lm:id=Functional::MonitorHealth::tm -->
+<!-- lm:id=MsatFunctional::MonitorHealth::tm -->
 
 `item` · type : `Telemetry`
 
 ### MaintainAttitude
 
-<!-- lm:id=Functional::MaintainAttitude -->
+<!-- lm:id=MsatFunctional::MaintainAttitude -->
 
 `action_def`
 
 Maintenir le pointage requis pendant l'acquisition.
 
-- **Alloué à** : `Logical::Aocs`
+- **Alloué à** : `MsatLogical::Aocs`
 
 ### OperationalModes
 
-<!-- lm:id=Functional::OperationalModes -->
+<!-- lm:id=MsatFunctional::OperationalModes -->
 
 `state_def`
 
@@ -416,25 +437,25 @@ Modes opérationnels du satellite.
 
 #### standby
 
-<!-- lm:id=Functional::OperationalModes::standby -->
+<!-- lm:id=MsatFunctional::OperationalModes::standby -->
 
 `state`
 
 #### imaging
 
-<!-- lm:id=Functional::OperationalModes::imaging -->
+<!-- lm:id=MsatFunctional::OperationalModes::imaging -->
 
 `state`
 
 #### downlink
 
-<!-- lm:id=Functional::OperationalModes::downlink -->
+<!-- lm:id=MsatFunctional::OperationalModes::downlink -->
 
 `state`
 
 #### safe
 
-<!-- lm:id=Functional::OperationalModes::safe -->
+<!-- lm:id=MsatFunctional::OperationalModes::safe -->
 
 `state`
 
@@ -442,43 +463,75 @@ Modes opérationnels du satellite.
 
 # Couche Logical (L)
 
-27 élément(s).
+33 élément(s).
 
-## Logical
+## DecompositionExtras
 
-<!-- lm:id=Logical -->
+<!-- lm:id=DecompositionExtras -->
+
+`package`
+
+### ThermalSensor
+
+<!-- lm:id=DecompositionExtras::ThermalSensor -->
+
+`part_def`
+
+Tagué component par METADATA (pas par le chemin) ;
+raffine la plateforme comme les autres composants.
+
+## MsatLogical
+
+<!-- lm:id=MsatLogical -->
 
 `package`
 
 Architecture logique : sous-systèmes et interfaces.
 
+- **Vérifiée par** : `MsatRequirements::MissionAvailability::testreq2`
+- **Vérifie** : `MsatRequirements::MissionAvailability`
+
 ### DataBusPort
 
-<!-- lm:id=Logical::DataBusPort -->
+<!-- lm:id=MsatLogical::DataBusPort -->
 
 `port_def`
 
 ### PowerPort
 
-<!-- lm:id=Logical::PowerPort -->
+<!-- lm:id=MsatLogical::PowerPort -->
 
 `port_def`
 
 ### RfPort
 
-<!-- lm:id=Logical::RfPort -->
+<!-- lm:id=MsatLogical::RfPort -->
 
 `port_def`
 
 ### OpticalPort
 
-<!-- lm:id=Logical::OpticalPort -->
+<!-- lm:id=MsatLogical::OpticalPort -->
 
 `port_def`
 
+### cacahuetes
+
+<!-- lm:id=MsatLogical::cacahuetes -->
+
+`part_def`
+
+test doc
+
+#### lol
+
+<!-- lm:id=MsatLogical::cacahuetes::lol -->
+
+`part` · type : `kisscool`
+
 ### Satellite
 
-<!-- lm:id=Logical::Satellite -->
+<!-- lm:id=MsatLogical::Satellite -->
 
 `part_def`
 
@@ -486,157 +539,165 @@ Système satellite complet.
 
 #### payload
 
-<!-- lm:id=Logical::Satellite::payload -->
+<!-- lm:id=MsatLogical::Satellite::payload -->
 
 `part` · type : `PayloadModule`
 
 #### obc
 
-<!-- lm:id=Logical::Satellite::obc -->
+<!-- lm:id=MsatLogical::Satellite::obc -->
 
 `part` · type : `OnboardComputer`
 
 #### comm
 
-<!-- lm:id=Logical::Satellite::comm -->
+<!-- lm:id=MsatLogical::Satellite::comm -->
 
 `part` · type : `CommSubsystem`
 
 #### eps
 
-<!-- lm:id=Logical::Satellite::eps -->
+<!-- lm:id=MsatLogical::Satellite::eps -->
 
 `part` · type : `PowerSubsystem`
 
-#### aocs
+#### aocs2
 
-<!-- lm:id=Logical::Satellite::aocs -->
+<!-- lm:id=MsatLogical::Satellite::aocs2 -->
 
 `part` · type : `Aocs`
 
+#### test
+
+<!-- lm:id=MsatLogical::Satellite::test -->
+
+`part` · type : `testlog`
+
 ### PayloadModule
 
-<!-- lm:id=Logical::PayloadModule -->
+<!-- lm:id=MsatLogical::PayloadModule -->
 
 `part_def`
 
 Module charge utile : instrument optique et électronique.
 
-- **Satisfait** : `Requirements::Imaging::DailyImagingCapacity`
-- **Alloué à** : `Physical::CameraAssembly`
-- **Alloué depuis** : `Functional::CaptureImage`
-
 #### data
 
-<!-- lm:id=Logical::PayloadModule::data -->
+<!-- lm:id=MsatLogical::PayloadModule::data -->
 
 `port` · type : `DataBusPort`
 
 #### pwr
 
-<!-- lm:id=Logical::PayloadModule::pwr -->
+<!-- lm:id=MsatLogical::PayloadModule::pwr -->
 
 `port` · type : `PowerPort`
 
-#### optics
+#### CommSubsystem
 
-<!-- lm:id=Logical::PayloadModule::optics -->
-
-`port` · type : `OpticalPort`
-
-### OnboardComputer
-
-<!-- lm:id=Logical::OnboardComputer -->
-
-`part_def`
-
-Calculateur de bord : gestion mission et données.
-
-- **Satisfait** : `Requirements::Platform::SafeMode`
-- **Alloué à** : `Physical::ObcBoard`
-- **Alloué depuis** : `Functional::PlanAcquisition`, `Functional::CompressImage`, `Functional::StoreImage`, `Functional::MonitorHealth`
-
-#### bus
-
-<!-- lm:id=Logical::OnboardComputer::bus -->
-
-`port` · type : `DataBusPort`
-
-#### pwr
-
-<!-- lm:id=Logical::OnboardComputer::pwr -->
-
-`port` · type : `PowerPort`
-
-### CommSubsystem
-
-<!-- lm:id=Logical::CommSubsystem -->
+<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem -->
 
 `part_def`
 
 Sous-système de communication bande X.
 
-- **Satisfait** : `Requirements::Imaging::DownlinkBand`
-- **Alloué à** : `Physical::XBandTransmitter`
-- **Alloué depuis** : `Functional::TransmitData`
+- **Satisfait** : `MsatRequirements::Imaging::DownlinkBand`
+- **Alloué à** : `MsatPhysical::XBandTransmitter`
+- **Alloué depuis** : `MsatFunctional::TransmitData`
 
-#### rf
+##### rf
 
-<!-- lm:id=Logical::CommSubsystem::rf -->
+<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::rf -->
 
 `port` · type : `RfPort`
 
+##### bus
+
+<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::bus -->
+
+`port` · type : `DataBusPort`
+
+##### pwr
+
+<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::pwr -->
+
+`port` · type : `PowerPort`
+
+##### optics
+
+<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::optics -->
+
+`port` · type : `OpticalPort`
+
+### OnboardComputer
+
+<!-- lm:id=MsatLogical::OnboardComputer -->
+
+`part_def`
+
+Calculateur de bord : gestion mission et données.
+
+- **Satisfait** : `MsatRequirements::Platform::SafeMode`
+- **Alloué à** : `MsatPhysical::ObcBoard`
+- **Alloué depuis** : `MsatFunctional::PlanAcquisition`, `MsatFunctional::CompressImage`, `MsatFunctional::StoreImage`, `MsatFunctional::MonitorHealth`
+
 #### bus
 
-<!-- lm:id=Logical::CommSubsystem::bus -->
+<!-- lm:id=MsatLogical::OnboardComputer::bus -->
 
 `port` · type : `DataBusPort`
 
 #### pwr
 
-<!-- lm:id=Logical::CommSubsystem::pwr -->
+<!-- lm:id=MsatLogical::OnboardComputer::pwr -->
 
 `port` · type : `PowerPort`
 
 ### PowerSubsystem
 
-<!-- lm:id=Logical::PowerSubsystem -->
+<!-- lm:id=MsatLogical::PowerSubsystem -->
 
 `part_def`
 
 Génération, stockage et distribution d'énergie.
 
-- **Alloué à** : `Physical::SolarArray`, `Physical::Battery`
+- **Alloué à** : `MsatPhysical::SolarArray`, `MsatPhysical::Battery`
 
 #### pwr
 
-<!-- lm:id=Logical::PowerSubsystem::pwr -->
+<!-- lm:id=MsatLogical::PowerSubsystem::pwr -->
 
 `port` · type : `PowerPort`
 
 ### Aocs
 
-<!-- lm:id=Logical::Aocs -->
+<!-- lm:id=MsatLogical::Aocs -->
 
 `part_def`
 
 Contrôle d'attitude et d'orbite.
 
-- **Satisfait** : `Requirements::Platform::AttitudeAccuracy`
-- **Alloué à** : `Physical::ReactionWheel`, `Physical::StarTracker`
-- **Alloué depuis** : `Functional::MaintainAttitude`
+- **Satisfait** : `MsatRequirements::Platform::AttitudeAccuracy`
+- **Alloué à** : `MsatPhysical::ReactionWheel`, `MsatPhysical::StarTracker`
+- **Alloué depuis** : `MsatFunctional::MaintainAttitude`
 
 #### bus
 
-<!-- lm:id=Logical::Aocs::bus -->
+<!-- lm:id=MsatLogical::Aocs::bus -->
 
 `port` · type : `DataBusPort`
 
 #### pwr
 
-<!-- lm:id=Logical::Aocs::pwr -->
+<!-- lm:id=MsatLogical::Aocs::pwr -->
 
 `port` · type : `PowerPort`
+
+### NewPart1
+
+<!-- lm:id=MsatLogical::NewPart1 -->
+
+`part_def`
 
 ---
 
@@ -644,9 +705,9 @@ Contrôle d'attitude et d'orbite.
 
 29 élément(s).
 
-## Physical
+## MsatPhysical
 
-<!-- lm:id=Physical -->
+<!-- lm:id=MsatPhysical -->
 
 `package`
 
@@ -654,210 +715,210 @@ Architecture physique : équipements et budgets.
 
 ### CameraAssembly
 
-<!-- lm:id=Physical::CameraAssembly -->
+<!-- lm:id=MsatPhysical::CameraAssembly -->
 
 `part_def`
 
 Ensemble caméra : télescope + plan focal.
 
-- **Satisfait** : `Requirements::Imaging::ImageResolution`
-- **Alloué depuis** : `Logical::PayloadModule`, `Requirements::MissionAvailability::testreq2`, `Requirements::Imaging::DailyImagingCapacity`, `Requirements::Platform::AttitudeAccuracy`
+- **Satisfait** : `MsatRequirements::Imaging::ImageResolution`
+- **Alloué depuis** : `PayloadModule`, `MsatRequirements::MissionAvailability::testreq2`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Platform::AttitudeAccuracy`
 
 #### mass
 
-<!-- lm:id=Physical::CameraAssembly::mass -->
+<!-- lm:id=MsatPhysical::CameraAssembly::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::CameraAssembly::power -->
+<!-- lm:id=MsatPhysical::CameraAssembly::power -->
 
 `attribute` · type : `Real`
 
 ### ObcBoard
 
-<!-- lm:id=Physical::ObcBoard -->
+<!-- lm:id=MsatPhysical::ObcBoard -->
 
 `part_def`
 
 Carte calculateur durcie.
 
-- **Alloué depuis** : `Logical::OnboardComputer`, `Requirements::Platform::TotalMass`, `Requirements::Platform::AttitudeAccuracy`
+- **Alloué depuis** : `MsatLogical::OnboardComputer`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::AttitudeAccuracy`, `MsatRequirements::MissionAvailability`
 
 #### mass
 
-<!-- lm:id=Physical::ObcBoard::mass -->
+<!-- lm:id=MsatPhysical::ObcBoard::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::ObcBoard::power -->
+<!-- lm:id=MsatPhysical::ObcBoard::power -->
 
 `attribute` · type : `Real`
 
 ### XBandTransmitter
 
-<!-- lm:id=Physical::XBandTransmitter -->
+<!-- lm:id=MsatPhysical::XBandTransmitter -->
 
 `part_def`
 
 Émetteur bande X 150 Mbit/s.
 
-- **Alloué depuis** : `Logical::CommSubsystem`, `Requirements::Platform::TotalMass`
+- **Alloué depuis** : `MsatLogical::PayloadModule::CommSubsystem`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::MissionAvailability`, `MsatRequirements::MissionAvailability::testreq`
 
 #### mass
 
-<!-- lm:id=Physical::XBandTransmitter::mass -->
+<!-- lm:id=MsatPhysical::XBandTransmitter::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::XBandTransmitter::power -->
+<!-- lm:id=MsatPhysical::XBandTransmitter::power -->
 
 `attribute` · type : `Real`
 
 ### SolarArray
 
-<!-- lm:id=Physical::SolarArray -->
+<!-- lm:id=MsatPhysical::SolarArray -->
 
 `part_def`
 
 Générateur solaire déployable.
 
-- **Satisfait** : `Requirements::Platform::PowerBudget`
-- **Alloué depuis** : `Logical::PowerSubsystem`, `Requirements::MissionAvailability::testreq`, `Requirements::Platform::TotalMass`
+- **Satisfait** : `MsatRequirements::Platform::PowerBudget`
+- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::TotalMass`
 
 #### mass
 
-<!-- lm:id=Physical::SolarArray::mass -->
+<!-- lm:id=MsatPhysical::SolarArray::mass -->
 
 `attribute` · type : `Real`
 
 #### power
 
-<!-- lm:id=Physical::SolarArray::power -->
+<!-- lm:id=MsatPhysical::SolarArray::power -->
 
 `attribute` · type : `Real`
 
 ### Battery
 
-<!-- lm:id=Physical::Battery -->
+<!-- lm:id=MsatPhysical::Battery -->
 
 `part_def`
 
 Batterie Li-ion 40 Ah.
 
-- **Alloué depuis** : `Logical::PowerSubsystem`, `Requirements::Platform::SafeMode`
+- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::SafeMode`, `MsatRequirements::Platform::ThermalRange`, `MsatRequirements::Platform::PowerBudget`
 
 #### mass
 
-<!-- lm:id=Physical::Battery::mass -->
+<!-- lm:id=MsatPhysical::Battery::mass -->
 
 `attribute` · type : `Real`
 
 ### ReactionWheel
 
-<!-- lm:id=Physical::ReactionWheel -->
+<!-- lm:id=MsatPhysical::ReactionWheel -->
 
 `part_def`
 
 Roue à réaction 0.1 Nm.
 
-- **Alloué depuis** : `Logical::Aocs`, `Requirements::Imaging::ImageResolution`, `Requirements::Platform::TotalMass`
+- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::PowerBudget`
 
 #### mass
 
-<!-- lm:id=Physical::ReactionWheel::mass -->
+<!-- lm:id=MsatPhysical::ReactionWheel::mass -->
 
 `attribute` · type : `Real`
 
 ### StarTracker
 
-<!-- lm:id=Physical::StarTracker -->
+<!-- lm:id=MsatPhysical::StarTracker -->
 
 `part_def`
 
 Senseur stellaire.
 
-- **Alloué depuis** : `Logical::Aocs`, `Requirements::Platform::TotalMass`, `Requirements::Platform::TotalMass`, `Requirements::Platform::TotalMass`, `Requirements::Imaging::DailyImagingCapacity`, `Requirements::Imaging::ImageResolution`, `Requirements::Platform::SafeMode`
+- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::SafeMode`
 
 #### mass
 
-<!-- lm:id=Physical::StarTracker::mass -->
+<!-- lm:id=MsatPhysical::StarTracker::mass -->
 
 `attribute` · type : `Real`
 
 ### Structure
 
-<!-- lm:id=Physical::Structure -->
+<!-- lm:id=MsatPhysical::Structure -->
 
 `part_def`
 
 Structure primaire et thermique.
 
-- **Satisfait** : `Requirements::Platform::TotalMass`, `Requirements::Platform::ThermalRange`
-- **Alloué depuis** : `Requirements::Platform::TotalMass`, `Requirements::Platform::SafeMode`
+- **Satisfait** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::ThermalRange`
+- **Alloué depuis** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::SafeMode`
 
 #### mass
 
-<!-- lm:id=Physical::Structure::mass -->
+<!-- lm:id=MsatPhysical::Structure::mass -->
 
 `attribute` · type : `Real`
 
 ### camera
 
-<!-- lm:id=Physical::camera -->
+<!-- lm:id=MsatPhysical::camera -->
 
 `part` · type : `CameraAssembly`
 
-- **Alloué depuis** : `Requirements::Imaging::ImageResolution`, `Requirements::Imaging::DownlinkBand`, `Requirements::Platform::PowerBudget`
+- **Alloué depuis** : `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Imaging::DownlinkBand`, `MsatRequirements::Platform::PowerBudget`
 
 ### obcBoard
 
-<!-- lm:id=Physical::obcBoard -->
+<!-- lm:id=MsatPhysical::obcBoard -->
 
 `part` · type : `ObcBoard`
 
 ### transmitter
 
-<!-- lm:id=Physical::transmitter -->
+<!-- lm:id=MsatPhysical::transmitter -->
 
 `part` · type : `XBandTransmitter`
 
-- **Alloué depuis** : `Requirements::Platform::ThermalRange`
+- **Alloué depuis** : `MsatRequirements::Platform::ThermalRange`
 
 ### solarArray
 
-<!-- lm:id=Physical::solarArray -->
+<!-- lm:id=MsatPhysical::solarArray -->
 
 `part` · type : `SolarArray`
 
 ### battery
 
-<!-- lm:id=Physical::battery -->
+<!-- lm:id=MsatPhysical::battery -->
 
 `part` · type : `Battery`
 
 ### wheels
 
-<!-- lm:id=Physical::wheels -->
+<!-- lm:id=MsatPhysical::wheels -->
 
 `part` · type : `ReactionWheel`
 
-- **Alloué depuis** : `Requirements::Platform::PowerBudget`
+- **Alloué depuis** : `MsatRequirements::Platform::PowerBudget`
 
 ### starTracker
 
-<!-- lm:id=Physical::starTracker -->
+<!-- lm:id=MsatPhysical::starTracker -->
 
 `part` · type : `StarTracker`
 
 ### structure
 
-<!-- lm:id=Physical::structure -->
+<!-- lm:id=MsatPhysical::structure -->
 
 `part` · type : `Structure`
 
@@ -867,9 +928,9 @@ Structure primaire et thermique.
 
 7 élément(s).
 
-## IVVQ
+## MsatIvvq
 
-<!-- lm:id=IVVQ -->
+<!-- lm:id=MsatIvvq -->
 
 `package`
 
@@ -877,62 +938,62 @@ Campagne de vérification MSAT.
 
 ### MSAT-TC-001 — VerifyImageResolution
 
-<!-- lm:id=IVVQ::VerifyImageResolution -->
+<!-- lm:id=MsatIvvq::VerifyImageResolution -->
 
 `verification_def`
 
 Mesure de la FTM et du GSD sur banc optique, puis en vol
 sur mire géoréférencée.
 
-- **Vérifie** : `Requirements::Imaging::ImageResolution`
+- **Vérifie** : `MsatRequirements::Imaging::ImageResolution`
 
 ### MSAT-TC-002 — VerifyMassBudget
 
-<!-- lm:id=IVVQ::VerifyMassBudget -->
+<!-- lm:id=MsatIvvq::VerifyMassBudget -->
 
 `verification_def`
 
 Pesée de l'ensemble intégré, comparaison au budget.
 
-- **Vérifie** : `Requirements::Platform::TotalMass`
+- **Vérifie** : `MsatRequirements::Platform::TotalMass`
 
 ### MSAT-TC-003 — VerifyPowerBudget
 
-<!-- lm:id=IVVQ::VerifyPowerBudget -->
+<!-- lm:id=MsatIvvq::VerifyPowerBudget -->
 
 `verification_def`
 
 Test de génération en simulation solaire fin de vie.
 
-- **Vérifie** : `Requirements::Platform::PowerBudget`
+- **Vérifie** : `MsatRequirements::Platform::PowerBudget`
 
 ### MSAT-TC-004 — VerifyDownlink
 
-<!-- lm:id=IVVQ::VerifyDownlink -->
+<!-- lm:id=MsatIvvq::VerifyDownlink -->
 
 `verification_def`
 
 Liaison RF de bout en bout avec la station sol.
 
-- **Vérifie** : `Requirements::Imaging::DownlinkBand`
+- **Vérifie** : `MsatRequirements::Imaging::DownlinkBand`
 
 ### MSAT-TC-005 — VerifySafeMode
 
-<!-- lm:id=IVVQ::VerifySafeMode -->
+<!-- lm:id=MsatIvvq::VerifySafeMode -->
 
 `verification_def`
 
 Injection d'anomalies et vérification de la transition
 autonome en mode sûr.
 
-- **Vérifie** : `Requirements::Platform::SafeMode`
+- **Vérifie** : `MsatRequirements::Platform::SafeMode`
 
 ### MSAT-TC-006 — VerifyAttitude
 
-<!-- lm:id=IVVQ::VerifyAttitude -->
+<!-- lm:id=MsatIvvq::VerifyAttitude -->
 
 `verification_def`
 
 Précision de pointage en boucle fermée sur simulateur.
 
-- **Vérifie** : `Requirements::Platform::AttitudeAccuracy`
+- **Vérifie** : `MsatRequirements::Platform::AttitudeAccuracy`
