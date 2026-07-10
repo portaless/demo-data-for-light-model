@@ -1,36 +1,51 @@
-# Branche demo-decomposition — jeu d'essai des niveaux d'abstraction
+# Branche demo-decomposition — décomposition & analyse récursive
 
-Setup de test de la vue **Décomposition** (REQ-MULTI-004) : trois niveaux
-canoniques reliés par des relations `refine` (l'élément le plus concret
-raffine le plus abstrait).
+Deux jeux d'essai complémentaires sur le modèle MSAT.
 
-## Contenu ajouté (aucun fichier existant modifié)
+## 1. Vue Décomposition (niveaux d'abstraction, REQ-MULTI-004)
 
-- `levels/system/logical/` — `ObservationSatellite`, `GroundSegment`
-  (niveau porté par le **chemin**)
-- `levels/subsystem/logical/` — `ImagingPayload`, `SatellitePlatform`
-  (raffinent le satellite), `MissionControl` (raffine le segment sol)
-- `levels/component/logical/` — `OpticalCamera`, `ImageCompressor` (→ payload),
-  `StarTracker`, `BatteryPack` (→ plateforme), `SpareAntenna` (**sans refine**)
-- `logical/decomposition-extras.sysml` — `ThermalSensor` : niveau porté par
-  **metadata** `#Component` (l'autre mode de tag)
+Dossiers `levels/system|subsystem|component/` + `logical/decomposition-extras.sysml`
+(tag par metadata `#Component`). Onglet **Décomposition** : arbres
+ObservationSatellite → {ImagingPayload, SatellitePlatform} → composants,
+`SpareAntenna` dans « Non rattachés », filtres « Niveau » apparus.
 
-## Ce qu'il faut voir
+## 2. Analyse récursive ROFLP+IVVQ (REQ-MULTI-005) — NOUVEAU
 
-1. **Onglet Décomposition** : deux arbres — `ObservationSatellite` →
-   {ImagingPayload → {OpticalCamera, ImageCompressor}, SatellitePlatform →
-   {StarTracker, BatteryPack, ThermalSensor}} et `GroundSegment` →
-   {MissionControl} ; badges indigo/bleu/cyan par niveau ; `SpareAntenna`
-   dans « Non rattachés » ; clic = sélection partagée.
-2. **Filtres « Niveau »** (apparus automatiquement) : explorateur + toolbar
-   du diagramme (`-` = hors niveaux, breadcrumb `⟨niveau⟩`).
-3. **Diagramme couche L** : les arêtes `refine` (triangle creux pointillé) ;
-   mode lien **R** de la toolbox pour en créer d'autres au clic.
-4. Supprimer un `refine` (clic sur l'arête) → l'élément bascule dans
-   « Non rattachés » en live.
+Le composant `Logical::PayloadModule` a été **dérivé en sous-système** :
+`subprojects/payload-module/` porte un cycle COMPLET, comme la racine :
+
+- `requirements/` — `PlImageResolution`, `PlMassBudget` : exigences DÉRIVÉES
+  (`refine` vers les exigences système Imaging/Platform)
+- `functional/` — mini ActionFlow (acquire → compress, succession)
+- `logical/` — `PayloadModule { refine Logical::PayloadModule; }` (le pont
+  vertical), `CameraUnit` et `CompressionBoard` qui `satisfy` SES exigences
+- `ivvq/` — `VerifyPlResolution`, `VerifyPlMass` : la recette PROPRE à l'étage
+
+Et l'étage 3 existe déjà : `subprojects/camera-unit/` (scaffold généré par la
+feature elle-même, dérivé de `PayloadModuleLogical::CameraUnit`).
+
+### Parcours de test conseillé
+
+1. **Explorateur → toggle « Systèmes »** : la racine avec ses couches, puis
+   `payload-module` imbriqué (badge système, « ← PayloadModule »), puis
+   `camera-unit` imbriqué dedans — chacun avec ses 6 couches.
+2. **Dériver soi-même** : clic droit sur un `part def` L/P (explorateur ou
+   diagramme) → « Dériver en sous-système… » (nom prérempli). La racine créée
+   est sélectionnée, le sélecteur « Sous-système » scope toutes les vues.
+3. **Onglet Décomposition** : les chaînes `refine` de la démo niveaux ET de
+   l'analyse récursive y apparaissent.
+4. **Diagramme** : sélecteur Sous-système = payload-module, couche R/L/IVVQ —
+   les arêtes refine (triangle creux pointillé), satisfy et verify du cycle.
+5. **Matrice / Dashboard** : la couverture reste GLOBALE pour l'instant —
+   la recette PAR sous-système est au backlog (REQ-MULTI-007).
+
+### Structure : à plat, hiérarchie par refine
+
+Chaque cycle dérivé est un dossier FRÈRE sous `subprojects/` (git-friendly,
+importable) ; la verticalité est portée par les relations `refine` et rendue
+par l'explorateur « Systèmes » et la Décomposition.
 
 ## Utilisation
 
-    git checkout demo-decomposition   # additif : pas de conflit avec main
-
-puis recharger l'application (le watcher réindexe tout seul).
+    git checkout demo-decomposition
+    # l'application réindexe toute seule (watcher) — F5 pour recharger l'UI
