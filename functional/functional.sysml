@@ -1,11 +1,9 @@
-package Functional {
+package MsatFunctional {
     doc /* Architecture fonctionnelle : chaîne image et fonctions plateforme. */
-
     item def ImagingCommand;
     item def RawImage;
     item def CompressedImage;
     item def Telemetry;
-
     action def PlanAcquisition {
         doc /* Transformer une demande utilisateur en plan d'acquisition. */
         out item plan : ImagingCommand;
@@ -33,13 +31,6 @@ package Functional {
     action def MaintainAttitude {
         doc /* Maintenir le pointage requis pendant l'acquisition. */
     }
-
-    flow from PlanAcquisition.plan to CaptureImage.cmd;
-    flow from CaptureImage.raw to CompressImage.raw;
-    flow from CompressImage.compressed to StoreImage;
-    flow from StoreImage to TransmitData;
-    flow from MonitorHealth.tm to TransmitData;
-
     state def OperationalModes {
         doc /* Modes opérationnels du satellite. */
         state standby;
@@ -47,4 +38,9 @@ package Functional {
         state downlink;
         state safe;
     }
+    flow from PlanAcquisition.plan to CaptureImage.cmd;
+    flow from CaptureImage.raw to CompressImage.raw;
+    flow from CompressImage.compressed to StoreImage;
+    flow from StoreImage to TransmitData;
+    flow from MonitorHealth.tm to TransmitData;
 }

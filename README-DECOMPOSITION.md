@@ -1,5 +1,12 @@
 # Branche demo-decomposition — décomposition & analyse récursive
 
+## 0. Le système de tête a son identité
+
+Les packages racine portent le nom du SYSTÈME (`MsatRequirements`,
+`MsatOperational`, `MsatFunctional`, `MsatLogical`, `MsatPhysical`,
+`MsatIvvq`) — même convention que les sous-systèmes dérivés
+(`PayloadModule<Couche>`) : chaque étage du cycle récursif a la même forme.
+
 Deux jeux d'essai complémentaires sur le modèle MSAT.
 
 ## 1. Vue Décomposition (niveaux d'abstraction, REQ-MULTI-004)
@@ -12,7 +19,7 @@ ObservationSatellite → {ImagingPayload, SatellitePlatform} → composants,
 ## 2. Analyse récursive ROFLP+IVVQ (REQ-MULTI-005) — NOUVEAU
 
 Le composant `Logical::PayloadModule` a été **dérivé en sous-système** :
-`subprojects/payload-module/` porte un cycle COMPLET, comme la racine :
+`subsystems/payload-module/` porte un cycle COMPLET, comme la racine :
 
 - `requirements/` — `PlImageResolution`, `PlMassBudget` : exigences DÉRIVÉES
   (`refine` vers les exigences système Imaging/Platform)
@@ -21,7 +28,7 @@ Le composant `Logical::PayloadModule` a été **dérivé en sous-système** :
   vertical), `CameraUnit` et `CompressionBoard` qui `satisfy` SES exigences
 - `ivvq/` — `VerifyPlResolution`, `VerifyPlMass` : la recette PROPRE à l'étage
 
-Et l'étage 3 existe déjà : `subprojects/camera-unit/` (scaffold généré par la
+Et l'étage 3 existe déjà : `subsystems/camera-unit/` (scaffold généré par la
 feature elle-même, dérivé de `PayloadModuleLogical::CameraUnit`).
 
 ### Parcours de test conseillé
@@ -41,7 +48,7 @@ feature elle-même, dérivé de `PayloadModuleLogical::CameraUnit`).
 
 ### Structure : à plat, hiérarchie par refine
 
-Chaque cycle dérivé est un dossier FRÈRE sous `subprojects/` (git-friendly,
+Chaque cycle dérivé est un dossier FRÈRE sous `subsystems/` (git-friendly,
 importable) ; la verticalité est portée par les relations `refine` et rendue
 par l'explorateur « Systèmes » et la Décomposition.
 

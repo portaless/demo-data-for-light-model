@@ -1,8 +1,8 @@
 package PayloadModuleLogical {
     doc /* Analyse logique du sous-système PayloadModule,
-         dérivée de Logical::PayloadModule. */
+         dérivée de MsatLogical::PayloadModule. */
     part def PayloadModule {
-        refine Logical::PayloadModule;
+        refine MsatLogical::PayloadModule;
         part camera : CameraUnit;
         part compressor : CompressionBoard;
     }

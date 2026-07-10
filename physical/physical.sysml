@@ -1,6 +1,5 @@
-package Physical {
+package MsatPhysical {
     doc /* Architecture physique : équipements et budgets. */
-
     part def CameraAssembly {
         doc /* Ensemble caméra : télescope + plan focal. */
         attribute mass : Real = 12.5;
@@ -37,7 +36,6 @@ package Physical {
         doc /* Structure primaire et thermique. */
         attribute mass : Real = 35.0;
     }
-
     part camera : CameraAssembly;
     part obcBoard : ObcBoard;
     part transmitter : XBandTransmitter;
@@ -46,7 +44,6 @@ package Physical {
     part wheels : ReactionWheel [4];
     part starTracker : StarTracker [2];
     part structure : Structure;
-
     allocate PayloadModule to CameraAssembly;
     allocate OnboardComputer to ObcBoard;
     allocate CommSubsystem to XBandTransmitter;
@@ -54,7 +51,6 @@ package Physical {
     allocate PowerSubsystem to Battery;
     allocate Aocs to ReactionWheel;
     allocate Aocs to StarTracker;
-
     satisfy ImageResolution by CameraAssembly;
     satisfy TotalMass by Structure;
     satisfy PowerBudget by SolarArray;

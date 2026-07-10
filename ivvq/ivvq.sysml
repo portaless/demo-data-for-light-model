@@ -1,9 +1,9 @@
-package IVVQ {
+package MsatIvvq {
     doc /* Campagne de vérification MSAT. */
-
     verification def <'MSAT-TC-001'> VerifyImageResolution {
         doc /* Mesure de la FTM et du GSD sur banc optique, puis en vol
-             * sur mire géoréférencée. */
+         * sur mire géoréférencée.
+         */
         verify ImageResolution;
     }
     verification def <'MSAT-TC-002'> VerifyMassBudget {
@@ -20,7 +20,8 @@ package IVVQ {
     }
     verification def <'MSAT-TC-005'> VerifySafeMode {
         doc /* Injection d'anomalies et vérification de la transition
-             * autonome en mode sûr. */
+         * autonome en mode sûr.
+         */
         verify SafeMode;
     }
     verification def <'MSAT-TC-006'> VerifyAttitude {

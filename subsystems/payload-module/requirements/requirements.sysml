@@ -4,11 +4,11 @@ package PayloadModuleRequirements {
     requirement def PlImageResolution {
         doc /* Résolution image au niveau charge utile — dérive de
              l'exigence système ImageResolution. */
-        refine Requirements::Imaging::ImageResolution;
+        refine MsatRequirements::Imaging::ImageResolution;
     }
     requirement def PlMassBudget {
         doc /* Budget de masse alloué à la charge utile — dérive du budget
              de masse total plateforme. */
-        refine Requirements::Platform::TotalMass;
+        refine MsatRequirements::Platform::TotalMass;
     }
 }
