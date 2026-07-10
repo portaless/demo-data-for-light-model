@@ -2,6 +2,9 @@
 
 ## 0. Le système de tête a son identité
 
+Le premier niveau vit dans `system/<couches>` — même forme que chaque
+`subsystems/<nom>/<couches>` : le cycle a la même structure à tous les étages.
+
 Les packages racine portent le nom du SYSTÈME (`MsatRequirements`,
 `MsatOperational`, `MsatFunctional`, `MsatLogical`, `MsatPhysical`,
 `MsatIvvq`) — même convention que les sous-systèmes dérivés
