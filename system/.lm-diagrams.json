@@ -5,6 +5,7 @@
   "mode": "all",
   "name": "Architecture logique",
   "nested_containers": [
+   "RadioReveilLogical",
    "RadioReveilLogical::RadioReveil"
   ],
   "nesting": false,
@@ -29,7 +30,9 @@
   "layer": "F",
   "mode": "arch",
   "name": "Chaîne fonctionnelle réveil",
-  "nested_containers": [],
+  "nested_containers": [
+   "RadioReveilFunctional"
+  ],
   "nesting": false,
   "nesting_depth": null,
   "nodes": [],
@@ -89,6 +92,7 @@
   "mode": "all",
   "name": "Solution physique (carte)",
   "nested_containers": [
+   "RadioReveilPhysical",
    "RadioReveilPhysical::CartePrincipale"
   ],
   "nesting": false,
@@ -113,7 +117,9 @@
   "layer": "L",
   "mode": "all",
   "name": "Étage chaîne radio",
-  "nested_containers": [],
+  "nested_containers": [
+   "ChaineRadioLogical"
+  ],
   "nesting": false,
   "nesting_depth": null,
   "nodes": [
