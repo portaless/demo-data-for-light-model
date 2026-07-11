@@ -145,3 +145,74 @@ explicitement demandé (REQ-MULTI-008).
 -
 -
 ```
+
+---
+
+## ✅ SOLUTION CONVERGÉE (contraintes utilisateur 2026-07-11)
+
+Trois contraintes fixées : **(1)** interopérabilité de la donnée,
+**(2)** zéro doublon / zéro conflit, **(3)** rester SysML v2 pur.
+Elles éliminent le YAML `root:` de l'option B (pas SysML) ET la copie
+actuelle (doublons). L'ancre retenue est un construct SysML v2 de
+première classe : **`ref part`** — une référence, jamais une possession.
+
+```sysml
+// system/logical/logical.sysml — la structure vit UNE FOIS (encapsulation)
+package MsatLogical {
+    part def PayloadModule {
+        port data : DataBusPort;
+        part def CameraUnit { … }        // ajout/renommage : UN seul endroit
+    }
+}
+
+// subsystems/payload-module/logical/logical.sysml — l'ANCRE, pas une copie
+package PayloadModuleLogical {
+    doc /* Architecture du sous-système payload-module. */
+    ref part root : MsatLogical::PayloadModule;   // ← LE lien, en SysML pur
+}
+
+// subsystems/payload-module/requirements/requirements.sysml — le PROPRE de l'étage
+package PayloadModuleRequirements {
+    requirement def PlImageResolution {
+        refine MsatRequirements::Imaging::ImageResolution;
+    }
+}
+```
+
+**Vérifié sur le parser réel** : `ref part` est parsé (`is_ref: true`),
+indexé comme relation `typing` → la chaîne d'étages est requêtable
+exactement comme aujourd'hui, et le statement survit au round-trip.
+
+**Contrôle des trois contraintes** :
+1. *Interopérable* : `ref part x : Q;` est de la notation textuelle SysML v2
+   standard — n'importe quel outil conforme lit ces fichiers ; aucune
+   sémantique essentielle dans un fichier propriétaire (les .lm/docs ne
+   portent que du confort d'outillage).
+2. *Zéro doublon* : la structure logique n'existe qu'à UN endroit
+   (encapsulation dans l'étage parent). Renommer, ajouter un port ou un
+   sous-élément : rien à propager entre étages, rien à désambiguïser.
+3. *SysML v2* : ancre `ref part`, ponts d'exigences `refine`, allocations
+   et `verify` — 100 % du méta-modèle standard.
+
+**Ce que « Architecturer le sous-système » fait désormais** (remplace
+« Dériver ») : créer `subsystems/<nom>/` avec R/O/F/IVVQ propres + le
+package logique d'ancrage ci-dessus. C'est tout. La vue « Systèmes »
+montre sous l'étage : ses couches propres + le **sous-arbre réel et
+vivant** du part def (résolu via l'ancre) — le « redéplier » marche par
+construction.
+
+**Plan de migration** (à lancer après la session de recette en cours) :
+1. backend : `derive` → `architecture` (ancre ref, plus de copie ni de
+   scaffold part def), résolution de chaîne sur typing-des-ancres au lieu
+   de refine-des-racines ;
+2. vues : arbre « Systèmes » (sous-arbre réel injecté sous l'étage),
+   Décomposition, filtres ;
+3. démo : migrer payload-module/camera-unit/ground-segment vers l'ancre,
+   dé-dupliquer ;
+4. SRD : REQ-MULTI-005 réécrite (architecturer, sans copie), MULTI-009
+   ajustée.
+
+```
+✏️ Validation finale testeur :
+[ ] OK pour l'ancre ref part    [ ] objection :
+```
