@@ -1,87 +1,213 @@
 {
-  "Architecture logique": {
-    "layer": "L",
-    "mode": "arch",
-    "name": "Architecture logique",
-    "nodes": [],
-    "pan": {
-      "x": 40.0,
-      "y": 20.0
-    },
-    "positions": {
-      "MsatLogical::Aocs": {
-        "x": 480.0,
-        "y": 560.0
-      },
-      "MsatLogical::CommSubsystem": {
-        "x": 620.0,
-        "y": 320.0
-      },
-      "MsatLogical::OnboardComputer": {
-        "x": 340.0,
-        "y": 320.0
-      },
-      "MsatLogical::PayloadModule": {
-        "x": 60.0,
-        "y": 320.0
-      },
-      "MsatLogical::PowerSubsystem": {
-        "x": 200.0,
-        "y": 560.0
-      },
-      "MsatLogical::Satellite": {
-        "x": 420.0,
-        "y": 40.0
-      }
-    },
-    "updated_at": "",
-    "zoom": 0.85
+ "Architecture logique": {
+  "inherited_ports": [],
+  "layer": "L",
+  "mode": "arch",
+  "name": "Architecture logique",
+  "nested_containers": [],
+  "nesting": false,
+  "nesting_depth": null,
+  "nodes": [],
+  "pan": {
+   "x": 40.0,
+   "y": 20.0
   },
-  "test": {
-    "inherited_ports": [],
-    "layer": "L",
-    "mode": "all",
-    "name": "test",
-    "nested_containers": [
-      "CameraUnitLogical"
-    ],
-    "nesting": false,
-    "nesting_depth": null,
-    "nodes": [],
-    "pan": {
-      "x": 538.5,
-      "y": 271.0
-    },
-    "port_positions": {},
-    "positions": {
-      "CameraUnitLogical": {
-        "height": 168.0,
-        "width": 512.0,
-        "x": -180.0,
-        "y": -43.5
-      },
-      "CameraUnitLogical::NewPart2": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 312.0,
-        "y": 72.0
-      },
-      "CameraUnitLogical::root": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 0.0,
-        "y": 40.0
-      },
-      "MsatLogical::CameraUnit2": {
-        "x": 278.8499755859375,
-        "y": 434.4499969482422
-      },
-      "MsatLogical::CameraUnit2::NewPart3": {
-        "x": 529.8499755859375,
-        "y": 371.4499969482422
-      }
-    },
-    "updated_at": "2026-07-11T11:05:57+00:00",
-    "zoom": 2.0
-  }
+  "port_positions": {},
+  "positions": {
+   "RadioReveilLogical::RadioReveil": {
+    "x": 420.0,
+    "y": 20.0
+   },
+   "RadioReveilLogical::RadioReveil::AffichageTemps": {
+    "x": 60.0,
+    "y": 400.0
+   },
+   "RadioReveilLogical::RadioReveil::AlimentationSauvegarde": {
+    "x": 420.0,
+    "y": 560.0
+   },
+   "RadioReveilLogical::RadioReveil::BaseDeTemps": {
+    "x": 60.0,
+    "y": 200.0
+   },
+   "RadioReveilLogical::RadioReveil::ChaineRadio": {
+    "x": 660.0,
+    "y": 200.0
+   },
+   "RadioReveilLogical::RadioReveil::GestionAlarmes": {
+    "x": 360.0,
+    "y": 200.0
+   },
+   "RadioReveilLogical::RadioReveil::InterfaceCommande": {
+    "x": 360.0,
+    "y": 400.0
+   },
+   "RadioReveilLogical::RadioReveil::RestitutionSonore": {
+    "x": 660.0,
+    "y": 400.0
+   }
+  },
+  "updated_at": "",
+  "zoom": 0.85
+ },
+ "Chaîne fonctionnelle réveil": {
+  "inherited_ports": [],
+  "layer": "F",
+  "mode": "arch",
+  "name": "Chaîne fonctionnelle réveil",
+  "nested_containers": [],
+  "nesting": false,
+  "nesting_depth": null,
+  "nodes": [],
+  "pan": {
+   "x": 40.0,
+   "y": 20.0
+  },
+  "port_positions": {},
+  "positions": {
+   "RadioReveilFunctional::AcquerirCommandes": {
+    "x": 40.0,
+    "y": 240.0
+   },
+   "RadioReveilFunctional::AfficherHeure": {
+    "x": 560.0,
+    "y": 40.0
+   },
+   "RadioReveilFunctional::AmplifierAudio": {
+    "x": 820.0,
+    "y": 240.0
+   },
+   "RadioReveilFunctional::DistribuerEnergie": {
+    "x": 40.0,
+    "y": 440.0
+   },
+   "RadioReveilFunctional::GenererBaseDeTemps": {
+    "x": 40.0,
+    "y": 40.0
+   },
+   "RadioReveilFunctional::GenererSonAlarme": {
+    "x": 560.0,
+    "y": 240.0
+   },
+   "RadioReveilFunctional::MaintenirHeure": {
+    "x": 300.0,
+    "y": 40.0
+   },
+   "RadioReveilFunctional::RecevoirFm": {
+    "x": 820.0,
+    "y": 40.0
+   },
+   "RadioReveilFunctional::SauvegarderHeure": {
+    "x": 300.0,
+    "y": 440.0
+   },
+   "RadioReveilFunctional::SurveillerAlarme": {
+    "x": 300.0,
+    "y": 240.0
+   }
+  },
+  "updated_at": "",
+  "zoom": 0.85
+ },
+ "Solution physique (carte)": {
+  "inherited_ports": [],
+  "layer": "P",
+  "mode": "arch",
+  "name": "Solution physique (carte)",
+  "nested_containers": [],
+  "nesting": false,
+  "nesting_depth": null,
+  "nodes": [],
+  "pan": {
+   "x": 40.0,
+   "y": 20.0
+  },
+  "port_positions": {},
+  "positions": {
+   "RadioReveilPhysical::AntenneFilaire": {
+    "x": 840.0,
+    "y": 620.0
+   },
+   "RadioReveilPhysical::CartePrincipale": {
+    "x": 380.0,
+    "y": 20.0
+   },
+   "RadioReveilPhysical::CartePrincipale::AfficheurLed7Segments": {
+    "x": 320.0,
+    "y": 620.0
+   },
+   "RadioReveilPhysical::CartePrincipale::AmplificateurPam8403": {
+    "x": 840.0,
+    "y": 220.0
+   },
+   "RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0": {
+    "x": 60.0,
+    "y": 220.0
+   },
+   "RadioReveilPhysical::CartePrincipale::ModuleFmRda5807": {
+    "x": 580.0,
+    "y": 220.0
+   },
+   "RadioReveilPhysical::CartePrincipale::PontRedresseur": {
+    "x": 320.0,
+    "y": 420.0
+   },
+   "RadioReveilPhysical::CartePrincipale::QuartzHorloge32kHz": {
+    "x": 320.0,
+    "y": 220.0
+   },
+   "RadioReveilPhysical::CartePrincipale::RegulateurBuck5V": {
+    "x": 580.0,
+    "y": 420.0
+   },
+   "RadioReveilPhysical::CartePrincipale::SupercondensateurSauvegarde": {
+    "x": 840.0,
+    "y": 420.0
+   },
+   "RadioReveilPhysical::CartePrincipale::TransformateurSecteur": {
+    "x": 60.0,
+    "y": 420.0
+   },
+   "RadioReveilPhysical::ClavierBoutons": {
+    "x": 60.0,
+    "y": 620.0
+   },
+   "RadioReveilPhysical::HautParleur": {
+    "x": 580.0,
+    "y": 620.0
+   }
+  },
+  "updated_at": "",
+  "zoom": 0.85
+ },
+ "Étage chaîne radio": {
+  "inherited_ports": [],
+  "layer": "L",
+  "mode": "all",
+  "name": "Étage chaîne radio",
+  "nested_containers": [],
+  "nesting": false,
+  "nesting_depth": null,
+  "nodes": [
+   "ChaineRadioLogical",
+   "ChaineRadioLogical::root"
+  ],
+  "pan": {
+   "x": 40.0,
+   "y": 20.0
+  },
+  "port_positions": {},
+  "positions": {
+   "ChaineRadioLogical": {
+    "x": 60.0,
+    "y": 40.0
+   },
+   "ChaineRadioLogical::root": {
+    "x": 60.0,
+    "y": 240.0
+   }
+  },
+  "updated_at": "",
+  "zoom": 0.85
+ }
 }

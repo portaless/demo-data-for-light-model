@@ -1,54 +1,51 @@
-package MsatIvvq {
-    doc /* Campagne de vérification MSAT. */
-    verification def <'MSAT-TC-001'> VerifyImageResolution {
-        doc /* Mesure de la FTM et du GSD sur banc optique, puis en vol
-         * sur mire géoréférencée.
-         */
-        verify ImageResolution;
+package RadioReveilIvvq {
+    doc /* Campagne de vérification du produit RR-100. */
+    verification def <'RR-TC-001'> TestPrecisionHorloge {
+        doc /* Banc 7 jours, comparaison à une référence GPS : dérive/jour. */
+        verify RadioReveilRequirements::Fonctions::PrecisionHorloge;
     }
-    verification def <'MSAT-TC-002'> VerifyMassBudget {
-        doc /* Pesée de l'ensemble intégré, comparaison au budget. */
-        verify TotalMass;
+    verification def <'RR-TC-002'> TestAlarmes {
+        doc /* Programmation des 2 alarmes, vérification du déclenchement à la minute. */
+        verify RadioReveilRequirements::Fonctions::AlarmeProgrammable;
     }
-    verification def <'MSAT-TC-003'> VerifyPowerBudget {
-        doc /* Test de génération en simulation solaire fin de vie. */
-        verify PowerBudget;
+    verification def <'RR-TC-003'> TestSnooze {
+        doc /* Trois reports successifs de 9 min chronométrés. */
+        verify RadioReveilRequirements::Fonctions::Snooze;
     }
-    verification def <'MSAT-TC-004'> VerifyDownlink {
-        doc /* Liaison RF de bout en bout avec la station sol. */
-        verify DownlinkBand;
+    verification def <'RR-TC-004'> TestSauvegarde72h {
+        doc /* Débranchement 72 h, vérification heure et alarmes au retour. */
+        verify RadioReveilRequirements::Fonctions::SauvegardeHeure;
     }
-    verification def <'MSAT-TC-005'> VerifySafeMode {
-        doc /* Injection d'anomalies et vérification de la transition
-         * autonome en mode sûr.
-         */
-        verify SafeMode;
+    verification def <'RR-TC-005'> MesureConsoVeille {
+        doc /* Wattmètre de précision, affichage en mode nuit. */
+        verify RadioReveilRequirements::Contraintes::ConsommationVeille;
     }
-    verification def <'MSAT-TC-006'> VerifyAttitude {
-        doc /* Précision de pointage en boucle fermée sur simulateur. */
-        verify AttitudeAccuracy;
+    verification def <'RR-TC-006'> TestBandeFm {
+        doc /* Balayage 87.5 - 108 MHz sur générateur HF. */
+        verify RadioReveilRequirements::Fonctions::ReceptionFm;
+    }
+    verification def <'RR-TC-007'> EssaiSecuriteElectrique {
+        doc /* Essai diélectrique et courant de fuite selon EN 60065. */
+        verify RadioReveilRequirements::Contraintes::SecuriteElectrique;
     }
 }
 
-package CameraUnitIvvq {
-    doc /* Couche IVVQ du sous-système CameraUnit
-         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+package ChaineRadioIvvq {
+    doc /* Recette propre à l'étage chaine-radio. */
+    verification def <'CR-TC-001'> TestSensibilite {
+        doc /* Mesure de sensibilité à 2 µV, S/N 26 dB, trois fréquences. */
+        verify ChaineRadioRequirements::CrSensibilite;
+    }
 }
 
-package NewPart2Ivvq {
-    doc /* Couche IVVQ du sous-système NewPart2
-         (architecture de CameraUnitLogical::NewPart2). */
+package BaseDeTempsIvvq {
+    doc /* Recette propre à l'étage base-de-temps. */
+    verification def <'BT-TC-001'> TestDerive {
+        doc /* Étuve 0-40 °C, mesure de dérive sur 48 h. */
+        verify BaseDeTempsRequirements::BtDerive;
+    }
 }
 
-package PayloadModuleIvvq {
-    doc /* Campagne de vérification du sous-système : chaque étage
-         d'analyse porte sa propre recette IVVQ. */
-    verification def VerifyPlResolution {
-        doc /* Banc optique : mesure de la résolution bout en bout. */
-        verify PayloadModuleRequirements::PlImageResolution;
-    }
-    verification def VerifyPlMass {
-        doc /* Pesée du module intégré. */
-        verify PayloadModuleRequirements::PlMassBudget;
-    }
+package SyntoniseurIvvq {
+    doc /* Couche IVVQ de l'étage syntoniseur. */
 }

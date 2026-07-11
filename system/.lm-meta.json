@@ -1,78 +1,134 @@
 {
-  "MsatLogical::Satellite": {
-    "milestone": "PDR",
-    "owner": "marc",
-    "priority": "P0",
-    "status": "in_review"
-  },
-  "MsatPhysical::CameraAssembly": {
-    "milestone": "CDR",
-    "owner": "sophie",
-    "priority": "P0",
-    "status": "approved"
-  },
-  "MsatRequirements::Imaging::DailyImagingCapacity": {
-    "milestone": "PDR",
-    "owner": "karim",
-    "priority": "P1",
-    "status": "in_review"
-  },
-  "MsatRequirements::Imaging::DownlinkBand": {
-    "milestone": "PDR",
-    "owner": "karim",
-    "priority": "P1",
-    "status": "approved",
-    "verification_method": "Demonstration",
-    "verification_verdict": "pass"
-  },
-  "MsatRequirements::Imaging::ImageResolution": {
-    "milestone": "PDR",
-    "owner": "sophie",
-    "priority": "P0",
-    "status": "approved",
-    "verification_method": "Test",
-    "verification_verdict": "pass"
-  },
-  "MsatRequirements::MissionAvailability": {
-    "milestone": "SRR",
-    "owner": "sophie",
-    "priority": "P0",
-    "status": "approved"
-  },
-  "MsatRequirements::Platform::AttitudeAccuracy": {
-    "milestone": "CDR",
-    "owner": "marc",
-    "priority": "P1",
-    "status": "in_review",
-    "verification_method": "Test",
-    "verification_verdict": "inconclusive"
-  },
-  "MsatRequirements::Platform::PowerBudget": {
-    "milestone": "CDR",
-    "owner": "lena",
-    "priority": "P0",
-    "status": "in_review",
-    "verification_method": "Analysis",
-    "verification_verdict": "not_run"
-  },
-  "MsatRequirements::Platform::SafeMode": {
-    "milestone": "SRR",
-    "owner": "marc",
-    "priority": "P0",
-    "status": "draft"
-  },
-  "MsatRequirements::Platform::ThermalRange": {
-    "milestone": "CDR",
-    "owner": "lena",
-    "priority": "P2",
-    "status": "in_review"
-  },
-  "MsatRequirements::Platform::TotalMass": {
-    "milestone": "CDR",
-    "owner": "lena",
-    "priority": "P0",
-    "status": "approved",
-    "verification_method": "Test",
-    "verification_verdict": "fail"
-  }
+ "BaseDeTempsRequirements::BtDerive": {
+  "milestone": "CDR",
+  "owner": "lea",
+  "priority": "P0",
+  "status": "approved",
+  "verification_method": "Test",
+  "verification_verdict": "pass"
+ },
+ "ChaineRadioRequirements::CrSensibilite": {
+  "milestone": "CDR",
+  "owner": "yusuf",
+  "priority": "P1",
+  "status": "in_review",
+  "verification_method": "Test",
+  "verification_verdict": "not_run"
+ },
+ "RadioReveilLogical::RadioReveil": {
+  "milestone": "PDR",
+  "owner": "nina",
+  "priority": "P0",
+  "status": "in_review"
+ },
+ "RadioReveilLogical::RadioReveil::BaseDeTemps": {
+  "milestone": "PDR",
+  "owner": "lea",
+  "priority": "P0",
+  "status": "approved"
+ },
+ "RadioReveilLogical::RadioReveil::ChaineRadio": {
+  "milestone": "PDR",
+  "owner": "yusuf",
+  "priority": "P1",
+  "status": "in_review"
+ },
+ "RadioReveilPhysical::CartePrincipale": {
+  "milestone": "CDR",
+  "owner": "yusuf",
+  "priority": "P0",
+  "status": "draft"
+ },
+ "RadioReveilRequirements::Contraintes::ConsommationVeille": {
+  "milestone": "CDR",
+  "owner": "lea",
+  "priority": "P0",
+  "status": "in_review",
+  "verification_method": "Test",
+  "verification_verdict": "fail"
+ },
+ "RadioReveilRequirements::Contraintes::MasseMax": {
+  "milestone": "CDR",
+  "owner": "nina",
+  "priority": "P2",
+  "status": "approved"
+ },
+ "RadioReveilRequirements::Contraintes::SecuriteElectrique": {
+  "milestone": "CDR",
+  "owner": "nina",
+  "priority": "P0",
+  "status": "approved",
+  "verification_method": "Test",
+  "verification_verdict": "pass"
+ },
+ "RadioReveilRequirements::Fonctions::AffichageHeure": {
+  "milestone": "PDR",
+  "owner": "marc",
+  "priority": "P0",
+  "status": "approved"
+ },
+ "RadioReveilRequirements::Fonctions::AlarmeProgrammable": {
+  "milestone": "PDR",
+  "owner": "marc",
+  "priority": "P0",
+  "status": "approved",
+  "verification_method": "Test",
+  "verification_verdict": "pass"
+ },
+ "RadioReveilRequirements::Fonctions::PrecisionHorloge": {
+  "milestone": "PDR",
+  "owner": "lea",
+  "priority": "P0",
+  "status": "approved",
+  "verification_method": "Test",
+  "verification_verdict": "pass"
+ },
+ "RadioReveilRequirements::Fonctions::ReceptionFm": {
+  "milestone": "CDR",
+  "owner": "yusuf",
+  "priority": "P1",
+  "status": "approved",
+  "verification_method": "Test",
+  "verification_verdict": "inconclusive"
+ },
+ "RadioReveilRequirements::Fonctions::SauvegardeHeure": {
+  "milestone": "CDR",
+  "owner": "lea",
+  "priority": "P0",
+  "status": "approved",
+  "verification_method": "Test",
+  "verification_verdict": "not_run"
+ },
+ "RadioReveilRequirements::Fonctions::Snooze": {
+  "milestone": "PDR",
+  "owner": "marc",
+  "priority": "P1",
+  "status": "in_review",
+  "verification_method": "Demonstration",
+  "verification_verdict": "pass"
+ },
+ "RadioReveilRequirements::Fonctions::VolumeCroissant": {
+  "milestone": "CDR",
+  "owner": "marc",
+  "priority": "P2",
+  "status": "draft"
+ },
+ "RadioReveilRequirements::Interfaces::AlimentationSecteur": {
+  "milestone": "SRR",
+  "owner": "yusuf",
+  "priority": "P0",
+  "status": "approved"
+ },
+ "RadioReveilRequirements::Interfaces::LuminositeReglable": {
+  "milestone": "CDR",
+  "owner": "marc",
+  "priority": "P2",
+  "status": "in_review"
+ },
+ "RadioReveilRequirements::ReveilFiable": {
+  "milestone": "SRR",
+  "owner": "nina",
+  "priority": "P0",
+  "status": "approved"
+ }
 }

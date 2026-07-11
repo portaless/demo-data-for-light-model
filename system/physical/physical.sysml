@@ -1,73 +1,101 @@
-package MsatPhysical {
-    doc /* Architecture physique : équipements et budgets. */
-    part def CameraAssembly {
-        doc /* Ensemble caméra : télescope + plan focal. */
-        attribute mass : Real = 12.5;
-        attribute power : Real = 45.0;
+package RadioReveilPhysical {
+    doc /* SOLUTION TECHNIQUE : électronique grand public sur carte unique,
+         descendue au niveau composant. */
+    part def BoitierAbs {
+        doc /* Boîtier plastique ABS deux coques, sans vis apparente. */
+        attribute masse : Real = 0.18;
     }
-    part def ObcBoard {
-        doc /* Carte calculateur durcie. */
-        attribute mass : Real = 1.2;
-        attribute power : Real = 8.0;
+    part def CartePrincipale {
+        doc /* PCB simple face — toute l'électronique du produit. */
+        attribute masse : Real = 0.09;
+        part def MicrocontroleurStm32l0 {
+            doc /* MCU basse consommation, RTC 32 bits intégrée : tient
+             * l'heure, gère alarmes/snooze, pilote afficheur et module FM.
+             */
+            attribute consoVeille : Real = 0.008;
+        }
+        part def QuartzHorloge32kHz {
+            doc /* Quartz horloger 32 768 Hz ±20 ppm : la référence de temps. */
+        }
+        part def ModuleFmRda5807 {
+            doc /* Récepteur FM intégré (syntoniseur + démodulateur), bus I2C. */
+            attribute consoActive : Real = 0.02;
+        }
+        part def AmplificateurPam8403 {
+            doc /* Ampli audio classe D 2×3 W, volume piloté (croissance). */
+            attribute consoActive : Real = 2.5;
+        }
+        part def TransformateurSecteur {
+            doc /* Transformateur d'isolement 230 V → 9 V, double isolation. */
+            attribute masse : Real = 0.12;
+        }
+        part def PontRedresseur {
+            doc /* Redressement + filtrage de la tension secondaire. */
+        }
+        part def RegulateurBuck5V {
+            doc /* Conversion 9 V → 5 V à découpage, haut rendement en veille. */
+        }
+        part def SupercondensateurSauvegarde {
+            doc /* 1 F sur le domaine RTC : maintient l'heure plus de 72 h. */
+        }
+        part def AfficheurLed7Segments {
+            doc /* 4 digits LED, driver TM1637, 3 niveaux de luminosité. */
+            attribute consoVeille : Real = 0.35;
+        }
+        part mcu : MicrocontroleurStm32l0;
+        part quartz : QuartzHorloge32kHz;
+        part moduleFm : ModuleFmRda5807;
+        part ampli : AmplificateurPam8403;
+        part transfo : TransformateurSecteur;
+        part redresseur : PontRedresseur;
+        part regulateur : RegulateurBuck5V;
+        part supercap : SupercondensateurSauvegarde;
+        part afficheur : AfficheurLed7Segments;
     }
-    part def XBandTransmitter {
-        doc /* Émetteur bande X 150 Mbit/s. */
-        attribute mass : Real = 2.4;
-        attribute power : Real = 35.0;
+    part def HautParleur {
+        doc /* Haut-parleur large bande 8 Ω / 2 W. */
+        attribute masse : Real = 0.06;
     }
-    part def SolarArray {
-        doc /* Générateur solaire déployable. */
-        attribute mass : Real = 8.0;
-        attribute power : Real = 450.0;
+    part def ClavierBoutons {
+        doc /* 5 boutons poussoirs dont un grand SNOOZE sur le dessus. */
     }
-    part def Battery {
-        doc /* Batterie Li-ion 40 Ah. */
-        attribute mass : Real = 6.5;
+    part def AntenneFilaire {
+        doc /* Antenne FM filaire 75 cm. */
     }
-    part def ReactionWheel {
-        doc /* Roue à réaction 0.1 Nm. */
-        attribute mass : Real = 1.1;
-    }
-    part def StarTracker {
-        doc /* Senseur stellaire. */
-        attribute mass : Real = 0.9;
-    }
-    part def Structure {
-        doc /* Structure primaire et thermique. */
-        attribute mass : Real = 35.0;
-    }
-    part camera : CameraAssembly;
-    part obcBoard : ObcBoard;
-    part transmitter : XBandTransmitter;
-    part solarArray : SolarArray [2];
-    part battery : Battery;
-    part wheels : ReactionWheel [4];
-    part starTracker : MsatPhysical::StarTracker [2];
-    part structure : Structure;
-    allocate MsatLogical::PayloadModule to CameraAssembly;
-    allocate OnboardComputer to ObcBoard;
-    allocate CommSubsystem to XBandTransmitter;
-    allocate PowerSubsystem to SolarArray;
-    allocate PowerSubsystem to Battery;
-    allocate Aocs to ReactionWheel;
-    allocate Aocs to MsatPhysical::StarTracker;
-    satisfy ImageResolution by CameraAssembly;
-    satisfy TotalMass by Structure;
-    satisfy PowerBudget by SolarArray;
-    satisfy ThermalRange by Structure;
+    part boitier : BoitierAbs;
+    part carte : CartePrincipale;
+    part hautParleur : HautParleur;
+    part clavier : ClavierBoutons;
+    part antenne : AntenneFilaire;
+    allocate RadioReveilLogical::RadioReveil::BaseDeTemps to CartePrincipale::MicrocontroleurStm32l0;
+    allocate RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference to CartePrincipale::QuartzHorloge32kHz;
+    allocate RadioReveilLogical::RadioReveil::BaseDeTemps::CompteurTemps to CartePrincipale::MicrocontroleurStm32l0;
+    allocate RadioReveilLogical::RadioReveil::GestionAlarmes to CartePrincipale::MicrocontroleurStm32l0;
+    allocate RadioReveilLogical::RadioReveil::ChaineRadio to CartePrincipale::ModuleFmRda5807;
+    allocate RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur to CartePrincipale::ModuleFmRda5807;
+    allocate RadioReveilLogical::RadioReveil::ChaineRadio::Demodulateur to CartePrincipale::ModuleFmRda5807;
+    allocate RadioReveilLogical::RadioReveil::RestitutionSonore to CartePrincipale::AmplificateurPam8403;
+    allocate RadioReveilLogical::RadioReveil::RestitutionSonore to HautParleur;
+    allocate RadioReveilLogical::RadioReveil::AffichageTemps to CartePrincipale::AfficheurLed7Segments;
+    allocate RadioReveilLogical::RadioReveil::InterfaceCommande to ClavierBoutons;
+    allocate RadioReveilLogical::RadioReveil::AlimentationSauvegarde to CartePrincipale::TransformateurSecteur;
+    allocate RadioReveilLogical::RadioReveil::AlimentationSauvegarde to CartePrincipale::RegulateurBuck5V;
+    allocate RadioReveilLogical::RadioReveil::AlimentationSauvegarde to CartePrincipale::SupercondensateurSauvegarde;
+    satisfy RadioReveilRequirements::Contraintes::ConsommationVeille by CartePrincipale;
+    satisfy RadioReveilRequirements::Contraintes::SecuriteElectrique by CartePrincipale::TransformateurSecteur;
+    satisfy RadioReveilRequirements::Contraintes::MasseMax by BoitierAbs;
+    satisfy RadioReveilRequirements::Interfaces::AlimentationSecteur by CartePrincipale::TransformateurSecteur;
 }
 
-package CameraUnitPhysical {
-    doc /* Couche Physical du sous-système CameraUnit
-         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+package ChaineRadioPhysical {
+    doc /* Couche Physical de l'étage chaine-radio : la solution retenue
+         (module intégré RDA5807) est tracée par les allocations. */
 }
 
-package NewPart2Physical {
-    doc /* Couche Physical du sous-système NewPart2
-         (architecture de CameraUnitLogical::NewPart2). */
+package BaseDeTempsPhysical {
+    doc /* Couche Physical de l'étage base-de-temps (quartz + RTC du MCU). */
 }
 
-package PayloadModulePhysical {
-    doc /* Couche Physical du sous-système PayloadModule
-         (analyse dérivée de MsatLogical::PayloadModule). */
+package SyntoniseurPhysical {
+    doc /* Couche Physical de l'étage syntoniseur. */
 }

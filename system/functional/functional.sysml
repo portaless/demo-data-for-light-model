@@ -1,66 +1,103 @@
-package MsatFunctional {
-    doc /* Architecture fonctionnelle : chaîne image et fonctions plateforme. */
-    item def ImagingCommand;
-    item def RawImage;
-    item def CompressedImage;
-    item def Telemetry;
-    action def PlanAcquisition {
-        doc /* Transformer une demande utilisateur en plan d'acquisition. */
-        out item plan : ImagingCommand;
+package RadioReveilFunctional {
+    doc /* Architecture fonctionnelle : chaînes du temps, de l'alarme et du son. */
+    item def TopHoraire;
+    item def HeureCourante;
+    item def ConsigneAlarme;
+    item def Declenchement;
+    item def CommandeUtilisateur;
+    item def SignalRf;
+    item def SignalAudio;
+    item def EnergieRegulee;
+    action def GenererBaseDeTemps {
+        doc /* Produire la référence de temps stable du système. */
+        out item top : TopHoraire;
     }
-    action def CaptureImage {
-        doc /* Acquérir une scène avec l'instrument optique. */
-        in item cmd : ImagingCommand;
-        out item raw : RawImage;
+    action def MaintenirHeure {
+        doc /* Compter le temps et tenir l'heure courante à jour. */
+        in item top : TopHoraire;
+        out item heure : HeureCourante;
     }
-    action def CompressImage {
-        doc /* Compresser l'image brute (CCSDS 122). */
-        in item raw : RawImage;
-        out item compressed : CompressedImage;
+    action def AfficherHeure {
+        doc /* Rendre l'heure lisible en permanence. */
+        in item heure : HeureCourante;
     }
-    action def StoreImage {
-        doc /* Stocker l'image compressée en mémoire de masse. */
+    action def SurveillerAlarme {
+        doc /* Comparer l'heure courante aux consignes d'alarme. */
+        in item heure : HeureCourante;
+        in item consigne : ConsigneAlarme;
+        out item declenchement : Declenchement;
     }
-    action def TransmitData {
-        doc /* Transmettre images et télémesure vers le sol. */
+    action def GenererSonAlarme {
+        doc /* Produire le signal d'alarme, volume croissant. */
+        in item declenchement : Declenchement;
+        out item audio : SignalAudio;
     }
-    action def MonitorHealth {
-        doc /* Surveiller la santé du satellite et détecter les anomalies. */
-        out item tm : Telemetry;
+    action def RecevoirFm {
+        doc /* Capter et démoduler la bande FM. */
+        in item rf : SignalRf;
+        out item audio : SignalAudio;
     }
-    action def MaintainAttitude {
-        doc /* Maintenir le pointage requis pendant l'acquisition. */
+    action def AmplifierAudio {
+        doc /* Amplifier le signal audio vers le transducteur. */
+        in item audio : SignalAudio;
     }
-    state def OperationalModes {
-        doc /* Modes opérationnels du satellite. */
-        state standby;
-        state imaging;
-        state downlink;
-        state safe;
+    action def AcquerirCommandes {
+        doc /* Lire les actions utilisateur (boutons, snooze). */
+        out item commande : CommandeUtilisateur;
     }
-    flow from PlanAcquisition.plan to CaptureImage.cmd;
-    flow from CaptureImage.raw to CompressImage.raw;
-    flow from CompressImage.compressed to StoreImage;
-    flow from StoreImage to TransmitData;
-    flow from MonitorHealth.tm to TransmitData;
+    action def DistribuerEnergie {
+        doc /* Convertir le secteur et alimenter toutes les fonctions. */
+        out item energie : EnergieRegulee;
+    }
+    action def SauvegarderHeure {
+        doc /* Maintenir l'heure sur source de secours pendant une coupure. */
+    }
+    state def ModesFonctionnement {
+        doc /* Modes du radio-réveil. */
+        state veille;
+        state alarme;
+        state radio;
+        state coupureSecteur;
+    }
+    flow from GenererBaseDeTemps.top to MaintenirHeure.top;
+    flow from MaintenirHeure.heure to AfficherHeure.heure;
+    flow from MaintenirHeure.heure to SurveillerAlarme.heure;
+    flow from SurveillerAlarme.declenchement to GenererSonAlarme.declenchement;
+    flow from GenererSonAlarme.audio to AmplifierAudio.audio;
+    flow from RecevoirFm.audio to AmplifierAudio.audio;
+    flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
+    action surveiller : SurveillerAlarme;
+    action sonner : GenererSonAlarme;
+    action amplifier : AmplifierAudio;
+    first surveiller then sonner;
+    first sonner then amplifier;
 }
 
-package CameraUnitFunctional {
-    doc /* Couche Functional du sous-système CameraUnit
-         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+package ChaineRadioFunctional {
+    doc /* Fonctions propres à l'étage chaine-radio. */
+    action def CapterRf {
+        doc /* Capter le champ électromagnétique de la bande FM. */
+    }
+    action def Syntoniser {
+        doc /* Sélectionner la porteuse de la station choisie. */
+    }
+    action def Demoduler {
+        doc /* Extraire le signal audio de la porteuse FM. */
+    }
+    flow from CapterRf to Syntoniser;
+    flow from Syntoniser to Demoduler;
 }
 
-package NewPart2Functional {
-    doc /* Couche Functional du sous-système NewPart2
-         (architecture de CameraUnitLogical::NewPart2). */
+package BaseDeTempsFunctional {
+    doc /* Fonctions propres à l'étage base-de-temps. */
+    action def CompenserDerive {
+        doc /* Corriger la dérive thermique de l'oscillateur. */
+    }
+    action def BasculerSurSecours {
+        doc /* Détecter la coupure secteur et basculer la source d'énergie. */
+    }
 }
 
-package PayloadModuleFunctional {
-    doc /* Chaîne fonctionnelle image de la charge utile (ActionFlow :
-         succession = flot de contrôle, créable au mode lien T). */
-    action def AcquireFrame;
-    action def CompressFrame;
-    action acquire : AcquireFrame;
-    action compress : CompressFrame;
-    first acquire then compress;
+package SyntoniseurFunctional {
+    doc /* Couche Functional de l'étage syntoniseur. */
 }

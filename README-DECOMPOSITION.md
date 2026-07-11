@@ -1,5 +1,10 @@
 # Branche demo-decomposition — décomposition & analyse récursive
 
+> Jeu de données courant : **radio-réveil RR-100** (voir
+> [README-RADIO-REVEIL.md](README-RADIO-REVEIL.md)) — étages
+> base-de-temps / chaine-radio / syntoniseur. Les exemples MSAT cités
+> ci-dessous illustrent le MÉCANISME, transposable tel quel.
+
 ## 0. UN SEUL `.sysml` par couche (v3, décision 2026-07-11)
 
 TOUT le modèle vit dans `system/<couche>/<couche>.sysml` — six fichiers,

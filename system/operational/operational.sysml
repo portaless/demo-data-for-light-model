@@ -1,41 +1,42 @@
-package MsatOperational {
-    doc /* Contexte opérationnel : acteurs et cas d'usage de la mission. */
-    part def GroundOperator {
-        doc /* Opérateur du segment sol. */
+package RadioReveilOperational {
+    doc /* Contexte opérationnel : qui utilise le radio-réveil et pour quoi. */
+    part def Dormeur {
+        doc /* L'utilisateur principal : programme, dort, est réveillé. */
     }
-    part def ImageAnalyst {
-        doc /* Analyste exploitant les images livrées. */
+    part def ReseauElectrique {
+        doc /* Le secteur domestique — disponible... sauf la nuit de l'examen. */
     }
-    use case def AcquireImagery {
-        doc /* Programmer et acquérir des images d'une zone d'intérêt. */
-        actor operator : GroundOperator;
-        subject satellite : Satellite;
+    use case def EtreReveille {
+        doc /* Être tiré du sommeil à l'heure programmée, volume croissant. */
+        actor dormeur : Dormeur;
+        subject radioReveil : RadioReveil;
     }
-    use case def DownlinkImagery {
-        doc /* Transmettre les images acquises vers la station sol. */
-        actor operator : GroundOperator;
+    use case def ProgrammerAlarme {
+        doc /* Régler l'heure de réveil et activer/désactiver les alarmes. */
+        actor dormeur : Dormeur;
     }
-    use case def ExploitImagery {
-        doc /* Analyser et distribuer les produits image. */
-        actor analyst : ImageAnalyst;
+    use case def Snoozer {
+        doc /* Reporter l'alarme de 9 minutes d'un seul geste, sans ouvrir les yeux. */
+        actor dormeur : Dormeur;
     }
-    use case def RecoverFromAnomaly {
-        doc /* Ramener le satellite en service après une anomalie. */
-        actor operator : GroundOperator;
+    use case def EcouterRadio {
+        doc /* Écouter un programme FM, notamment pour s'endormir (minuterie). */
+        actor dormeur : Dormeur;
+    }
+    use case def SurvivreCoupure {
+        doc /* Conserver heure et alarmes pendant une coupure secteur. */
+        actor reseau : ReseauElectrique;
     }
 }
 
-package CameraUnitOperational {
-    doc /* Couche Operational du sous-système CameraUnit
-         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+package ChaineRadioOperational {
+    doc /* Couche Operational de l'étage chaine-radio. */
 }
 
-package NewPart2Operational {
-    doc /* Couche Operational du sous-système NewPart2
-         (architecture de CameraUnitLogical::NewPart2). */
+package BaseDeTempsOperational {
+    doc /* Couche Operational de l'étage base-de-temps. */
 }
 
-package PayloadModuleOperational {
-    doc /* Couche Operational du sous-système PayloadModule
-         (analyse dérivée de MsatLogical::PayloadModule). */
+package SyntoniseurOperational {
+    doc /* Couche Operational de l'étage syntoniseur. */
 }

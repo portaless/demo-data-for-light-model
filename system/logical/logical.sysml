@@ -1,101 +1,141 @@
-package MsatLogical {
-    doc /* Architecture logique : sous-systèmes et interfaces. */
-    port def DataBusPort;
-    port def PowerPort;
+package RadioReveilLogical {
+    doc /* Architecture LOGIQUE : le système SANS solution technique —
+         des responsabilités et des interfaces, aucun choix de composant. */
+    port def TempsPort;
+    port def AudioPort;
+    port def EnergiePort;
+    port def CommandePort;
     port def RfPort;
-    port def OpticalPort;
-    part def Satellite {
-        doc /* Système satellite complet. */
-        part payload : MsatLogical::PayloadModule;
-        part obc : OnboardComputer;
-        part comm : CommSubsystem;
-        part eps : PowerSubsystem;
-        part aocs : Aocs;
-    }
-    part def PayloadModule {
-        doc /* Module charge utile : instrument optique et électronique.
-         * Architecturé en étage subsystems/payload-module — la structure
-         * interne ci-dessous est LA source de vérité (aucune copie).
+    part def RadioReveil {
+        doc /* Le radio-réveil vu comme un assemblage de sous-systèmes
+         * logiques. Chaque part def interne est candidate à
+         * « Architecturer le sous-système ».
          */
-        port data : DataBusPort;
-        port pwr : PowerPort;
-        part def CompressionBoard {
-            doc /* Carte de compression embarquée. */
+        part def BaseDeTemps {
+            doc /* Entretient l'heure courante et fournit la référence de
+             * temps. Aucun choix technologique ici : quartz, résonateur
+             * ou radio-pilotage appartiennent à la couche physique.
+             */
+            port energie : EnergiePort;
+            port temps : TempsPort;
+            part def OscillateurReference {
+                doc /* Source de cadence stable, précision à charge de l'étage. */
+            }
+            part def CompteurTemps {
+                doc /* Accumule les tops en heure/minute/seconde. */
+            }
+            part oscillateur : OscillateurReference;
+            part compteur : CompteurTemps;
         }
-        part camera : CameraUnit2;
-        part compressor : CompressionBoard;
+        part def GestionAlarmes {
+            doc /* Compare l'heure aux consignes, déclenche et gère le
+             * report (snooze). Deux consignes indépendantes.
+             */
+            port temps : TempsPort;
+            port declenche : CommandePort;
+            port energie : EnergiePort;
+        }
+        part def ChaineRadio {
+            doc /* Capte la bande FM et restitue un signal audio — sans
+             * préjuger de la solution (module intégré, discret, SDR…).
+             */
+            port rf : RfPort;
+            port audio : AudioPort;
+            port energie : EnergiePort;
+            part def Syntoniseur {
+                doc /* Sélectionne la station : filtrage et accord. */
+            }
+            part def Demodulateur {
+                doc /* Extrait l'audio de la porteuse. */
+            }
+            part syntoniseur : Syntoniseur;
+            part demodulateur : Demodulateur;
+        }
+        part def RestitutionSonore {
+            doc /* Transforme un signal audio en son audible, volume piloté. */
+            port audio : AudioPort;
+            port commande : CommandePort;
+            port energie : EnergiePort;
+        }
+        part def AffichageTemps {
+            doc /* Rend l'heure lisible, luminosité réglable, mode nuit. */
+            port temps : TempsPort;
+            port energie : EnergiePort;
+        }
+        part def InterfaceCommande {
+            doc /* Capte les actions utilisateur : réglages, alarmes, snooze. */
+            port commandes : CommandePort;
+            port energie : EnergiePort;
+        }
+        part def AlimentationSauvegarde {
+            doc /* Convertit le secteur, distribue l'énergie et maintient
+             * l'heure pendant une coupure (source de secours).
+             */
+            port secteur : EnergiePort;
+            port energie : EnergiePort;
+        }
+        part baseTemps : BaseDeTemps;
+        part alarmes : GestionAlarmes;
+        part radio : ChaineRadio;
+        part son : RestitutionSonore;
+        part affichage : AffichageTemps;
+        part commandes : InterfaceCommande;
+        part alimentation : AlimentationSauvegarde;
+        connect alimentation.energie to baseTemps.energie;
+        connect alimentation.energie to alarmes.energie;
+        connect alimentation.energie to radio.energie;
+        connect alimentation.energie to son.energie;
+        connect alimentation.energie to affichage.energie;
+        connect alimentation.energie to commandes.energie;
+        connect baseTemps.temps to affichage.temps;
+        connect baseTemps.temps to alarmes.temps;
+        connect alarmes.declenche to son.commande;
+        connect radio.audio to son.audio;
+        connect commandes.commandes to alarmes.declenche;
     }
-    part def CommSubsystem {
-        doc /* Sous-système de communication bande X. */
-        port rf : RfPort;
-        port bus : DataBusPort;
-        port pwr : PowerPort;
-    }
-    part def OnboardComputer {
-        doc /* Calculateur de bord : gestion mission et données. */
-        port bus : DataBusPort;
-        port pwr : PowerPort;
-    }
-    part def PowerSubsystem {
-        doc /* Génération, stockage et distribution d'énergie. */
-        port pwr : PowerPort;
-    }
-    part def Aocs {
-        doc /* Contrôle d'attitude et d'orbite. */
-        port bus : DataBusPort;
-        port pwr : PowerPort;
-    }
-    part def CameraUnit2 {
-        doc /* Tête optique — architecturée à son tour (étage 3) :
-         * clic droit → « Architecturer le sous-système… ».
-         */
-        part def <subcomponentcamera> subcomponentcamer;
-        part def NewPart3;
-    }
-    connect PayloadModule.data to OnboardComputer.bus;
-    connect OnboardComputer.bus to CommSubsystem.bus;
-    connect OnboardComputer.bus to Aocs.bus;
-    connect PowerSubsystem.pwr to PayloadModule.pwr;
-    connect PowerSubsystem.pwr to OnboardComputer.pwr;
-    connect PowerSubsystem.pwr to CommSubsystem.pwr;
-    connect PowerSubsystem.pwr to Aocs.pwr;
-    allocate PlanAcquisition to OnboardComputer;
-    allocate CaptureImage to PayloadModule;
-    allocate CompressImage to OnboardComputer;
-    allocate StoreImage to OnboardComputer;
-    allocate TransmitData to CommSubsystem;
-    allocate MonitorHealth to OnboardComputer;
-    allocate MaintainAttitude to Aocs;
-    satisfy DownlinkBand by CommSubsystem;
-    satisfy AttitudeAccuracy by Aocs;
-    satisfy SafeMode by OnboardComputer;
-    satisfy DailyImagingCapacity by PayloadModule;
+    part radioReveil : RadioReveil;
+    allocate RadioReveilFunctional::GenererBaseDeTemps to RadioReveil::BaseDeTemps::OscillateurReference;
+    allocate RadioReveilFunctional::MaintenirHeure to RadioReveil::BaseDeTemps::CompteurTemps;
+    allocate RadioReveilFunctional::AfficherHeure to RadioReveil::AffichageTemps;
+    allocate RadioReveilFunctional::SurveillerAlarme to RadioReveil::GestionAlarmes;
+    allocate RadioReveilFunctional::GenererSonAlarme to RadioReveil::GestionAlarmes;
+    allocate RadioReveilFunctional::RecevoirFm to RadioReveil::ChaineRadio;
+    allocate RadioReveilFunctional::AmplifierAudio to RadioReveil::RestitutionSonore;
+    allocate RadioReveilFunctional::AcquerirCommandes to RadioReveil::InterfaceCommande;
+    allocate RadioReveilFunctional::DistribuerEnergie to RadioReveil::AlimentationSauvegarde;
+    allocate RadioReveilFunctional::SauvegarderHeure to RadioReveil::AlimentationSauvegarde;
+    satisfy RadioReveilRequirements::ReveilFiable by RadioReveil;
+    satisfy RadioReveilRequirements::Fonctions::AffichageHeure by RadioReveil::AffichageTemps;
+    satisfy RadioReveilRequirements::Fonctions::PrecisionHorloge by RadioReveil::BaseDeTemps;
+    satisfy RadioReveilRequirements::Fonctions::AlarmeProgrammable by RadioReveil::GestionAlarmes;
+    satisfy RadioReveilRequirements::Fonctions::Snooze by RadioReveil::InterfaceCommande;
+    satisfy RadioReveilRequirements::Fonctions::ReceptionFm by RadioReveil::ChaineRadio;
+    satisfy RadioReveilRequirements::Fonctions::SauvegardeHeure by RadioReveil::AlimentationSauvegarde;
+    satisfy RadioReveilRequirements::Interfaces::LuminositeReglable by RadioReveil::AffichageTemps;
 }
 
-package CameraUnitLogical {
-    doc /* Architecture du sous-système camera-unit, ancrée sur
-     * MsatLogical::PayloadModule::CameraUnit — étage 3 du cycle
-     * récursif, même structure ROFLP+IVVQ que les étages 1 et 2.
-     */
-    ref part root : MsatLogical::CameraUnit2;
-    part def NewPart2;
+package ChaineRadioLogical {
+    doc /* Étage chaine-radio, ancré sur le sous-système logique ChaineRadio —
+         la structure vit au niveau parent, ce package porte l'ancre et les
+         liens propres à l'étage. */
+    ref part root : RadioReveilLogical::RadioReveil::ChaineRadio;
+    satisfy ChaineRadioRequirements::CrSensibilite by RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
+    satisfy ChaineRadioRequirements::CrRejetCanalAdjacent by RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
+    allocate ChaineRadioFunctional::CapterRf to RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
+    allocate ChaineRadioFunctional::Syntoniser to RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
+    allocate ChaineRadioFunctional::Demoduler to RadioReveilLogical::RadioReveil::ChaineRadio::Demodulateur;
 }
 
-package NewPart2Logical {
-    doc /* Architecture du sous-système NewPart2,
-         ancrée sur CameraUnitLogical::NewPart2 — la structure logique
-         vit au niveau parent, cette couche ne porte que
-         la référence et les compléments propres à l'étage. */
-    ref part root : CameraUnitLogical::NewPart2;
+package BaseDeTempsLogical {
+    doc /* Étage base-de-temps, ancré sur le sous-système logique BaseDeTemps. */
+    ref part root : RadioReveilLogical::RadioReveil::BaseDeTemps;
+    satisfy BaseDeTempsRequirements::BtDerive by RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference;
+    allocate BaseDeTempsFunctional::CompenserDerive to RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference;
+    allocate BaseDeTempsFunctional::BasculerSurSecours to RadioReveilLogical::RadioReveil::AlimentationSauvegarde;
 }
 
-package PayloadModuleLogical {
-    doc /* Architecture du sous-système payload-module, ancrée sur
-     * MsatLogical::PayloadModule — la structure logique vit au niveau
-     * parent (aucune copie, REQ-MULTI-005 v2). Cette couche ne porte
-     * que l'ancre et les liens propres à l'étage.
-     */
-    ref part root : MsatLogical::PayloadModule;
-    satisfy PayloadModuleRequirements::PlImageResolution by MsatLogical::CameraUnit2;
-    satisfy PayloadModuleRequirements::PlMassBudget by MsatLogical::PayloadModule::CompressionBoard;
+package SyntoniseurLogical {
+    doc /* Étage syntoniseur (niveau 3), ancré sur le part def imbriqué
+         Syntoniseur — la profondeur se lit dans l'encapsulation. */
+    ref part root : RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
 }

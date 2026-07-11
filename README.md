@@ -1,3 +1,8 @@
+> **Branche demo-decomposition** : le jeu de données est désormais le
+> **radio-réveil RR-100** (cas réaliste, toutes les vues) — voir
+> [README-RADIO-REVEIL.md](README-RADIO-REVEIL.md). La description
+> MSAT ci-dessous correspond à la branche main.
+
 # MSAT — Jeu de données de démonstration pour light-model
 
 Modèle SysML v2 d'un **mini-satellite d'observation terrestre** (MSAT),
