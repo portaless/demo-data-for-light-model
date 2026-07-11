@@ -183,6 +183,20 @@ package PayloadModuleRequirements {
 indexé comme relation `typing` → la chaîne d'étages est requêtable
 exactement comme aujourd'hui, et le statement survit au round-trip.
 
+**⚠️ Précision — la propagation ne disparaît pas, elle change de nature.**
+Deux propagations distinctes :
+- la **propagation des RÉFÉRENCES** au renommage (réécrire les `refine`,
+  typages, `connect`… qui pointent vers l'élément renommé, y compris
+  l'ancre `ref part` ci-dessus) : **voulue, déjà implémentée et
+  CONSERVÉE** — elle reste indispensable ;
+- la **synchronisation de CONTENU entre deux copies** du même sous-arbre
+  (répliquer renommages/ajouts/suppressions d'une copie vers l'autre) :
+  elle n'a jamais existé — c'est le trou constaté — et au lieu de
+  construire un moteur de synchro (et ses conflits), on supprime sa raison
+  d'être. Une donnée unique ne peut pas diverger d'elle-même : le
+  comportement attendu (renommage et ajouts visibles dans TOUS les étages)
+  est obtenu **par construction**.
+
 **Contrôle des trois contraintes** :
 1. *Interopérable* : `ref part x : Q;` est de la notation textuelle SysML v2
    standard — n'importe quel outil conforme lit ces fichiers ; aucune
