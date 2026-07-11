@@ -10,7 +10,9 @@
 > sous-niveaux, en SysML v2 pur, fichiers texte versionnés.
 
 Quatre approches maquettées, **cumulables** (ce n'est pas un concours à un
-seul gagnant — probablement 04 + 02 d'abord, 01 ensuite) :
+seul gagnant — probablement 04 + 02 d'abord, 01 ensuite). **Le 05 est à part :
+c'est une remise en cause du mécanisme de dérivation lui-même (proposition
+utilisateur), à trancher AVANT d'investir dans 01-04.** :
 
 | # | Mockup | Geste central | Coût estimé |
 |---|--------|----------------|-------------|
@@ -18,6 +20,7 @@ seul gagnant — probablement 04 + 02 d'abord, 01 ensuite) :
 | [02](02-matrice-n2.md) | **Matrice N²** par étage | drill-down par la diagonale | moyen |
 | [03](03-colonnes-etages.md) | Explorateur en **colonnes d'étages** | 1 colonne = 1 étage, à la Miller | élevé |
 | [04](04-badges-navigation.md) | **Badges de dérivation** partout | clic sur le badge = navigation | faible |
+| [05](05-decomposition-virtuelle.md) | **Décomposition virtuelle / sans copie** ⚠️ structurel | « Architecturer le sous-système » — la donnée reste UNE | pivot |
 
 Chaque fiche : mockup ASCII, le geste, ce que la data fournit déjà, ce qui
 manque, avantages/limites, bloc `✏️ Corrections testeur`.
