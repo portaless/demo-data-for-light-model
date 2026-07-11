@@ -88,6 +88,38 @@ profondeur N se lit dans l'encapsulation, plus dans des copies).
 5. **Matrice / Dashboard** : la couverture reste GLOBALE pour l'instant —
    la recette PAR sous-système est au backlog (REQ-MULTI-007).
 
+### ❓ FAQ testeur : « chaque dossier a son logical.sysml, c'est une copie ? »
+
+Non — **même nom de fichier ≠ même contenu**. Chaque étage a un
+`logical.sysml` parce que chaque étage a sa COUCHE logique ; ce qui a
+disparu, c'est la copie DEDANS. Comparez :
+
+- `system/logical/logical.sysml` — **70 lignes** : LA structure (part defs,
+  ports, connexions). C'est le seul endroit où `PayloadModule` et
+  `CameraUnit` sont DÉFINIS.
+- `subsystems/payload-module/logical/logical.sysml` — **9 lignes** : un doc,
+  l'ancre `ref part root : …;` et deux `satisfy`. Que des RÉFÉRENCES par
+  nom qualifié — exactement comme `satisfy DownlinkBand by CommSubsystem;`
+  dans le fichier système ne « copie » pas CommSubsystem.
+
+**Comment la cohérence est garantie** :
+1. **Une définition = un seul fichier propriétaire.** Un nom qualifié
+   (`MsatLogical::PayloadModule::CameraUnit`) n'existe qu'à un endroit ;
+   les autres fichiers ne peuvent que le référencer.
+2. **Renommage = réécriture automatique de toutes les références** (ancres,
+   satisfy, refine, typages, connect) dans tous les fichiers — testez :
+   renommez `CameraUnit`, puis ouvrez le logical.sysml de camera-unit dans
+   l'onglet Source.
+3. **Référence cassée = détectée** : le vérificateur de modèle signale
+   toute référence non résolue (onglet Santé / check-model).
+4. **Pas de double ancre** : re-architecturer un composant déjà
+   architecturé est refusé (409).
+
+Pourquoi garder un fichier logique par étage alors ? Pour que l'étage
+reste une unité complète et exportable (docs + .lm + ses 6 couches,
+REQ-MULTI-008), et parce qu'il accueille les COMPLÉMENTS logiques propres
+à l'étage : aujourd'hui ses liens satisfy, demain ses délégations de ports.
+
 ### Structure : à plat, hiérarchie par les ancres
 
 Chaque étage est un dossier FRÈRE sous `subsystems/` (git-friendly,
