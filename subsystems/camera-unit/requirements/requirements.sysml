@@ -1,4 +1,4 @@
 package CameraUnitRequirements {
     doc /* Couche Requirements du sous-système CameraUnit
-         (analyse dérivée de PayloadModuleLogical::CameraUnit). */
+         (architecture de MsatLogical::PayloadModule::CameraUnit). */
 }

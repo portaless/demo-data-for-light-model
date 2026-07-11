@@ -1,17 +1,9 @@
 package PayloadModuleLogical {
-    doc /* Analyse logique du sous-système PayloadModule,
-         dérivée de MsatLogical::PayloadModule. */
-    part def PayloadModule {
-        refine MsatLogical::PayloadModule;
-        part camera : PayloadModuleLogical::CameraUnit;
-        part compressor : CompressionBoard;
-    }
-    part def CameraUnit {
-        doc /* Tête optique : clic droit dessus → « Dériver en
-             sous-système… » pour ouvrir le cycle de l'étage 3. */
-        satisfy PayloadModuleRequirements::PlImageResolution;
-    }
-    part def CompressionBoard {
-        satisfy PayloadModuleRequirements::PlMassBudget;
-    }
+    doc /* Architecture du sous-système payload-module, ancrée sur
+         MsatLogical::PayloadModule — la structure logique vit au niveau
+         parent (aucune copie, REQ-MULTI-005 v2). Cette couche ne porte
+         que l'ancre et les liens propres à l'étage. */
+    ref part root : MsatLogical::PayloadModule;
+    satisfy PayloadModuleRequirements::PlImageResolution by MsatLogical::PayloadModule::CameraUnit;
+    satisfy PayloadModuleRequirements::PlMassBudget by MsatLogical::PayloadModule::CompressionBoard;
 }

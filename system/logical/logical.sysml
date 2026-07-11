@@ -13,10 +13,21 @@ package MsatLogical {
         part aocs : Aocs;
     }
     part def PayloadModule {
-        doc /* Module charge utile : instrument optique et électronique. */
+        doc /* Module charge utile : instrument optique et électronique.
+             Architecturé en étage subsystems/payload-module — la structure
+             interne ci-dessous est LA source de vérité (aucune copie). */
         port data : DataBusPort;
         port pwr : PowerPort;
         port optics : OpticalPort;
+        part def CameraUnit {
+            doc /* Tête optique — architecturée à son tour (étage 3) :
+                 clic droit → « Architecturer le sous-système… ». */
+        }
+        part def CompressionBoard {
+            doc /* Carte de compression embarquée. */
+        }
+        part camera : CameraUnit;
+        part compressor : CompressionBoard;
     }
     part def CommSubsystem {
         doc /* Sous-système de communication bande X. */
