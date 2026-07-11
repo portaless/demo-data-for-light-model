@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T09:57:33+00:00
+generated_at: 2026-07-11T12:48:38+00:00
 ---
 
 # Modèle — document global
@@ -428,7 +428,7 @@ Modes opérationnels du satellite.
 
 # Couche Logical (L)
 
-31 élément(s).
+32 élément(s).
 
 ## MsatLogical
 
@@ -526,23 +526,6 @@ interne ci-dessous est LA source de vérité (aucune copie).
 
 `port` · type : `PowerPort`
 
-#### optics
-
-<!-- lm:id=MsatLogical::PayloadModule::optics -->
-
-`port` · type : `OpticalPort`
-
-#### CameraUnit
-
-<!-- lm:id=MsatLogical::PayloadModule::CameraUnit -->
-
-`part_def`
-
-Tête optique — architecturée à son tour (étage 3) :
-clic droit → « Architecturer le sous-système… ».
-
-- **Satisfait** : `PayloadModuleRequirements::PlImageResolution`
-
 #### CompressionBoard
 
 <!-- lm:id=MsatLogical::PayloadModule::CompressionBoard -->
@@ -557,7 +540,7 @@ Carte de compression embarquée.
 
 <!-- lm:id=MsatLogical::PayloadModule::camera -->
 
-`part` · type : `CameraUnit`
+`part` · type : `CameraUnit2`
 
 #### compressor
 
@@ -658,6 +641,29 @@ Contrôle d'attitude et d'orbite.
 <!-- lm:id=MsatLogical::Aocs::pwr -->
 
 `port` · type : `PowerPort`
+
+### CameraUnit2
+
+<!-- lm:id=MsatLogical::CameraUnit2 -->
+
+`part_def`
+
+Tête optique — architecturée à son tour (étage 3) :
+clic droit → « Architecturer le sous-système… ».
+
+- **Satisfait** : `PayloadModuleRequirements::PlImageResolution`
+
+#### subcomponentcamera — subcomponentcamer
+
+<!-- lm:id=MsatLogical::CameraUnit2::subcomponentcamer -->
+
+`part_def`
+
+#### NewPart3
+
+<!-- lm:id=MsatLogical::CameraUnit2::NewPart3 -->
+
+`part_def`
 
 ---
 
