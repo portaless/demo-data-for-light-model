@@ -1,12 +1,106 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-10T16:05:29+00:00
+generated_at: 2026-07-11T08:17:08+00:00
 layer: L
 ---
 
 # Couche Logical (L)
 
-33 élément(s).
+42 élément(s).
+
+## MsatComponents
+
+<!-- lm:id=MsatComponents -->
+
+`package`
+
+### OpticalCamera
+
+<!-- lm:id=MsatComponents::OpticalCamera -->
+
+`part_def`
+
+### ImageCompressor
+
+<!-- lm:id=MsatComponents::ImageCompressor -->
+
+`part_def`
+
+### StarTracker
+
+<!-- lm:id=MsatComponents::StarTracker -->
+
+`part_def`
+
+### BatteryPack
+
+<!-- lm:id=MsatComponents::BatteryPack -->
+
+`part_def`
+
+### SpareAntenna
+
+<!-- lm:id=MsatComponents::SpareAntenna -->
+
+`part_def`
+
+Tagué component par son chemin, mais ne raffine rien :
+attendu dans « Non rattachés (aucune relation refine) ».
+
+## MsatSubsystems
+
+<!-- lm:id=MsatSubsystems -->
+
+`package`
+
+### ImagingPayload
+
+<!-- lm:id=MsatSubsystems::ImagingPayload -->
+
+`part_def`
+
+Chaîne image : capteur, compression, stockage.
+
+### SatellitePlatform
+
+<!-- lm:id=MsatSubsystems::SatellitePlatform -->
+
+`part_def`
+
+Plateforme : énergie, attitude, calculateur.
+
+### MissionControl
+
+<!-- lm:id=MsatSubsystems::MissionControl -->
+
+`part_def`
+
+Centre de contrôle mission.
+
+## MsatSystem
+
+<!-- lm:id=MsatSystem -->
+
+`package`
+
+Vue système de la mission MSAT : le satellite d'observation et
+son segment sol, à raffiner par les sous-systèmes.
+
+### ObservationSatellite
+
+<!-- lm:id=MsatSystem::ObservationSatellite -->
+
+`part_def`
+
+Le satellite d'observation vu comme une boîte noire mission.
+
+### GroundSegment
+
+<!-- lm:id=MsatSystem::GroundSegment -->
+
+`part_def`
+
+Le segment sol vu du niveau mission.
 
 ## DecompositionExtras
 
@@ -30,9 +124,6 @@ raffine la plateforme comme les autres composants.
 `package`
 
 Architecture logique : sous-systèmes et interfaces.
-
-- **Vérifiée par** : `MsatRequirements::MissionAvailability::testreq2`
-- **Vérifie** : `MsatRequirements::MissionAvailability`
 
 ### DataBusPort
 
@@ -58,20 +149,6 @@ Architecture logique : sous-systèmes et interfaces.
 
 `port_def`
 
-### cacahuetes
-
-<!-- lm:id=MsatLogical::cacahuetes -->
-
-`part_def`
-
-test doc
-
-#### lol
-
-<!-- lm:id=MsatLogical::cacahuetes::lol -->
-
-`part` · type : `kisscool`
-
 ### Satellite
 
 <!-- lm:id=MsatLogical::Satellite -->
@@ -84,7 +161,7 @@ Système satellite complet.
 
 <!-- lm:id=MsatLogical::Satellite::payload -->
 
-`part` · type : `PayloadModule`
+`part` · type : `MsatLogical::PayloadModule`
 
 #### obc
 
@@ -104,17 +181,11 @@ Système satellite complet.
 
 `part` · type : `PowerSubsystem`
 
-#### aocs2
+#### aocs
 
-<!-- lm:id=MsatLogical::Satellite::aocs2 -->
+<!-- lm:id=MsatLogical::Satellite::aocs -->
 
 `part` · type : `Aocs`
-
-#### test
-
-<!-- lm:id=MsatLogical::Satellite::test -->
-
-`part` · type : `testlog`
 
 ### PayloadModule
 
@@ -123,6 +194,10 @@ Système satellite complet.
 `part_def`
 
 Module charge utile : instrument optique et électronique.
+
+- **Satisfait** : `MsatRequirements::Imaging::DailyImagingCapacity`
+- **Alloué à** : `MsatPhysical::CameraAssembly`
+- **Alloué depuis** : `MsatFunctional::CaptureImage`
 
 #### data
 
@@ -136,9 +211,15 @@ Module charge utile : instrument optique et électronique.
 
 `port` · type : `PowerPort`
 
-#### CommSubsystem
+#### optics
 
-<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem -->
+<!-- lm:id=MsatLogical::PayloadModule::optics -->
+
+`port` · type : `OpticalPort`
+
+### CommSubsystem
+
+<!-- lm:id=MsatLogical::CommSubsystem -->
 
 `part_def`
 
@@ -148,29 +229,23 @@ Sous-système de communication bande X.
 - **Alloué à** : `MsatPhysical::XBandTransmitter`
 - **Alloué depuis** : `MsatFunctional::TransmitData`
 
-##### rf
+#### rf
 
-<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::rf -->
+<!-- lm:id=MsatLogical::CommSubsystem::rf -->
 
 `port` · type : `RfPort`
 
-##### bus
+#### bus
 
-<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::bus -->
+<!-- lm:id=MsatLogical::CommSubsystem::bus -->
 
 `port` · type : `DataBusPort`
 
-##### pwr
+#### pwr
 
-<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::pwr -->
+<!-- lm:id=MsatLogical::CommSubsystem::pwr -->
 
 `port` · type : `PowerPort`
-
-##### optics
-
-<!-- lm:id=MsatLogical::PayloadModule::CommSubsystem::optics -->
-
-`port` · type : `OpticalPort`
 
 ### OnboardComputer
 
@@ -235,9 +310,3 @@ Contrôle d'attitude et d'orbite.
 <!-- lm:id=MsatLogical::Aocs::pwr -->
 
 `port` · type : `PowerPort`
-
-### NewPart1
-
-<!-- lm:id=MsatLogical::NewPart1 -->
-
-`part_def`

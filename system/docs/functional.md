@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-10T16:05:29+00:00
+generated_at: 2026-07-11T08:17:08+00:00
 layer: F
 ---
 
@@ -64,7 +64,7 @@ Transformer une demande utilisateur en plan d'acquisition.
 
 Acquérir une scène avec l'instrument optique.
 
-- **Alloué à** : `PayloadModule`
+- **Alloué à** : `MsatLogical::PayloadModule`
 
 #### cmd
 
@@ -118,7 +118,7 @@ Stocker l'image compressée en mémoire de masse.
 
 Transmettre images et télémesure vers le sol.
 
-- **Alloué à** : `MsatLogical::PayloadModule::CommSubsystem`
+- **Alloué à** : `MsatLogical::CommSubsystem`
 
 ### MonitorHealth
 

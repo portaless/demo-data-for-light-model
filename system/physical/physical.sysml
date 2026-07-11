@@ -42,15 +42,15 @@ package MsatPhysical {
     part solarArray : SolarArray [2];
     part battery : Battery;
     part wheels : ReactionWheel [4];
-    part starTracker : StarTracker [2];
+    part starTracker : MsatPhysical::StarTracker [2];
     part structure : Structure;
-    allocate PayloadModule to CameraAssembly;
+    allocate MsatLogical::PayloadModule to CameraAssembly;
     allocate OnboardComputer to ObcBoard;
     allocate CommSubsystem to XBandTransmitter;
     allocate PowerSubsystem to SolarArray;
     allocate PowerSubsystem to Battery;
     allocate Aocs to ReactionWheel;
-    allocate Aocs to StarTracker;
+    allocate Aocs to MsatPhysical::StarTracker;
     satisfy ImageResolution by CameraAssembly;
     satisfy TotalMass by Structure;
     satisfy PowerBudget by SolarArray;

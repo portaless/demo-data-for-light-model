@@ -4,10 +4,6 @@ package MsatRequirements {
         doc /* Le service d'imagerie doit être disponible 95 % du temps
          * sur une année d'exploitation.
          */
-        requirement testreq :> ROFLP::FunctionalRequirement;
-        requirement testreq2 :> ROFLP::FunctionalRequirement {
-            verify MsatLogical;
-        }
     }
     package Imaging {
         requirement def <'MSAT-REQ-010'> ImageResolution :> ROFLP::PerformanceRequirement {
@@ -18,7 +14,6 @@ package MsatRequirements {
         }
         requirement def <'MSAT-REQ-011'> DailyImagingCapacity :> ROFLP::FunctionalRequirement {
             doc /* Le système doit acquérir au moins 40 scènes par jour. */
-            verify MsatRequirements::Imaging::DownlinkBand;
         }
         requirement def <'MSAT-REQ-020'> DownlinkBand :> ROFLP::InterfaceRequirement {
             doc /* La télémesure image doit être transmise en bande X
@@ -49,16 +44,12 @@ package MsatRequirements {
             doc /* Les équipements doivent fonctionner entre -20 et +50 °C. */
         }
     }
-    part def NewPart2;
-    action def NewPart3;
     allocate Imaging::ImageResolution to MsatPhysical::ReactionWheel;
     allocate Imaging::ImageResolution to MsatPhysical::camera;
     allocate Imaging::DownlinkBand to MsatPhysical::camera;
     allocate Platform::PowerBudget to MsatPhysical::camera;
     allocate Platform::ThermalRange to MsatPhysical::transmitter;
     allocate Platform::PowerBudget to MsatPhysical::wheels;
-    allocate Platform::TotalMass to MsatPhysical::StarTracker;
-    allocate Platform::TotalMass to MsatPhysical::StarTracker;
     allocate Platform::TotalMass to MsatPhysical::StarTracker;
     allocate Platform::TotalMass to MsatPhysical::ReactionWheel;
     allocate Platform::TotalMass to MsatPhysical::SolarArray;
@@ -67,20 +58,16 @@ package MsatRequirements {
     allocate Platform::TotalMass to MsatPhysical::Structure;
     allocate Platform::TotalMass to MsatPhysical::XBandTransmitter;
     allocate Platform::TotalMass to MsatPhysical::ObcBoard;
-    allocate MissionAvailability::testreq2 to MsatPhysical::CameraAssembly;
     allocate Imaging::DailyImagingCapacity to MsatPhysical::CameraAssembly;
     allocate Platform::SafeMode to MsatPhysical::Battery;
     allocate Platform::SafeMode to MsatPhysical::StarTracker;
     allocate Platform::SafeMode to MsatPhysical::Structure;
     allocate Platform::AttitudeAccuracy to MsatPhysical::ObcBoard;
     allocate Platform::AttitudeAccuracy to MsatPhysical::CameraAssembly;
-    flow from MissionAvailability::testreq to MissionAvailability::testreq2;
-    verify Imaging;
     allocate Platform::ThermalRange to MsatPhysical::Battery;
     allocate Platform::PowerBudget to MsatPhysical::Battery;
     allocate Platform::PowerBudget to MsatPhysical::ReactionWheel;
     allocate MissionAvailability to MsatPhysical::ObcBoard;
     allocate MissionAvailability to MsatPhysical::XBandTransmitter;
-    allocate MissionAvailability::testreq to MsatPhysical::XBandTransmitter;
     connect Imaging::DailyImagingCapacity to Imaging::ImageResolution;
 }

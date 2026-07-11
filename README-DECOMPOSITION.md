@@ -21,13 +21,13 @@ ObservationSatellite → {ImagingPayload, SatellitePlatform} → composants,
 
 ## 2. Analyse récursive ROFLP+IVVQ (REQ-MULTI-005) — NOUVEAU
 
-Le composant `Logical::PayloadModule` a été **dérivé en sous-système** :
+Le composant `MsatLogical::PayloadModule` a été **dérivé en sous-système** :
 `subsystems/payload-module/` porte un cycle COMPLET, comme la racine :
 
 - `requirements/` — `PlImageResolution`, `PlMassBudget` : exigences DÉRIVÉES
   (`refine` vers les exigences système Imaging/Platform)
 - `functional/` — mini ActionFlow (acquire → compress, succession)
-- `logical/` — `PayloadModule { refine Logical::PayloadModule; }` (le pont
+- `logical/` — `PayloadModule { refine MsatLogical::PayloadModule; }` (le pont
   vertical), `CameraUnit` et `CompressionBoard` qui `satisfy` SES exigences
 - `ivvq/` — `VerifyPlResolution`, `VerifyPlMass` : la recette PROPRE à l'étage
 

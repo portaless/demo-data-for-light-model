@@ -9,10 +9,6 @@
       "y": 20.0
     },
     "positions": {
-      "Logical::CommSubsystem": {
-        "x": 620.0,
-        "y": 320.0
-      },
       "MsatLogical::Aocs": {
         "x": 480.0,
         "y": 560.0
@@ -32,115 +28,13 @@
       "MsatLogical::Satellite": {
         "x": 420.0,
         "y": 40.0
+      },
+      "MsatLogical::CommSubsystem": {
+        "x": 620.0,
+        "y": 320.0
       }
     },
     "updated_at": "",
     "zoom": 0.85
-  },
-  "testreq": {
-    "layer": "R",
-    "mode": "all",
-    "name": "testreq",
-    "nested_containers": [
-      "MsatRequirements",
-      "MsatRequirements::MissionAvailability",
-      "MsatRequirements::Imaging",
-      "MsatRequirements::Platform"
-    ],
-    "nesting": false,
-    "nesting_depth": null,
-    "nodes": [],
-    "pan": {
-      "x": 9.427180017735736,
-      "y": 163.05525421223763
-    },
-    "positions": {
-      "MsatRequirements": {
-        "height": 757.5,
-        "width": 1768.0611824031944,
-        "x": 78.77085427135682,
-        "y": 30.27788944723622
-      },
-      "MsatRequirements::Imaging": {
-        "height": 257.0,
-        "width": 542.0,
-        "x": 212.9849156542511,
-        "y": 163.36695569944848
-      },
-      "MsatRequirements::Imaging::DailyImagingCapacity": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 78.0,
-        "y": 65.0
-      },
-      "MsatRequirements::Imaging::DownlinkBand": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 326.0,
-        "y": 65.0
-      },
-      "MsatRequirements::Imaging::ImageResolution": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 78.0,
-        "y": 177.0
-      },
-      "MsatRequirements::MissionAvailability": {
-        "height": 120.0,
-        "width": 489.0,
-        "x": 62.0,
-        "y": 621.5
-      },
-      "MsatRequirements::MissionAvailability::testreq": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 16.0,
-        "y": 40.0
-      },
-      "MsatRequirements::MissionAvailability::testreq2": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 264.0,
-        "y": 40.0
-      },
-      "MsatRequirements::Platform": {
-        "height": 336.447928331467,
-        "width": 728.0,
-        "x": 983.4743962889726,
-        "y": 193.68980963045914
-      },
-      "MsatRequirements::Platform::AttitudeAccuracy": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 16.0,
-        "y": 40.0
-      },
-      "MsatRequirements::Platform::PowerBudget": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 247.1713325867861,
-        "y": 100.38521836506158
-      },
-      "MsatRequirements::Platform::SafeMode": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 512.0,
-        "y": 40.0
-      },
-      "MsatRequirements::Platform::ThermalRange": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 16.0,
-        "y": 152.0
-      },
-      "MsatRequirements::Platform::TotalMass": {
-        "height": 64.0,
-        "width": 200.0,
-        "x": 264.0,
-        "y": 256.447928331467
-      }
-    },
-    "updated_at": "2026-07-08T14:56:34+00:00",
-    "zoom": 1.010180995475113
   }
 }

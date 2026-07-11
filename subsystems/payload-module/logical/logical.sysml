@@ -3,7 +3,7 @@ package PayloadModuleLogical {
          dérivée de MsatLogical::PayloadModule. */
     part def PayloadModule {
         refine MsatLogical::PayloadModule;
-        part camera : CameraUnit;
+        part camera : PayloadModuleLogical::CameraUnit;
         part compressor : CompressionBoard;
     }
     part def CameraUnit {

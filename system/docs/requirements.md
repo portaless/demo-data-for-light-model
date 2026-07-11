@@ -1,12 +1,12 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-10T16:05:29+00:00
+generated_at: 2026-07-11T08:17:08+00:00
 layer: R
 ---
 
 # Couche Requirements (R)
 
-19 élément(s).
+15 élément(s).
 
 ## MsatRequirements
 
@@ -15,8 +15,6 @@ layer: R
 `package`
 
 Exigences du mini-satellite d'observation MSAT.
-
-- **Vérifie** : `MsatRequirements::Imaging`
 
 ### MSAT-REQ-001 — MissionAvailability
 
@@ -27,33 +25,13 @@ Exigences du mini-satellite d'observation MSAT.
 Le service d'imagerie doit être disponible 95 % du temps
 sur une année d'exploitation.
 
-- **Vérifiée par** : `MsatLogical`
 - **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::XBandTransmitter`
-
-#### testreq
-
-<!-- lm:id=MsatRequirements::MissionAvailability::testreq -->
-
-`requirement` · spécialise : `ROFLP::FunctionalRequirement`
-
-- **Alloué à** : `MsatPhysical::XBandTransmitter`
-
-#### testreq2
-
-<!-- lm:id=MsatRequirements::MissionAvailability::testreq2 -->
-
-`requirement` · spécialise : `ROFLP::FunctionalRequirement`
-
-- **Vérifie** : `MsatLogical`
-- **Alloué à** : `MsatPhysical::CameraAssembly`
 
 ### Imaging
 
 <!-- lm:id=MsatRequirements::Imaging -->
 
 `package`
-
-- **Vérifiée par** : `MsatRequirements`
 
 #### MSAT-REQ-010 — ImageResolution
 
@@ -82,8 +60,7 @@ La résolution au sol (GSD) doit être inférieure ou égale
 
 Le système doit acquérir au moins 40 scènes par jour.
 
-- **Satisfaite par** : `PayloadModule`
-- **Vérifie** : `MsatRequirements::Imaging::DownlinkBand`
+- **Satisfaite par** : `MsatLogical::PayloadModule`
 - **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::CameraAssembly`
 
 #### MSAT-REQ-020 — DownlinkBand
@@ -95,8 +72,8 @@ Le système doit acquérir au moins 40 scènes par jour.
 La télémesure image doit être transmise en bande X
 (8.0 - 8.4 GHz).
 
-- **Satisfaite par** : `MsatLogical::PayloadModule::CommSubsystem`
-- **Vérifiée par** : `MsatIvvq::VerifyDownlink`, `MsatRequirements::Imaging::DailyImagingCapacity`
+- **Satisfaite par** : `MsatLogical::CommSubsystem`
+- **Vérifiée par** : `MsatIvvq::VerifyDownlink`
 - **Alloué à** : `MsatPhysical::camera`
 
 ### Platform
@@ -115,7 +92,7 @@ La masse totale au lancement ne doit pas dépasser 120 kg.
 
 - **Satisfaite par** : `MsatPhysical::Structure`
 - **Vérifiée par** : `MsatIvvq::VerifyMassBudget`
-- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::StarTracker`, `MsatPhysical::StarTracker`, `MsatPhysical::ReactionWheel`, `MsatPhysical::SolarArray`, `MsatPhysical::Structure`, `MsatPhysical::XBandTransmitter`, `MsatPhysical::ObcBoard`
+- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::ReactionWheel`, `MsatPhysical::SolarArray`, `MsatPhysical::Structure`, `MsatPhysical::XBandTransmitter`, `MsatPhysical::ObcBoard`
 
 ##### maxMass
 
@@ -177,15 +154,3 @@ Les équipements doivent fonctionner entre -20 et +50 °C.
 
 - **Satisfaite par** : `MsatPhysical::Structure`
 - **Alloué à** : `MsatPhysical::transmitter`, `MsatPhysical::Battery`
-
-### NewPart2
-
-<!-- lm:id=MsatRequirements::NewPart2 -->
-
-`part_def`
-
-### NewPart3
-
-<!-- lm:id=MsatRequirements::NewPart3 -->
-
-`action_def`

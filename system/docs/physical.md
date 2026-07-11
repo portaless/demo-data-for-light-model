@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-10T16:05:29+00:00
+generated_at: 2026-07-11T08:17:08+00:00
 layer: P
 ---
 
@@ -25,7 +25,7 @@ Architecture physique : équipements et budgets.
 Ensemble caméra : télescope + plan focal.
 
 - **Satisfait** : `MsatRequirements::Imaging::ImageResolution`
-- **Alloué depuis** : `PayloadModule`, `MsatRequirements::MissionAvailability::testreq2`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Platform::AttitudeAccuracy`
+- **Alloué depuis** : `MsatLogical::PayloadModule`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Platform::AttitudeAccuracy`
 
 #### mass
 
@@ -69,7 +69,7 @@ Carte calculateur durcie.
 
 Émetteur bande X 150 Mbit/s.
 
-- **Alloué depuis** : `MsatLogical::PayloadModule::CommSubsystem`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::MissionAvailability`, `MsatRequirements::MissionAvailability::testreq`
+- **Alloué depuis** : `MsatLogical::CommSubsystem`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::MissionAvailability`
 
 #### mass
 
@@ -146,7 +146,7 @@ Roue à réaction 0.1 Nm.
 
 Senseur stellaire.
 
-- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::SafeMode`
+- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::SafeMode`
 
 #### mass
 
@@ -217,7 +217,7 @@ Structure primaire et thermique.
 
 <!-- lm:id=MsatPhysical::starTracker -->
 
-`part` · type : `StarTracker`
+`part` · type : `MsatPhysical::StarTracker`
 
 ### structure
 
