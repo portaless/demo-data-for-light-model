@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T08:17:08+00:00
+generated_at: 2026-07-11T09:57:33+00:00
 layer: IVVQ
 ---
 
@@ -15,4 +15,4 @@ layer: IVVQ
 `package`
 
 Couche IVVQ du sous-système CameraUnit
-(analyse dérivée de PayloadModuleLogical::CameraUnit).
+(architecture de MsatLogical::PayloadModule::CameraUnit).

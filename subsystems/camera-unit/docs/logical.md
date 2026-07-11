@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T08:17:08+00:00
+generated_at: 2026-07-11T09:57:33+00:00
 layer: L
 ---
 
@@ -14,11 +14,12 @@ layer: L
 
 `package`
 
-Analyse logique du sous-système CameraUnit,
-dérivée de PayloadModuleLogical::CameraUnit.
+Architecture du sous-système camera-unit, ancrée sur
+MsatLogical::PayloadModule::CameraUnit — étage 3 du cycle
+récursif, même structure ROFLP+IVVQ que les étages 1 et 2.
 
-### CameraUnit
+### root
 
-<!-- lm:id=CameraUnitLogical::CameraUnit -->
+<!-- lm:id=CameraUnitLogical::root -->
 
-`part_def`
+`part` · type : `MsatLogical::PayloadModule::CameraUnit`

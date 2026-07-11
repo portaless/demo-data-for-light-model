@@ -12,46 +12,20 @@ Les packages racine portent le nom du SYSTÈME (`MsatRequirements`,
 
 Deux jeux d'essai complémentaires sur le modèle MSAT.
 
-## 1. Vue Décomposition (niveaux d'abstraction, REQ-MULTI-004)
+## 1. Marquage de niveaux (REQ-MULTI-004) — démo retirée
 
-Dossiers `levels/system|subsystem|component/` + `logical/decomposition-extras.sysml`
-(tag par metadata `#Component`). Onglet **Décomposition** : arbres
-ObservationSatellite → {ImagingPayload, SatellitePlatform} → composants,
-`SpareAntenna` dans « Non rattachés », filtres « Niveau » apparus.
+La démo dédiée (`levels/` + `decomposition-extras.sysml`) est **retirée**
+(2026-07-11) : c'était un modèle PARALLÈLE (ObservationSatellite,
+ImagingPayload, OpticalCamera…) qui racontait la même histoire que le vrai
+modèle sous d'autres noms — source de confusion (constat testeur) et d'un
+homonyme StarTracker. La décomposition RÉELLE passe par les ancres (§2).
 
-
-## ❓ `levels/` vs `subsystems/` : qui fait quoi ? (question testeur)
-
-Les deux ne jouent PAS dans la même catégorie :
-
-| | `subsystems/<nom>/` (dérivation) | Niveaux (`#System/#Subsystem/#Component`) |
-|---|---|---|
-| **Nature** | une **STRUCTURE** : un étage d'analyse complet | une **ÉTIQUETTE** : un marquage de lecture |
-| **Contenu** | 6 couches ROFLP+IVVQ + docs/ + .lm propres | rien — juste un tag sur des éléments existants |
-| **Profondeur** | N niveaux (chaîne refine : sub, sub-sub, …) | 3 crans fixes (system/subsystem/component) |
-| **Créé par** | clic droit → « Architecturer le sous-système… » | metadata `#Component` (ou dossier `levels/`) |
-| **Sert à** | dérouler une VRAIE analyse récursive | classer l'abstraction d'éléments **au sein d'un même étage**, alimenter les filtres « Niveau » et colorer la vue Décomposition |
-
-**La règle simple** : dès qu'un composant mérite sa propre analyse
-(exigences dérivées, fonctions, conception, IVVQ) → **architecturez le
-sous-système**. Le marquage de niveau ne sert que quand on veut étiqueter
-l'abstraction SANS créer d'étage — par exemple distinguer, dans la couche
-logique d'un même étage, ce qui relève de la vue système de ce qui est déjà
-du composant.
-
-**Le dossier `levels/` lui-même est un mécanisme HISTORIQUE** (conçu avant
-la dérivation) : il tague par chemin ce que la metadata `#Component` tague
-plus simplement. Il reste reconnu en lecture, et la démo le conserve
-uniquement pour montrer la vue Décomposition indépendamment des
-sous-systèmes. Pour du vrai travail : metadata, pas dossier.
-
-```
-✏️ Question ouverte au testeur : maintenant que la dérivation couvre la
-   décomposition structurelle, gardez-vous une utilité au marquage de
-   niveau ? Si non, on déprécie le dossier levels/ (et on retire cette
-   partie de la démo) ; si oui, dans quel cas concret ?
--
-```
+Le marquage de niveaux reste disponible dans l'outil quand on veut étiqueter
+l'abstraction SANS créer d'étage : metadata `#System` / `#Subsystem` /
+`#Component` sur un élément, filtres « Niveau », vue Décomposition. C'est une
+ÉTIQUETTE de lecture ; `subsystems/<nom>/` est une STRUCTURE d'analyse —
+dès qu'un composant mérite ses propres exigences/fonctions/IVVQ →
+**architecturez le sous-système**.
 
 ## 2. Analyse récursive ROFLP+IVVQ (REQ-MULTI-005 v2) — SANS COPIE
 

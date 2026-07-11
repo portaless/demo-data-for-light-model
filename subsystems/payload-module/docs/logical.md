@@ -1,12 +1,12 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T08:17:08+00:00
+generated_at: 2026-07-11T09:57:33+00:00
 layer: L
 ---
 
 # Couche Logical (L)
 
-6 élément(s).
+2 élément(s).
 
 ## PayloadModuleLogical
 
@@ -14,42 +14,13 @@ layer: L
 
 `package`
 
-Analyse logique du sous-système PayloadModule,
-dérivée de MsatLogical::PayloadModule.
+Architecture du sous-système payload-module, ancrée sur
+MsatLogical::PayloadModule — la structure logique vit au niveau
+parent (aucune copie, REQ-MULTI-005 v2). Cette couche ne porte
+que l'ancre et les liens propres à l'étage.
 
-### PayloadModule
+### root
 
-<!-- lm:id=PayloadModuleLogical::PayloadModule -->
+<!-- lm:id=PayloadModuleLogical::root -->
 
-`part_def`
-
-#### camera
-
-<!-- lm:id=PayloadModuleLogical::PayloadModule::camera -->
-
-`part` · type : `PayloadModuleLogical::CameraUnit`
-
-#### compressor
-
-<!-- lm:id=PayloadModuleLogical::PayloadModule::compressor -->
-
-`part` · type : `CompressionBoard`
-
-### CameraUnit
-
-<!-- lm:id=PayloadModuleLogical::CameraUnit -->
-
-`part_def`
-
-Tête optique : clic droit dessus → « Dériver en
-sous-système… » pour ouvrir le cycle de l'étage 3.
-
-- **Satisfait** : `PayloadModuleRequirements::PlImageResolution`
-
-### CompressionBoard
-
-<!-- lm:id=PayloadModuleLogical::CompressionBoard -->
-
-`part_def`
-
-- **Satisfait** : `PayloadModuleRequirements::PlMassBudget`
+`part` · type : `MsatLogical::PayloadModule`

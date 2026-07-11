@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T08:17:08+00:00
+generated_at: 2026-07-11T09:57:33+00:00
 ---
 
 # Sous-système camera-unit — document global
@@ -16,7 +16,7 @@ generated_at: 2026-07-11T08:17:08+00:00
 `package`
 
 Couche Requirements du sous-système CameraUnit
-(analyse dérivée de PayloadModuleLogical::CameraUnit).
+(architecture de MsatLogical::PayloadModule::CameraUnit).
 
 ---
 
@@ -31,7 +31,7 @@ Couche Requirements du sous-système CameraUnit
 `package`
 
 Couche Operational du sous-système CameraUnit
-(analyse dérivée de PayloadModuleLogical::CameraUnit).
+(architecture de MsatLogical::PayloadModule::CameraUnit).
 
 ---
 
@@ -46,7 +46,7 @@ Couche Operational du sous-système CameraUnit
 `package`
 
 Couche Functional du sous-système CameraUnit
-(analyse dérivée de PayloadModuleLogical::CameraUnit).
+(architecture de MsatLogical::PayloadModule::CameraUnit).
 
 ---
 
@@ -60,14 +60,15 @@ Couche Functional du sous-système CameraUnit
 
 `package`
 
-Analyse logique du sous-système CameraUnit,
-dérivée de PayloadModuleLogical::CameraUnit.
+Architecture du sous-système camera-unit, ancrée sur
+MsatLogical::PayloadModule::CameraUnit — étage 3 du cycle
+récursif, même structure ROFLP+IVVQ que les étages 1 et 2.
 
-### CameraUnit
+### root
 
-<!-- lm:id=CameraUnitLogical::CameraUnit -->
+<!-- lm:id=CameraUnitLogical::root -->
 
-`part_def`
+`part` · type : `MsatLogical::PayloadModule::CameraUnit`
 
 ---
 
@@ -82,7 +83,7 @@ dérivée de PayloadModuleLogical::CameraUnit.
 `package`
 
 Couche Physical du sous-système CameraUnit
-(analyse dérivée de PayloadModuleLogical::CameraUnit).
+(architecture de MsatLogical::PayloadModule::CameraUnit).
 
 ---
 
@@ -97,4 +98,4 @@ Couche Physical du sous-système CameraUnit
 `package`
 
 Couche IVVQ du sous-système CameraUnit
-(analyse dérivée de PayloadModuleLogical::CameraUnit).
+(architecture de MsatLogical::PayloadModule::CameraUnit).

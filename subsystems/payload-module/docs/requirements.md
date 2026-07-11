@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T08:17:08+00:00
+generated_at: 2026-07-11T09:57:33+00:00
 layer: R
 ---
 
@@ -26,7 +26,7 @@ système par refine (traçabilité verticale du cycle récursif).
 Résolution image au niveau charge utile — dérive de
 l'exigence système ImageResolution.
 
-- **Satisfaite par** : `PayloadModuleLogical::CameraUnit`
+- **Satisfaite par** : `MsatLogical::PayloadModule::CameraUnit`
 - **Vérifiée par** : `PayloadModuleIvvq::VerifyPlResolution`
 
 ### PlMassBudget
@@ -38,5 +38,5 @@ l'exigence système ImageResolution.
 Budget de masse alloué à la charge utile — dérive du budget
 de masse total plateforme.
 
-- **Satisfaite par** : `PayloadModuleLogical::CompressionBoard`
+- **Satisfaite par** : `MsatLogical::PayloadModule::CompressionBoard`
 - **Vérifiée par** : `PayloadModuleIvvq::VerifyPlMass`

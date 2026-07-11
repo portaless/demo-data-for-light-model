@@ -1,121 +1,12 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T08:17:08+00:00
+generated_at: 2026-07-11T09:57:33+00:00
 layer: L
 ---
 
 # Couche Logical (L)
 
-42 élément(s).
-
-## MsatComponents
-
-<!-- lm:id=MsatComponents -->
-
-`package`
-
-### OpticalCamera
-
-<!-- lm:id=MsatComponents::OpticalCamera -->
-
-`part_def`
-
-### ImageCompressor
-
-<!-- lm:id=MsatComponents::ImageCompressor -->
-
-`part_def`
-
-### StarTracker
-
-<!-- lm:id=MsatComponents::StarTracker -->
-
-`part_def`
-
-### BatteryPack
-
-<!-- lm:id=MsatComponents::BatteryPack -->
-
-`part_def`
-
-### SpareAntenna
-
-<!-- lm:id=MsatComponents::SpareAntenna -->
-
-`part_def`
-
-Tagué component par son chemin, mais ne raffine rien :
-attendu dans « Non rattachés (aucune relation refine) ».
-
-## MsatSubsystems
-
-<!-- lm:id=MsatSubsystems -->
-
-`package`
-
-### ImagingPayload
-
-<!-- lm:id=MsatSubsystems::ImagingPayload -->
-
-`part_def`
-
-Chaîne image : capteur, compression, stockage.
-
-### SatellitePlatform
-
-<!-- lm:id=MsatSubsystems::SatellitePlatform -->
-
-`part_def`
-
-Plateforme : énergie, attitude, calculateur.
-
-### MissionControl
-
-<!-- lm:id=MsatSubsystems::MissionControl -->
-
-`part_def`
-
-Centre de contrôle mission.
-
-## MsatSystem
-
-<!-- lm:id=MsatSystem -->
-
-`package`
-
-Vue système de la mission MSAT : le satellite d'observation et
-son segment sol, à raffiner par les sous-systèmes.
-
-### ObservationSatellite
-
-<!-- lm:id=MsatSystem::ObservationSatellite -->
-
-`part_def`
-
-Le satellite d'observation vu comme une boîte noire mission.
-
-### GroundSegment
-
-<!-- lm:id=MsatSystem::GroundSegment -->
-
-`part_def`
-
-Le segment sol vu du niveau mission.
-
-## DecompositionExtras
-
-<!-- lm:id=DecompositionExtras -->
-
-`package`
-
-### ThermalSensor
-
-<!-- lm:id=DecompositionExtras::ThermalSensor -->
-
-`part_def`
-
-Tagué component par METADATA (pas par le chemin) ;
-raffine la plateforme comme les autres composants.
+31 élément(s).
 
 ## MsatLogical
 
@@ -194,6 +85,8 @@ Système satellite complet.
 `part_def`
 
 Module charge utile : instrument optique et électronique.
+Architecturé en étage subsystems/payload-module — la structure
+interne ci-dessous est LA source de vérité (aucune copie).
 
 - **Satisfait** : `MsatRequirements::Imaging::DailyImagingCapacity`
 - **Alloué à** : `MsatPhysical::CameraAssembly`
@@ -216,6 +109,39 @@ Module charge utile : instrument optique et électronique.
 <!-- lm:id=MsatLogical::PayloadModule::optics -->
 
 `port` · type : `OpticalPort`
+
+#### CameraUnit
+
+<!-- lm:id=MsatLogical::PayloadModule::CameraUnit -->
+
+`part_def`
+
+Tête optique — architecturée à son tour (étage 3) :
+clic droit → « Architecturer le sous-système… ».
+
+- **Satisfait** : `PayloadModuleRequirements::PlImageResolution`
+
+#### CompressionBoard
+
+<!-- lm:id=MsatLogical::PayloadModule::CompressionBoard -->
+
+`part_def`
+
+Carte de compression embarquée.
+
+- **Satisfait** : `PayloadModuleRequirements::PlMassBudget`
+
+#### camera
+
+<!-- lm:id=MsatLogical::PayloadModule::camera -->
+
+`part` · type : `CameraUnit`
+
+#### compressor
+
+<!-- lm:id=MsatLogical::PayloadModule::compressor -->
+
+`part` · type : `CompressionBoard`
 
 ### CommSubsystem
 
