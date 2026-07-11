@@ -215,6 +215,23 @@ montre sous l'étage : ses couches propres + le **sous-arbre réel et
 vivant** du part def (résolu via l'ancre) — le « redéplier » marche par
 construction.
 
+**Workflow d'interface — où est le CHOIX de l'architecte d'étage ?**
+Cas concret : au niveau système, on ajoute un port sur `PayloadModule`.
+- Le port fait partie du **contrat de boîte noire**, qui appartient au
+  niveau N : l'architecte de l'étage n'a pas le choix de son *existence*
+  (sinon les deux niveaux divergent sur le contrat — le bug de la copie).
+- Son choix, c'est **l'intégration** : le port apparaît immédiatement sur
+  la frontière dans sa vue (même donnée), mais **non couvert** — aucune
+  délégation interne (`connect root.thermal to radiator.sink`) n'existe.
+- **La délégation EST l'acte d'acceptation.** Tant qu'elle manque, le port
+  est signalé « à traiter » : indicateur de couverture d'interfaces par
+  étage (REQ-MULTI-007 + option « interfaces héritées » du mockup 02).
+- Pour refuser/renégocier le contrat : le changement au niveau N est un
+  commit git visible, discutable, révocable — pas une synchro silencieuse.
+
+Le changement inter-étages devient donc un **to-do visible** (port non
+délégué) au lieu d'une divergence silencieuse entre copies.
+
 **Plan de migration** (à lancer après la session de recette en cours) :
 1. backend : `derive` → `architecture` (ancre ref, plus de copie ni de
    scaffold part def), résolution de chaîne sur typing-des-ancres au lieu
