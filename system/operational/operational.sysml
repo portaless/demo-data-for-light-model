@@ -24,3 +24,18 @@ package MsatOperational {
         actor operator : GroundOperator;
     }
 }
+
+package CameraUnitOperational {
+    doc /* Couche Operational du sous-système CameraUnit
+         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+}
+
+package NewPart2Operational {
+    doc /* Couche Operational du sous-système NewPart2
+         (architecture de CameraUnitLogical::NewPart2). */
+}
+
+package PayloadModuleOperational {
+    doc /* Couche Operational du sous-système PayloadModule
+         (analyse dérivée de MsatLogical::PayloadModule). */
+}

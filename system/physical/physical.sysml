@@ -56,3 +56,18 @@ package MsatPhysical {
     satisfy PowerBudget by SolarArray;
     satisfy ThermalRange by Structure;
 }
+
+package CameraUnitPhysical {
+    doc /* Couche Physical du sous-système CameraUnit
+         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+}
+
+package NewPart2Physical {
+    doc /* Couche Physical du sous-système NewPart2
+         (architecture de CameraUnitLogical::NewPart2). */
+}
+
+package PayloadModulePhysical {
+    doc /* Couche Physical du sous-système PayloadModule
+         (analyse dérivée de MsatLogical::PayloadModule). */
+}

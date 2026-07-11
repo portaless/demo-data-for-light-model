@@ -44,3 +44,23 @@ package MsatFunctional {
     flow from StoreImage to TransmitData;
     flow from MonitorHealth.tm to TransmitData;
 }
+
+package CameraUnitFunctional {
+    doc /* Couche Functional du sous-système CameraUnit
+         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+}
+
+package NewPart2Functional {
+    doc /* Couche Functional du sous-système NewPart2
+         (architecture de CameraUnitLogical::NewPart2). */
+}
+
+package PayloadModuleFunctional {
+    doc /* Chaîne fonctionnelle image de la charge utile (ActionFlow :
+         succession = flot de contrôle, créable au mode lien T). */
+    action def AcquireFrame;
+    action def CompressFrame;
+    action acquire : AcquireFrame;
+    action compress : CompressFrame;
+    first acquire then compress;
+}

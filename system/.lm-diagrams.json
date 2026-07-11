@@ -13,6 +13,10 @@
         "x": 480.0,
         "y": 560.0
       },
+      "MsatLogical::CommSubsystem": {
+        "x": 620.0,
+        "y": 320.0
+      },
       "MsatLogical::OnboardComputer": {
         "x": 340.0,
         "y": 320.0
@@ -28,13 +32,56 @@
       "MsatLogical::Satellite": {
         "x": 420.0,
         "y": 40.0
-      },
-      "MsatLogical::CommSubsystem": {
-        "x": 620.0,
-        "y": 320.0
       }
     },
     "updated_at": "",
     "zoom": 0.85
+  },
+  "test": {
+    "inherited_ports": [],
+    "layer": "L",
+    "mode": "all",
+    "name": "test",
+    "nested_containers": [
+      "CameraUnitLogical"
+    ],
+    "nesting": false,
+    "nesting_depth": null,
+    "nodes": [],
+    "pan": {
+      "x": 538.5,
+      "y": 271.0
+    },
+    "port_positions": {},
+    "positions": {
+      "CameraUnitLogical": {
+        "height": 168.0,
+        "width": 512.0,
+        "x": -180.0,
+        "y": -43.5
+      },
+      "CameraUnitLogical::NewPart2": {
+        "height": 64.0,
+        "width": 200.0,
+        "x": 312.0,
+        "y": 72.0
+      },
+      "CameraUnitLogical::root": {
+        "height": 64.0,
+        "width": 200.0,
+        "x": 0.0,
+        "y": 40.0
+      },
+      "MsatLogical::CameraUnit2": {
+        "x": 278.8499755859375,
+        "y": 434.4499969482422
+      },
+      "MsatLogical::CameraUnit2::NewPart3": {
+        "x": 529.8499755859375,
+        "y": 371.4499969482422
+      }
+    },
+    "updated_at": "2026-07-11T11:05:57+00:00",
+    "zoom": 2.0
   }
 }

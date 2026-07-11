@@ -71,3 +71,28 @@ package MsatRequirements {
     allocate MissionAvailability to MsatPhysical::XBandTransmitter;
     connect Imaging::DailyImagingCapacity to Imaging::ImageResolution;
 }
+
+package CameraUnitRequirements {
+    doc /* Couche Requirements du sous-système CameraUnit
+         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+}
+
+package NewPart2Requirements {
+    doc /* Couche Requirements du sous-système NewPart2
+         (architecture de CameraUnitLogical::NewPart2). */
+}
+
+package PayloadModuleRequirements {
+    doc /* Exigences du sous-système PayloadModule, DÉRIVÉES des exigences
+         système par refine (traçabilité verticale du cycle récursif). */
+    requirement def PlImageResolution {
+        doc /* Résolution image au niveau charge utile — dérive de
+             l'exigence système ImageResolution. */
+        refine MsatRequirements::Imaging::ImageResolution;
+    }
+    requirement def PlMassBudget {
+        doc /* Budget de masse alloué à la charge utile — dérive du budget
+             de masse total plateforme. */
+        refine MsatRequirements::Platform::TotalMass;
+    }
+}

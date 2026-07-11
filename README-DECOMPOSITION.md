@@ -1,9 +1,12 @@
 # Branche demo-decomposition — décomposition & analyse récursive
 
-## 0. Le système de tête a son identité
+## 0. UN SEUL `.sysml` par couche (v3, décision 2026-07-11)
 
-Le premier niveau vit dans `system/<couches>` — même forme que chaque
-`subsystems/<nom>/<couches>` : le cycle a la même structure à tous les étages.
+TOUT le modèle vit dans `system/<couche>/<couche>.sysml` — six fichiers,
+c'est tout. Un sous-système n'a NI dossier NI fichier : c'est une
+**PROJECTION** (macro → micro) portée par ses packages d'identité
+`<Système><Couche>` dans ces mêmes fichiers. La donnée vit une fois ;
+l'explorateur, le diagramme et les docs re-scopent la vue par étage.
 
 Les packages racine portent le nom du SYSTÈME (`MsatRequirements`,
 `MsatOperational`, `MsatFunctional`, `MsatLogical`, `MsatPhysical`,
@@ -78,8 +81,9 @@ profondeur N se lit dans l'encapsulation, plus dans des copies).
    (le même élément — l'étage re-scope la vue, il ne copie rien), à côté
    du package d'ancrage. `camera-unit` imbriqué dedans, même principe.
 2. **Architecturer soi-même** : clic droit sur un `part def` L/P
-   (explorateur ou diagramme) → « Architecturer le sous-système… ». La
-   couche logique créée ne contient QUE l'ancre — vérifiez dans Source.
+   (explorateur ou diagramme) → « Architecturer le sous-système… ». AUCUN
+   dossier créé : six packages ajoutés aux fichiers de couche (l'ancre dans
+   Logical) — vérifiez dans Source.
 3. **Tester la non-copie** : ajoutez un sous-élément à
    `MsatLogical::PayloadModule` (au niveau système) → il apparaît dans la
    couche Logical de l'étage. Renommez `CameraUnit` → l'ancre de
@@ -92,44 +96,30 @@ profondeur N se lit dans l'encapsulation, plus dans des copies).
 5. **Matrice / Dashboard** : la couverture reste GLOBALE pour l'instant —
    la recette PAR sous-système est au backlog (REQ-MULTI-007).
 
-### ❓ FAQ testeur : « chaque dossier a son logical.sysml, c'est une copie ? »
+### ❓ FAQ testeur : « où vivent les données d'un étage ? »
 
-Non — **même nom de fichier ≠ même contenu**. Chaque étage a un
-`logical.sysml` parce que chaque étage a sa COUCHE logique ; ce qui a
-disparu, c'est la copie DEDANS. Comparez :
+Dans les MÊMES six fichiers que tout le reste — il n'y a plus qu'un
+`logical.sysml` (celui de `system/logical/`). Un étage y possède ses
+packages d'identité :
 
-- `system/logical/logical.sysml` — **70 lignes** : LA structure (part defs,
-  ports, connexions). C'est le seul endroit où `PayloadModule` et
-  `CameraUnit` sont DÉFINIS.
-- `subsystems/payload-module/logical/logical.sysml` — **9 lignes** : un doc,
-  l'ancre `ref part root : …;` et deux `satisfy`. Que des RÉFÉRENCES par
-  nom qualifié — exactement comme `satisfy DownlinkBand by CommSubsystem;`
-  dans le fichier système ne « copie » pas CommSubsystem.
+- `PayloadModuleLogical` — l'ancre `ref part root : …;` + les liens
+  propres à l'étage ;
+- `PayloadModuleRequirements`, `…Functional`, `…Ivvq` — ses exigences
+  dérivées, fonctions, campagne de vérification.
 
-**Comment la cohérence est garantie** :
-1. **Une définition = un seul fichier propriétaire.** Un nom qualifié
-   (`MsatLogical::PayloadModule::CameraUnit`) n'existe qu'à un endroit ;
-   les autres fichiers ne peuvent que le référencer.
-2. **Renommage = réécriture automatique de toutes les références** (ancres,
-   satisfy, refine, typages, connect) dans tous les fichiers — testez :
-   renommez `CameraUnit`, puis ouvrez le logical.sysml de camera-unit dans
-   l'onglet Source.
-3. **Référence cassée = détectée** : le vérificateur de modèle signale
-   toute référence non résolue (onglet Santé / check-model).
-4. **Pas de double ancre** : re-architecturer un composant déjà
-   architecturé est refusé (409).
+**Comment la cohérence est garantie** : une définition = un seul endroit
+(plus AUCUNE duplication possible, même de fichier) ; le renommage réécrit
+toutes les références ; le vérificateur détecte les références cassées ;
+re-architecturer un composant déjà architecturé est refusé (409).
 
-Pourquoi garder un fichier logique par étage alors ? Pour que l'étage
-reste une unité complète et exportable (docs + .lm + ses 6 couches,
-REQ-MULTI-008), et parce qu'il accueille les COMPLÉMENTS logiques propres
-à l'étage : aujourd'hui ses liens satisfy, demain ses délégations de ports.
+### Structure : des packages, pas des dossiers
 
-### Structure : à plat, hiérarchie par les ancres
-
-Chaque étage est un dossier FRÈRE sous `subsystems/` (git-friendly,
-importable) ; la verticalité est portée par le typing des ancres `ref part`
-(fallback refine pour les anciens scaffolds) et rendue par l'explorateur
-« Systèmes » et la Décomposition.
+Un étage = 6 packages `<Système><Couche>` dans les fichiers de couche
+uniques, découvert par son ancre (`<Système>Logical` contenant
+`ref part root`). La verticalité est portée par le typing des ancres et
+rendue par l'explorateur « Systèmes », le diagramme scopé et la
+Décomposition. Les dossiers `subsystems/<nom>/` des anciens projets
+restent reconnus en lecture.
 
 ## Utilisation
 

@@ -29,3 +29,26 @@ package MsatIvvq {
         verify AttitudeAccuracy;
     }
 }
+
+package CameraUnitIvvq {
+    doc /* Couche IVVQ du sous-système CameraUnit
+         (architecture de MsatLogical::PayloadModule::CameraUnit). */
+}
+
+package NewPart2Ivvq {
+    doc /* Couche IVVQ du sous-système NewPart2
+         (architecture de CameraUnitLogical::NewPart2). */
+}
+
+package PayloadModuleIvvq {
+    doc /* Campagne de vérification du sous-système : chaque étage
+         d'analyse porte sa propre recette IVVQ. */
+    verification def VerifyPlResolution {
+        doc /* Banc optique : mesure de la résolution bout en bout. */
+        verify PayloadModuleRequirements::PlImageResolution;
+    }
+    verification def VerifyPlMass {
+        doc /* Pesée du module intégré. */
+        verify PayloadModuleRequirements::PlMassBudget;
+    }
+}

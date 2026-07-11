@@ -14,19 +14,15 @@ package MsatLogical {
     }
     part def PayloadModule {
         doc /* Module charge utile : instrument optique et électronique.
-             Architecturé en étage subsystems/payload-module — la structure
-             interne ci-dessous est LA source de vérité (aucune copie). */
+         * Architecturé en étage subsystems/payload-module — la structure
+         * interne ci-dessous est LA source de vérité (aucune copie).
+         */
         port data : DataBusPort;
         port pwr : PowerPort;
-        port optics : OpticalPort;
-        part def CameraUnit {
-            doc /* Tête optique — architecturée à son tour (étage 3) :
-                 clic droit → « Architecturer le sous-système… ». */
-        }
         part def CompressionBoard {
             doc /* Carte de compression embarquée. */
         }
-        part camera : CameraUnit;
+        part camera : CameraUnit2;
         part compressor : CompressionBoard;
     }
     part def CommSubsystem {
@@ -49,15 +45,22 @@ package MsatLogical {
         port bus : DataBusPort;
         port pwr : PowerPort;
     }
-    connect MsatLogical::PayloadModule.data to OnboardComputer.bus;
+    part def CameraUnit2 {
+        doc /* Tête optique — architecturée à son tour (étage 3) :
+         * clic droit → « Architecturer le sous-système… ».
+         */
+        part def <subcomponentcamera> subcomponentcamer;
+        part def NewPart3;
+    }
+    connect PayloadModule.data to OnboardComputer.bus;
     connect OnboardComputer.bus to CommSubsystem.bus;
     connect OnboardComputer.bus to Aocs.bus;
-    connect PowerSubsystem.pwr to MsatLogical::PayloadModule.pwr;
+    connect PowerSubsystem.pwr to PayloadModule.pwr;
     connect PowerSubsystem.pwr to OnboardComputer.pwr;
     connect PowerSubsystem.pwr to CommSubsystem.pwr;
     connect PowerSubsystem.pwr to Aocs.pwr;
     allocate PlanAcquisition to OnboardComputer;
-    allocate CaptureImage to MsatLogical::PayloadModule;
+    allocate CaptureImage to PayloadModule;
     allocate CompressImage to OnboardComputer;
     allocate StoreImage to OnboardComputer;
     allocate TransmitData to CommSubsystem;
@@ -66,5 +69,33 @@ package MsatLogical {
     satisfy DownlinkBand by CommSubsystem;
     satisfy AttitudeAccuracy by Aocs;
     satisfy SafeMode by OnboardComputer;
-    satisfy DailyImagingCapacity by MsatLogical::PayloadModule;
+    satisfy DailyImagingCapacity by PayloadModule;
+}
+
+package CameraUnitLogical {
+    doc /* Architecture du sous-système camera-unit, ancrée sur
+     * MsatLogical::PayloadModule::CameraUnit — étage 3 du cycle
+     * récursif, même structure ROFLP+IVVQ que les étages 1 et 2.
+     */
+    ref part root : MsatLogical::CameraUnit2;
+    part def NewPart2;
+}
+
+package NewPart2Logical {
+    doc /* Architecture du sous-système NewPart2,
+         ancrée sur CameraUnitLogical::NewPart2 — la structure logique
+         vit au niveau parent, cette couche ne porte que
+         la référence et les compléments propres à l'étage. */
+    ref part root : CameraUnitLogical::NewPart2;
+}
+
+package PayloadModuleLogical {
+    doc /* Architecture du sous-système payload-module, ancrée sur
+     * MsatLogical::PayloadModule — la structure logique vit au niveau
+     * parent (aucune copie, REQ-MULTI-005 v2). Cette couche ne porte
+     * que l'ancre et les liens propres à l'étage.
+     */
+    ref part root : MsatLogical::PayloadModule;
+    satisfy PayloadModuleRequirements::PlImageResolution by MsatLogical::CameraUnit2;
+    satisfy PayloadModuleRequirements::PlMassBudget by MsatLogical::PayloadModule::CompressionBoard;
 }
