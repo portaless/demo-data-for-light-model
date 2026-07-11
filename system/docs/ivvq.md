@@ -1,79 +1,87 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T12:48:38+00:00
+generated_at: 2026-07-11T13:18:40+00:00
 layer: IVVQ
 ---
 
 # Couche IVVQ (IVVQ)
 
-7 élément(s).
+8 élément(s).
 
-## MsatIvvq
+## RadioReveilIvvq
 
-<!-- lm:id=MsatIvvq -->
+<!-- lm:id=RadioReveilIvvq -->
 
 `package`
 
-Campagne de vérification MSAT.
+Campagne de vérification du produit RR-100.
 
-### MSAT-TC-001 — VerifyImageResolution
+### RR-TC-001 — TestPrecisionHorloge
 
-<!-- lm:id=MsatIvvq::VerifyImageResolution -->
-
-`verification_def`
-
-Mesure de la FTM et du GSD sur banc optique, puis en vol
-sur mire géoréférencée.
-
-- **Vérifie** : `MsatRequirements::Imaging::ImageResolution`
-
-### MSAT-TC-002 — VerifyMassBudget
-
-<!-- lm:id=MsatIvvq::VerifyMassBudget -->
+<!-- lm:id=RadioReveilIvvq::TestPrecisionHorloge -->
 
 `verification_def`
 
-Pesée de l'ensemble intégré, comparaison au budget.
+Banc 7 jours, comparaison à une référence GPS : dérive/jour.
 
-- **Vérifie** : `MsatRequirements::Platform::TotalMass`
+- **Vérifie** : `RadioReveilRequirements::Fonctions::PrecisionHorloge`
 
-### MSAT-TC-003 — VerifyPowerBudget
+### RR-TC-002 — TestAlarmes
 
-<!-- lm:id=MsatIvvq::VerifyPowerBudget -->
-
-`verification_def`
-
-Test de génération en simulation solaire fin de vie.
-
-- **Vérifie** : `MsatRequirements::Platform::PowerBudget`
-
-### MSAT-TC-004 — VerifyDownlink
-
-<!-- lm:id=MsatIvvq::VerifyDownlink -->
+<!-- lm:id=RadioReveilIvvq::TestAlarmes -->
 
 `verification_def`
 
-Liaison RF de bout en bout avec la station sol.
+Programmation des 2 alarmes, vérification du déclenchement à la minute.
 
-- **Vérifie** : `MsatRequirements::Imaging::DownlinkBand`
+- **Vérifie** : `RadioReveilRequirements::Fonctions::AlarmeProgrammable`
 
-### MSAT-TC-005 — VerifySafeMode
+### RR-TC-003 — TestSnooze
 
-<!-- lm:id=MsatIvvq::VerifySafeMode -->
-
-`verification_def`
-
-Injection d'anomalies et vérification de la transition
-autonome en mode sûr.
-
-- **Vérifie** : `MsatRequirements::Platform::SafeMode`
-
-### MSAT-TC-006 — VerifyAttitude
-
-<!-- lm:id=MsatIvvq::VerifyAttitude -->
+<!-- lm:id=RadioReveilIvvq::TestSnooze -->
 
 `verification_def`
 
-Précision de pointage en boucle fermée sur simulateur.
+Trois reports successifs de 9 min chronométrés.
 
-- **Vérifie** : `MsatRequirements::Platform::AttitudeAccuracy`
+- **Vérifie** : `RadioReveilRequirements::Fonctions::Snooze`
+
+### RR-TC-004 — TestSauvegarde72h
+
+<!-- lm:id=RadioReveilIvvq::TestSauvegarde72h -->
+
+`verification_def`
+
+Débranchement 72 h, vérification heure et alarmes au retour.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`
+
+### RR-TC-005 — MesureConsoVeille
+
+<!-- lm:id=RadioReveilIvvq::MesureConsoVeille -->
+
+`verification_def`
+
+Wattmètre de précision, affichage en mode nuit.
+
+- **Vérifie** : `RadioReveilRequirements::Contraintes::ConsommationVeille`
+
+### RR-TC-006 — TestBandeFm
+
+<!-- lm:id=RadioReveilIvvq::TestBandeFm -->
+
+`verification_def`
+
+Balayage 87.5 - 108 MHz sur générateur HF.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::ReceptionFm`
+
+### RR-TC-007 — EssaiSecuriteElectrique
+
+<!-- lm:id=RadioReveilIvvq::EssaiSecuriteElectrique -->
+
+`verification_def`
+
+Essai diélectrique et courant de fuite selon EN 60065.
+
+- **Vérifie** : `RadioReveilRequirements::Contraintes::SecuriteElectrique`

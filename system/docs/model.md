@@ -1,965 +1,1341 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T12:48:38+00:00
+generated_at: 2026-07-11T13:18:40+00:00
 ---
 
 # Modèle — document global
 
 # Couche Requirements (R)
 
-15 élément(s).
+21 élément(s).
 
-## MsatRequirements
+## RadioReveilRequirements
 
-<!-- lm:id=MsatRequirements -->
+<!-- lm:id=RadioReveilRequirements -->
 
 `package`
 
-Exigences du mini-satellite d'observation MSAT.
+Exigences du radio-réveil grand public RR-100.
 
-### MSAT-REQ-001 — MissionAvailability
+### RR-001 — ReveilFiable
 
-<!-- lm:id=MsatRequirements::MissionAvailability -->
+<!-- lm:id=RadioReveilRequirements::ReveilFiable -->
 
 `requirement_def` · spécialise : `ROFLP::StakeholderRequirement`
 
-Le service d'imagerie doit être disponible 95 % du temps
-sur une année d'exploitation.
+L'utilisateur doit être réveillé à l'heure programmée,
+chaque jour, y compris après une coupure secteur nocturne.
 
-- **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::XBandTransmitter`
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil`
 
-### Imaging
+### Fonctions
 
-<!-- lm:id=MsatRequirements::Imaging -->
+<!-- lm:id=RadioReveilRequirements::Fonctions -->
 
 `package`
 
-#### MSAT-REQ-010 — ImageResolution
+#### RR-010 — AffichageHeure
 
-<!-- lm:id=MsatRequirements::Imaging::ImageResolution -->
-
-`requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
-
-La résolution au sol (GSD) doit être inférieure ou égale
-à 3.5 m au nadir.
-
-- **Satisfaite par** : `MsatPhysical::CameraAssembly`
-- **Vérifiée par** : `MsatIvvq::VerifyImageResolution`
-- **Alloué à** : `MsatPhysical::ReactionWheel`, `MsatPhysical::camera`, `MsatPhysical::StarTracker`
-
-##### gsd
-
-<!-- lm:id=MsatRequirements::Imaging::ImageResolution::gsd -->
-
-`attribute` · type : `Real`
-
-#### MSAT-REQ-011 — DailyImagingCapacity
-
-<!-- lm:id=MsatRequirements::Imaging::DailyImagingCapacity -->
+<!-- lm:id=RadioReveilRequirements::Fonctions::AffichageHeure -->
 
 `requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
 
-Le système doit acquérir au moins 40 scènes par jour.
+L'heure courante doit être visible en permanence et
+lisible à 3 m dans l'obscurité.
 
-- **Satisfaite par** : `MsatLogical::PayloadModule`
-- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::CameraAssembly`
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
 
-#### MSAT-REQ-020 — DownlinkBand
+#### RR-011 — PrecisionHorloge
 
-<!-- lm:id=MsatRequirements::Imaging::DownlinkBand -->
+<!-- lm:id=RadioReveilRequirements::Fonctions::PrecisionHorloge -->
+
+`requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
+
+La dérive de l'heure doit rester inférieure ou égale à
+2 secondes par jour.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::BaseDeTemps`
+- **Vérifiée par** : `RadioReveilIvvq::TestPrecisionHorloge`
+
+##### deriveMaxSecondesParJour
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::PrecisionHorloge::deriveMaxSecondesParJour -->
+
+`attribute` · type : `Real`
+
+#### RR-012 — AlarmeProgrammable
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::AlarmeProgrammable -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Deux alarmes indépendantes doivent être programmables
+à la minute près.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::GestionAlarmes`
+- **Vérifiée par** : `RadioReveilIvvq::TestAlarmes`
+
+#### RR-013 — Snooze
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::Snooze -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Un appui unique doit reporter l'alarme de 9 minutes,
+répétable sans limite.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::InterfaceCommande`
+- **Vérifiée par** : `RadioReveilIvvq::TestSnooze`
+
+#### RR-014 — ReceptionFm
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::ReceptionFm -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Le récepteur doit couvrir la bande FM 87.5 - 108 MHz.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::ChaineRadio`
+- **Vérifiée par** : `RadioReveilIvvq::TestBandeFm`
+
+#### RR-015 — VolumeCroissant
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::VolumeCroissant -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Le volume de l'alarme doit croître progressivement
+pendant 30 s (réveil non agressif).
+
+#### RR-016 — SauvegardeHeure
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::SauvegardeHeure -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+L'heure et les alarmes doivent survivre à une coupure
+secteur d'au moins 72 h.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+- **Vérifiée par** : `RadioReveilIvvq::TestSauvegarde72h`
+
+##### autonomieHeures
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::SauvegardeHeure::autonomieHeures -->
+
+`attribute` · type : `Real`
+
+### Interfaces
+
+<!-- lm:id=RadioReveilRequirements::Interfaces -->
+
+`package`
+
+#### RR-020 — AlimentationSecteur
+
+<!-- lm:id=RadioReveilRequirements::Interfaces::AlimentationSecteur -->
 
 `requirement_def` · spécialise : `ROFLP::InterfaceRequirement`
 
-La télémesure image doit être transmise en bande X
-(8.0 - 8.4 GHz).
+L'appareil doit fonctionner sur secteur 230 V / 50 Hz
+(prise domestique standard).
 
-- **Satisfaite par** : `MsatLogical::CommSubsystem`
-- **Vérifiée par** : `MsatIvvq::VerifyDownlink`
-- **Alloué à** : `MsatPhysical::camera`
+- **Satisfaite par** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`
 
-### Platform
+#### RR-021 — LuminositeReglable
 
-<!-- lm:id=MsatRequirements::Platform -->
+<!-- lm:id=RadioReveilRequirements::Interfaces::LuminositeReglable -->
+
+`requirement_def` · spécialise : `ROFLP::InterfaceRequirement`
+
+La luminosité de l'affichage doit offrir 3 niveaux dont
+un mode nuit.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
+
+### Contraintes
+
+<!-- lm:id=RadioReveilRequirements::Contraintes -->
 
 `package`
 
-#### MSAT-REQ-030 — TotalMass
+#### RR-030 — ConsommationVeille
 
-<!-- lm:id=MsatRequirements::Platform::TotalMass -->
-
-`requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
-
-La masse totale au lancement ne doit pas dépasser 120 kg.
-
-- **Satisfaite par** : `MsatPhysical::Structure`
-- **Vérifiée par** : `MsatIvvq::VerifyMassBudget`
-- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::ReactionWheel`, `MsatPhysical::SolarArray`, `MsatPhysical::Structure`, `MsatPhysical::XBandTransmitter`, `MsatPhysical::ObcBoard`
-
-##### maxMass
-
-<!-- lm:id=MsatRequirements::Platform::TotalMass::maxMass -->
-
-`attribute` · type : `Real`
-
-#### MSAT-REQ-031 — PowerBudget
-
-<!-- lm:id=MsatRequirements::Platform::PowerBudget -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::ConsommationVeille -->
 
 `requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
-La puissance générée en fin de vie doit être supérieure
-à 400 W.
+La consommation en veille (affichage seul) doit être
+inférieure ou égale à 1 W.
 
-- **Satisfaite par** : `MsatPhysical::SolarArray`
-- **Vérifiée par** : `MsatIvvq::VerifyPowerBudget`
-- **Alloué à** : `MsatPhysical::camera`, `MsatPhysical::wheels`, `MsatPhysical::Battery`, `MsatPhysical::ReactionWheel`
+- **Satisfaite par** : `RadioReveilPhysical::CartePrincipale`
+- **Vérifiée par** : `RadioReveilIvvq::MesureConsoVeille`
 
-##### minPower
+##### consoMaxWatts
 
-<!-- lm:id=MsatRequirements::Platform::PowerBudget::minPower -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::ConsommationVeille::consoMaxWatts -->
 
 `attribute` · type : `Real`
 
-#### MSAT-REQ-050 — AttitudeAccuracy
+#### RR-031 — SecuriteElectrique
 
-<!-- lm:id=MsatRequirements::Platform::AttitudeAccuracy -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::SecuriteElectrique -->
 
-`requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
+`requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
-La précision de pointage doit être meilleure que 0.05 deg.
+L'isolation secteur doit satisfaire l'EN 60065
+(double isolation, pas de partie métallique accessible).
 
-- **Satisfaite par** : `MsatLogical::Aocs`
-- **Vérifiée par** : `MsatIvvq::VerifyAttitude`
-- **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::CameraAssembly`
+- **Satisfaite par** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`
+- **Vérifiée par** : `RadioReveilIvvq::EssaiSecuriteElectrique`
 
-#### MSAT-REQ-060 — SafeMode
+#### RR-032 — MasseMax
 
-<!-- lm:id=MsatRequirements::Platform::SafeMode -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::MasseMax -->
 
-`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+`requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
-Le satellite doit rejoindre un mode sûr de façon autonome
-sur détection d'anomalie critique.
+La masse totale ne doit pas dépasser 0.5 kg.
 
-- **Satisfaite par** : `MsatLogical::OnboardComputer`
-- **Vérifiée par** : `MsatIvvq::VerifySafeMode`
-- **Alloué à** : `MsatPhysical::Battery`, `MsatPhysical::StarTracker`, `MsatPhysical::Structure`
+- **Satisfaite par** : `RadioReveilPhysical::BoitierAbs`
 
-#### MSAT-REQ-040 — ThermalRange
+##### masseMaxKg
 
-<!-- lm:id=MsatRequirements::Platform::ThermalRange -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::MasseMax::masseMaxKg -->
 
-`requirement_def` · spécialise : `ROFLP::DesignConstraint`
-
-Les équipements doivent fonctionner entre -20 et +50 °C.
-
-- **Satisfaite par** : `MsatPhysical::Structure`
-- **Alloué à** : `MsatPhysical::transmitter`, `MsatPhysical::Battery`
+`attribute` · type : `Real`
 
 ---
 
 # Couche Operational (O)
 
-12 élément(s).
+14 élément(s).
 
-## MsatOperational
+## RadioReveilOperational
 
-<!-- lm:id=MsatOperational -->
+<!-- lm:id=RadioReveilOperational -->
 
 `package`
 
-Contexte opérationnel : acteurs et cas d'usage de la mission.
+Contexte opérationnel : qui utilise le radio-réveil et pour quoi.
 
-### GroundOperator
+### Dormeur
 
-<!-- lm:id=MsatOperational::GroundOperator -->
-
-`part_def`
-
-Opérateur du segment sol.
-
-### ImageAnalyst
-
-<!-- lm:id=MsatOperational::ImageAnalyst -->
+<!-- lm:id=RadioReveilOperational::Dormeur -->
 
 `part_def`
 
-Analyste exploitant les images livrées.
+L'utilisateur principal : programme, dort, est réveillé.
 
-### AcquireImagery
+### ReseauElectrique
 
-<!-- lm:id=MsatOperational::AcquireImagery -->
+<!-- lm:id=RadioReveilOperational::ReseauElectrique -->
 
-`use_case_def`
+`part_def`
 
-Programmer et acquérir des images d'une zone d'intérêt.
+Le secteur domestique — disponible... sauf la nuit de l'examen.
 
-#### operator
+### EtreReveille
 
-<!-- lm:id=MsatOperational::AcquireImagery::operator -->
-
-`actor` · type : `GroundOperator`
-
-#### satellite
-
-<!-- lm:id=MsatOperational::AcquireImagery::satellite -->
-
-`subject` · type : `Satellite`
-
-### DownlinkImagery
-
-<!-- lm:id=MsatOperational::DownlinkImagery -->
+<!-- lm:id=RadioReveilOperational::EtreReveille -->
 
 `use_case_def`
 
-Transmettre les images acquises vers la station sol.
+Être tiré du sommeil à l'heure programmée, volume croissant.
 
-#### operator
+#### dormeur
 
-<!-- lm:id=MsatOperational::DownlinkImagery::operator -->
+<!-- lm:id=RadioReveilOperational::EtreReveille::dormeur -->
 
-`actor` · type : `GroundOperator`
+`actor` · type : `Dormeur`
 
-### ExploitImagery
+#### radioReveil
 
-<!-- lm:id=MsatOperational::ExploitImagery -->
+<!-- lm:id=RadioReveilOperational::EtreReveille::radioReveil -->
 
-`use_case_def`
+`subject` · type : `RadioReveil`
 
-Analyser et distribuer les produits image.
+### ProgrammerAlarme
 
-#### analyst
-
-<!-- lm:id=MsatOperational::ExploitImagery::analyst -->
-
-`actor` · type : `ImageAnalyst`
-
-### RecoverFromAnomaly
-
-<!-- lm:id=MsatOperational::RecoverFromAnomaly -->
+<!-- lm:id=RadioReveilOperational::ProgrammerAlarme -->
 
 `use_case_def`
 
-Ramener le satellite en service après une anomalie.
+Régler l'heure de réveil et activer/désactiver les alarmes.
 
-#### operator
+#### dormeur
 
-<!-- lm:id=MsatOperational::RecoverFromAnomaly::operator -->
+<!-- lm:id=RadioReveilOperational::ProgrammerAlarme::dormeur -->
 
-`actor` · type : `GroundOperator`
+`actor` · type : `Dormeur`
+
+### Snoozer
+
+<!-- lm:id=RadioReveilOperational::Snoozer -->
+
+`use_case_def`
+
+Reporter l'alarme de 9 minutes d'un seul geste, sans ouvrir les yeux.
+
+#### dormeur
+
+<!-- lm:id=RadioReveilOperational::Snoozer::dormeur -->
+
+`actor` · type : `Dormeur`
+
+### EcouterRadio
+
+<!-- lm:id=RadioReveilOperational::EcouterRadio -->
+
+`use_case_def`
+
+Écouter un programme FM, notamment pour s'endormir (minuterie).
+
+#### dormeur
+
+<!-- lm:id=RadioReveilOperational::EcouterRadio::dormeur -->
+
+`actor` · type : `Dormeur`
+
+### SurvivreCoupure
+
+<!-- lm:id=RadioReveilOperational::SurvivreCoupure -->
+
+`use_case_def`
+
+Conserver heure et alarmes pendant une coupure secteur.
+
+#### reseau
+
+<!-- lm:id=RadioReveilOperational::SurvivreCoupure::reseau -->
+
+`actor` · type : `ReseauElectrique`
 
 ---
 
 # Couche Functional (F)
 
-23 élément(s).
+41 élément(s).
 
-## MsatFunctional
+## RadioReveilFunctional
 
-<!-- lm:id=MsatFunctional -->
+<!-- lm:id=RadioReveilFunctional -->
 
 `package`
 
-Architecture fonctionnelle : chaîne image et fonctions plateforme.
+Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
-### ImagingCommand
+### TopHoraire
 
-<!-- lm:id=MsatFunctional::ImagingCommand -->
-
-`item_def`
-
-### RawImage
-
-<!-- lm:id=MsatFunctional::RawImage -->
+<!-- lm:id=RadioReveilFunctional::TopHoraire -->
 
 `item_def`
 
-### CompressedImage
+### HeureCourante
 
-<!-- lm:id=MsatFunctional::CompressedImage -->
-
-`item_def`
-
-### Telemetry
-
-<!-- lm:id=MsatFunctional::Telemetry -->
+<!-- lm:id=RadioReveilFunctional::HeureCourante -->
 
 `item_def`
 
-### PlanAcquisition
+### ConsigneAlarme
 
-<!-- lm:id=MsatFunctional::PlanAcquisition -->
+<!-- lm:id=RadioReveilFunctional::ConsigneAlarme -->
 
-`action_def`
+`item_def`
 
-Transformer une demande utilisateur en plan d'acquisition.
+### Declenchement
 
-- **Alloué à** : `MsatLogical::OnboardComputer`
+<!-- lm:id=RadioReveilFunctional::Declenchement -->
 
-#### plan
+`item_def`
 
-<!-- lm:id=MsatFunctional::PlanAcquisition::plan -->
+### CommandeUtilisateur
 
-`item` · type : `ImagingCommand`
+<!-- lm:id=RadioReveilFunctional::CommandeUtilisateur -->
 
-### CaptureImage
+`item_def`
 
-<!-- lm:id=MsatFunctional::CaptureImage -->
+### SignalRf
 
-`action_def`
+<!-- lm:id=RadioReveilFunctional::SignalRf -->
 
-Acquérir une scène avec l'instrument optique.
+`item_def`
 
-- **Alloué à** : `MsatLogical::PayloadModule`
+### SignalAudio
 
-#### cmd
+<!-- lm:id=RadioReveilFunctional::SignalAudio -->
 
-<!-- lm:id=MsatFunctional::CaptureImage::cmd -->
+`item_def`
 
-`item` · type : `ImagingCommand`
+### EnergieRegulee
 
-#### raw
+<!-- lm:id=RadioReveilFunctional::EnergieRegulee -->
 
-<!-- lm:id=MsatFunctional::CaptureImage::raw -->
+`item_def`
 
-`item` · type : `RawImage`
+### GenererBaseDeTemps
 
-### CompressImage
-
-<!-- lm:id=MsatFunctional::CompressImage -->
+<!-- lm:id=RadioReveilFunctional::GenererBaseDeTemps -->
 
 `action_def`
 
-Compresser l'image brute (CCSDS 122).
+Produire la référence de temps stable du système.
 
-- **Alloué à** : `MsatLogical::OnboardComputer`
+- **Alloué à** : `RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference`
 
-#### raw
+#### top
 
-<!-- lm:id=MsatFunctional::CompressImage::raw -->
+<!-- lm:id=RadioReveilFunctional::GenererBaseDeTemps::top -->
 
-`item` · type : `RawImage`
+`item` · type : `TopHoraire`
 
-#### compressed
+### MaintenirHeure
 
-<!-- lm:id=MsatFunctional::CompressImage::compressed -->
-
-`item` · type : `CompressedImage`
-
-### StoreImage
-
-<!-- lm:id=MsatFunctional::StoreImage -->
+<!-- lm:id=RadioReveilFunctional::MaintenirHeure -->
 
 `action_def`
 
-Stocker l'image compressée en mémoire de masse.
+Compter le temps et tenir l'heure courante à jour.
 
-- **Alloué à** : `MsatLogical::OnboardComputer`
+- **Alloué à** : `RadioReveilLogical::RadioReveil::BaseDeTemps::CompteurTemps`
 
-### TransmitData
+#### top
 
-<!-- lm:id=MsatFunctional::TransmitData -->
+<!-- lm:id=RadioReveilFunctional::MaintenirHeure::top -->
 
-`action_def`
+`item` · type : `TopHoraire`
 
-Transmettre images et télémesure vers le sol.
+#### heure
 
-- **Alloué à** : `MsatLogical::CommSubsystem`
+<!-- lm:id=RadioReveilFunctional::MaintenirHeure::heure -->
 
-### MonitorHealth
+`item` · type : `HeureCourante`
 
-<!-- lm:id=MsatFunctional::MonitorHealth -->
+### AfficherHeure
 
-`action_def`
-
-Surveiller la santé du satellite et détecter les anomalies.
-
-- **Alloué à** : `MsatLogical::OnboardComputer`
-
-#### tm
-
-<!-- lm:id=MsatFunctional::MonitorHealth::tm -->
-
-`item` · type : `Telemetry`
-
-### MaintainAttitude
-
-<!-- lm:id=MsatFunctional::MaintainAttitude -->
+<!-- lm:id=RadioReveilFunctional::AfficherHeure -->
 
 `action_def`
 
-Maintenir le pointage requis pendant l'acquisition.
+Rendre l'heure lisible en permanence.
 
-- **Alloué à** : `MsatLogical::Aocs`
+- **Alloué à** : `RadioReveilLogical::RadioReveil::AffichageTemps`
 
-### OperationalModes
+#### heure
 
-<!-- lm:id=MsatFunctional::OperationalModes -->
+<!-- lm:id=RadioReveilFunctional::AfficherHeure::heure -->
+
+`item` · type : `HeureCourante`
+
+### SurveillerAlarme
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme -->
+
+`action_def`
+
+Comparer l'heure courante aux consignes d'alarme.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::GestionAlarmes`
+
+#### heure
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme::heure -->
+
+`item` · type : `HeureCourante`
+
+#### consigne
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme::consigne -->
+
+`item` · type : `ConsigneAlarme`
+
+#### declenchement
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme::declenchement -->
+
+`item` · type : `Declenchement`
+
+### GenererSonAlarme
+
+<!-- lm:id=RadioReveilFunctional::GenererSonAlarme -->
+
+`action_def`
+
+Produire le signal d'alarme, volume croissant.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::GestionAlarmes`
+
+#### declenchement
+
+<!-- lm:id=RadioReveilFunctional::GenererSonAlarme::declenchement -->
+
+`item` · type : `Declenchement`
+
+#### audio
+
+<!-- lm:id=RadioReveilFunctional::GenererSonAlarme::audio -->
+
+`item` · type : `SignalAudio`
+
+### RecevoirFm
+
+<!-- lm:id=RadioReveilFunctional::RecevoirFm -->
+
+`action_def`
+
+Capter et démoduler la bande FM.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::ChaineRadio`
+
+#### rf
+
+<!-- lm:id=RadioReveilFunctional::RecevoirFm::rf -->
+
+`item` · type : `SignalRf`
+
+#### audio
+
+<!-- lm:id=RadioReveilFunctional::RecevoirFm::audio -->
+
+`item` · type : `SignalAudio`
+
+### AmplifierAudio
+
+<!-- lm:id=RadioReveilFunctional::AmplifierAudio -->
+
+`action_def`
+
+Amplifier le signal audio vers le transducteur.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+
+#### audio
+
+<!-- lm:id=RadioReveilFunctional::AmplifierAudio::audio -->
+
+`item` · type : `SignalAudio`
+
+### AcquerirCommandes
+
+<!-- lm:id=RadioReveilFunctional::AcquerirCommandes -->
+
+`action_def`
+
+Lire les actions utilisateur (boutons, snooze).
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::InterfaceCommande`
+
+#### commande
+
+<!-- lm:id=RadioReveilFunctional::AcquerirCommandes::commande -->
+
+`item` · type : `CommandeUtilisateur`
+
+### DistribuerEnergie
+
+<!-- lm:id=RadioReveilFunctional::DistribuerEnergie -->
+
+`action_def`
+
+Convertir le secteur et alimenter toutes les fonctions.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+
+#### energie
+
+<!-- lm:id=RadioReveilFunctional::DistribuerEnergie::energie -->
+
+`item` · type : `EnergieRegulee`
+
+### SauvegarderHeure
+
+<!-- lm:id=RadioReveilFunctional::SauvegarderHeure -->
+
+`action_def`
+
+Maintenir l'heure sur source de secours pendant une coupure.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+
+### ModesFonctionnement
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement -->
 
 `state_def`
 
-Modes opérationnels du satellite.
+Modes du radio-réveil.
 
-#### standby
+#### veille
 
-<!-- lm:id=MsatFunctional::OperationalModes::standby -->
-
-`state`
-
-#### imaging
-
-<!-- lm:id=MsatFunctional::OperationalModes::imaging -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::veille -->
 
 `state`
 
-#### downlink
+#### alarme
 
-<!-- lm:id=MsatFunctional::OperationalModes::downlink -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::alarme -->
+
+`state`
+
+#### radio
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radio -->
 
 `state`
 
-#### safe
+#### coupureSecteur
 
-<!-- lm:id=MsatFunctional::OperationalModes::safe -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::coupureSecteur -->
 
 `state`
+
+### surveiller
+
+<!-- lm:id=RadioReveilFunctional::surveiller -->
+
+`action` · type : `SurveillerAlarme`
+
+### sonner
+
+<!-- lm:id=RadioReveilFunctional::sonner -->
+
+`action` · type : `GenererSonAlarme`
+
+### amplifier
+
+<!-- lm:id=RadioReveilFunctional::amplifier -->
+
+`action` · type : `AmplifierAudio`
 
 ---
 
 # Couche Logical (L)
 
-32 élément(s).
+47 élément(s).
 
-## MsatLogical
+## RadioReveilLogical
 
-<!-- lm:id=MsatLogical -->
+<!-- lm:id=RadioReveilLogical -->
 
 `package`
 
-Architecture logique : sous-systèmes et interfaces.
+Architecture LOGIQUE : le système SANS solution technique —
+des responsabilités et des interfaces, aucun choix de composant.
 
-### DataBusPort
+### TempsPort
 
-<!-- lm:id=MsatLogical::DataBusPort -->
+<!-- lm:id=RadioReveilLogical::TempsPort -->
 
 `port_def`
 
-### PowerPort
+### AudioPort
 
-<!-- lm:id=MsatLogical::PowerPort -->
+<!-- lm:id=RadioReveilLogical::AudioPort -->
+
+`port_def`
+
+### EnergiePort
+
+<!-- lm:id=RadioReveilLogical::EnergiePort -->
+
+`port_def`
+
+### CommandePort
+
+<!-- lm:id=RadioReveilLogical::CommandePort -->
 
 `port_def`
 
 ### RfPort
 
-<!-- lm:id=MsatLogical::RfPort -->
+<!-- lm:id=RadioReveilLogical::RfPort -->
 
 `port_def`
 
-### OpticalPort
+### RadioReveil
 
-<!-- lm:id=MsatLogical::OpticalPort -->
-
-`port_def`
-
-### Satellite
-
-<!-- lm:id=MsatLogical::Satellite -->
+<!-- lm:id=RadioReveilLogical::RadioReveil -->
 
 `part_def`
 
-Système satellite complet.
+Le radio-réveil vu comme un assemblage de sous-systèmes
+logiques. Chaque part def interne est candidate à
+« Architecturer le sous-système ».
 
-#### payload
+- **Satisfait** : `RadioReveilRequirements::ReveilFiable`
 
-<!-- lm:id=MsatLogical::Satellite::payload -->
+#### BaseDeTemps
 
-`part` · type : `MsatLogical::PayloadModule`
-
-#### obc
-
-<!-- lm:id=MsatLogical::Satellite::obc -->
-
-`part` · type : `OnboardComputer`
-
-#### comm
-
-<!-- lm:id=MsatLogical::Satellite::comm -->
-
-`part` · type : `CommSubsystem`
-
-#### eps
-
-<!-- lm:id=MsatLogical::Satellite::eps -->
-
-`part` · type : `PowerSubsystem`
-
-#### aocs
-
-<!-- lm:id=MsatLogical::Satellite::aocs -->
-
-`part` · type : `Aocs`
-
-### PayloadModule
-
-<!-- lm:id=MsatLogical::PayloadModule -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps -->
 
 `part_def`
 
-Module charge utile : instrument optique et électronique.
-Architecturé en étage subsystems/payload-module — la structure
-interne ci-dessous est LA source de vérité (aucune copie).
+Entretient l'heure courante et fournit la référence de
+temps. Aucun choix technologique ici : quartz, résonateur
+ou radio-pilotage appartiennent à la couche physique.
 
-- **Satisfait** : `MsatRequirements::Imaging::DailyImagingCapacity`
-- **Alloué à** : `MsatPhysical::CameraAssembly`
-- **Alloué depuis** : `MsatFunctional::CaptureImage`
+- **Satisfait** : `RadioReveilRequirements::Fonctions::PrecisionHorloge`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0`
 
-#### data
+##### energie
 
-<!-- lm:id=MsatLogical::PayloadModule::data -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps::energie -->
 
-`port` · type : `DataBusPort`
+`port` · type : `EnergiePort`
 
-#### pwr
+##### temps
 
-<!-- lm:id=MsatLogical::PayloadModule::pwr -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps::temps -->
 
-`port` · type : `PowerPort`
+`port` · type : `TempsPort`
 
-#### CompressionBoard
+##### OscillateurReference
 
-<!-- lm:id=MsatLogical::PayloadModule::CompressionBoard -->
-
-`part_def`
-
-Carte de compression embarquée.
-
-- **Satisfait** : `PayloadModuleRequirements::PlMassBudget`
-
-#### camera
-
-<!-- lm:id=MsatLogical::PayloadModule::camera -->
-
-`part` · type : `CameraUnit2`
-
-#### compressor
-
-<!-- lm:id=MsatLogical::PayloadModule::compressor -->
-
-`part` · type : `CompressionBoard`
-
-### CommSubsystem
-
-<!-- lm:id=MsatLogical::CommSubsystem -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference -->
 
 `part_def`
 
-Sous-système de communication bande X.
+Source de cadence stable, précision à charge de l'étage.
 
-- **Satisfait** : `MsatRequirements::Imaging::DownlinkBand`
-- **Alloué à** : `MsatPhysical::XBandTransmitter`
-- **Alloué depuis** : `MsatFunctional::TransmitData`
+- **Satisfait** : `BaseDeTempsRequirements::BtDerive`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::QuartzHorloge32kHz`
+- **Alloué depuis** : `RadioReveilFunctional::GenererBaseDeTemps`, `BaseDeTempsFunctional::CompenserDerive`
 
-#### rf
+##### CompteurTemps
 
-<!-- lm:id=MsatLogical::CommSubsystem::rf -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps::CompteurTemps -->
+
+`part_def`
+
+Accumule les tops en heure/minute/seconde.
+
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0`
+- **Alloué depuis** : `RadioReveilFunctional::MaintenirHeure`
+
+##### oscillateur
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps::oscillateur -->
+
+`part` · type : `OscillateurReference`
+
+##### compteur
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::BaseDeTemps::compteur -->
+
+`part` · type : `CompteurTemps`
+
+#### GestionAlarmes
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::GestionAlarmes -->
+
+`part_def`
+
+Compare l'heure aux consignes, déclenche et gère le
+report (snooze). Deux consignes indépendantes.
+
+- **Satisfait** : `RadioReveilRequirements::Fonctions::AlarmeProgrammable`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0`
+- **Alloué depuis** : `RadioReveilFunctional::SurveillerAlarme`, `RadioReveilFunctional::GenererSonAlarme`
+
+##### temps
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::GestionAlarmes::temps -->
+
+`port` · type : `TempsPort`
+
+##### declenche
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::GestionAlarmes::declenche -->
+
+`port` · type : `CommandePort`
+
+##### energie
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::GestionAlarmes::energie -->
+
+`port` · type : `EnergiePort`
+
+#### ChaineRadio
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio -->
+
+`part_def`
+
+Capte la bande FM et restitue un signal audio — sans
+préjuger de la solution (module intégré, discret, SDR…).
+
+- **Satisfait** : `RadioReveilRequirements::Fonctions::ReceptionFm`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::ModuleFmRda5807`
+- **Alloué depuis** : `RadioReveilFunctional::RecevoirFm`
+
+##### rf
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::rf -->
 
 `port` · type : `RfPort`
 
-#### bus
+##### audio
 
-<!-- lm:id=MsatLogical::CommSubsystem::bus -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::audio -->
 
-`port` · type : `DataBusPort`
+`port` · type : `AudioPort`
 
-#### pwr
+##### energie
 
-<!-- lm:id=MsatLogical::CommSubsystem::pwr -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::energie -->
 
-`port` · type : `PowerPort`
+`port` · type : `EnergiePort`
 
-### OnboardComputer
+##### Syntoniseur
 
-<!-- lm:id=MsatLogical::OnboardComputer -->
-
-`part_def`
-
-Calculateur de bord : gestion mission et données.
-
-- **Satisfait** : `MsatRequirements::Platform::SafeMode`
-- **Alloué à** : `MsatPhysical::ObcBoard`
-- **Alloué depuis** : `MsatFunctional::PlanAcquisition`, `MsatFunctional::CompressImage`, `MsatFunctional::StoreImage`, `MsatFunctional::MonitorHealth`
-
-#### bus
-
-<!-- lm:id=MsatLogical::OnboardComputer::bus -->
-
-`port` · type : `DataBusPort`
-
-#### pwr
-
-<!-- lm:id=MsatLogical::OnboardComputer::pwr -->
-
-`port` · type : `PowerPort`
-
-### PowerSubsystem
-
-<!-- lm:id=MsatLogical::PowerSubsystem -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur -->
 
 `part_def`
 
-Génération, stockage et distribution d'énergie.
+Sélectionne la station : filtrage et accord.
 
-- **Alloué à** : `MsatPhysical::SolarArray`, `MsatPhysical::Battery`
+- **Satisfait** : `ChaineRadioRequirements::CrSensibilite`, `ChaineRadioRequirements::CrRejetCanalAdjacent`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::ModuleFmRda5807`
+- **Alloué depuis** : `ChaineRadioFunctional::CapterRf`, `ChaineRadioFunctional::Syntoniser`
 
-#### pwr
+##### Demodulateur
 
-<!-- lm:id=MsatLogical::PowerSubsystem::pwr -->
-
-`port` · type : `PowerPort`
-
-### Aocs
-
-<!-- lm:id=MsatLogical::Aocs -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::Demodulateur -->
 
 `part_def`
 
-Contrôle d'attitude et d'orbite.
+Extrait l'audio de la porteuse.
 
-- **Satisfait** : `MsatRequirements::Platform::AttitudeAccuracy`
-- **Alloué à** : `MsatPhysical::ReactionWheel`, `MsatPhysical::StarTracker`
-- **Alloué depuis** : `MsatFunctional::MaintainAttitude`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::ModuleFmRda5807`
+- **Alloué depuis** : `ChaineRadioFunctional::Demoduler`
 
-#### bus
+##### syntoniseur
 
-<!-- lm:id=MsatLogical::Aocs::bus -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::syntoniseur -->
 
-`port` · type : `DataBusPort`
+`part` · type : `Syntoniseur`
 
-#### pwr
+##### demodulateur
 
-<!-- lm:id=MsatLogical::Aocs::pwr -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::ChaineRadio::demodulateur -->
 
-`port` · type : `PowerPort`
+`part` · type : `Demodulateur`
 
-### CameraUnit2
+#### RestitutionSonore
 
-<!-- lm:id=MsatLogical::CameraUnit2 -->
-
-`part_def`
-
-Tête optique — architecturée à son tour (étage 3) :
-clic droit → « Architecturer le sous-système… ».
-
-- **Satisfait** : `PayloadModuleRequirements::PlImageResolution`
-
-#### subcomponentcamera — subcomponentcamer
-
-<!-- lm:id=MsatLogical::CameraUnit2::subcomponentcamer -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::RestitutionSonore -->
 
 `part_def`
 
-#### NewPart3
+Transforme un signal audio en son audible, volume piloté.
 
-<!-- lm:id=MsatLogical::CameraUnit2::NewPart3 -->
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::AmplificateurPam8403`, `RadioReveilPhysical::HautParleur`
+- **Alloué depuis** : `RadioReveilFunctional::AmplifierAudio`
+
+##### audio
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::RestitutionSonore::audio -->
+
+`port` · type : `AudioPort`
+
+##### commande
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::RestitutionSonore::commande -->
+
+`port` · type : `CommandePort`
+
+##### energie
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::RestitutionSonore::energie -->
+
+`port` · type : `EnergiePort`
+
+#### AffichageTemps
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::AffichageTemps -->
 
 `part_def`
+
+Rend l'heure lisible, luminosité réglable, mode nuit.
+
+- **Satisfait** : `RadioReveilRequirements::Fonctions::AffichageHeure`, `RadioReveilRequirements::Interfaces::LuminositeReglable`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::AfficheurLed7Segments`
+- **Alloué depuis** : `RadioReveilFunctional::AfficherHeure`
+
+##### temps
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::AffichageTemps::temps -->
+
+`port` · type : `TempsPort`
+
+##### energie
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::AffichageTemps::energie -->
+
+`port` · type : `EnergiePort`
+
+#### InterfaceCommande
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande -->
+
+`part_def`
+
+Capte les actions utilisateur : réglages, alarmes, snooze.
+
+- **Satisfait** : `RadioReveilRequirements::Fonctions::Snooze`
+- **Alloué à** : `RadioReveilPhysical::ClavierBoutons`
+- **Alloué depuis** : `RadioReveilFunctional::AcquerirCommandes`
+
+##### commandes
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande::commandes -->
+
+`port` · type : `CommandePort`
+
+##### energie
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande::energie -->
+
+`port` · type : `EnergiePort`
+
+#### AlimentationSauvegarde
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::AlimentationSauvegarde -->
+
+`part_def`
+
+Convertit le secteur, distribue l'énergie et maintient
+l'heure pendant une coupure (source de secours).
+
+- **Satisfait** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`
+- **Alloué à** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`, `RadioReveilPhysical::CartePrincipale::RegulateurBuck5V`, `RadioReveilPhysical::CartePrincipale::SupercondensateurSauvegarde`
+- **Alloué depuis** : `RadioReveilFunctional::DistribuerEnergie`, `RadioReveilFunctional::SauvegarderHeure`, `BaseDeTempsFunctional::BasculerSurSecours`
+
+##### secteur
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::AlimentationSauvegarde::secteur -->
+
+`port` · type : `EnergiePort`
+
+##### energie
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::AlimentationSauvegarde::energie -->
+
+`port` · type : `EnergiePort`
+
+#### baseTemps
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::baseTemps -->
+
+`part` · type : `BaseDeTemps`
+
+#### alarmes
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::alarmes -->
+
+`part` · type : `GestionAlarmes`
+
+#### radio
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::radio -->
+
+`part` · type : `ChaineRadio`
+
+#### son
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::son -->
+
+`part` · type : `RestitutionSonore`
+
+#### affichage
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::affichage -->
+
+`part` · type : `AffichageTemps`
+
+#### commandes
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::commandes -->
+
+`part` · type : `InterfaceCommande`
+
+#### alimentation
+
+<!-- lm:id=RadioReveilLogical::RadioReveil::alimentation -->
+
+`part` · type : `AlimentationSauvegarde`
+
+### radioReveil
+
+<!-- lm:id=RadioReveilLogical::radioReveil -->
+
+`part` · type : `RadioReveil`
 
 ---
 
 # Couche Physical (P)
 
-29 élément(s).
+37 élément(s).
 
-## MsatPhysical
+## RadioReveilPhysical
 
-<!-- lm:id=MsatPhysical -->
+<!-- lm:id=RadioReveilPhysical -->
 
 `package`
 
-Architecture physique : équipements et budgets.
+SOLUTION TECHNIQUE : électronique grand public sur carte unique,
+descendue au niveau composant.
 
-### CameraAssembly
+### BoitierAbs
 
-<!-- lm:id=MsatPhysical::CameraAssembly -->
-
-`part_def`
-
-Ensemble caméra : télescope + plan focal.
-
-- **Satisfait** : `MsatRequirements::Imaging::ImageResolution`
-- **Alloué depuis** : `MsatLogical::PayloadModule`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Platform::AttitudeAccuracy`
-
-#### mass
-
-<!-- lm:id=MsatPhysical::CameraAssembly::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::CameraAssembly::power -->
-
-`attribute` · type : `Real`
-
-### ObcBoard
-
-<!-- lm:id=MsatPhysical::ObcBoard -->
+<!-- lm:id=RadioReveilPhysical::BoitierAbs -->
 
 `part_def`
 
-Carte calculateur durcie.
+Boîtier plastique ABS deux coques, sans vis apparente.
 
-- **Alloué depuis** : `MsatLogical::OnboardComputer`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::AttitudeAccuracy`, `MsatRequirements::MissionAvailability`
+- **Satisfait** : `RadioReveilRequirements::Contraintes::MasseMax`
 
-#### mass
+#### masse
 
-<!-- lm:id=MsatPhysical::ObcBoard::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::ObcBoard::power -->
+<!-- lm:id=RadioReveilPhysical::BoitierAbs::masse -->
 
 `attribute` · type : `Real`
 
-### XBandTransmitter
+### CartePrincipale
 
-<!-- lm:id=MsatPhysical::XBandTransmitter -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale -->
 
 `part_def`
 
-Émetteur bande X 150 Mbit/s.
+PCB simple face — toute l'électronique du produit.
 
-- **Alloué depuis** : `MsatLogical::CommSubsystem`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::MissionAvailability`
+- **Satisfait** : `RadioReveilRequirements::Contraintes::ConsommationVeille`
 
-#### mass
+#### masse
 
-<!-- lm:id=MsatPhysical::XBandTransmitter::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::XBandTransmitter::power -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::masse -->
 
 `attribute` · type : `Real`
 
-### SolarArray
+#### MicrocontroleurStm32l0
 
-<!-- lm:id=MsatPhysical::SolarArray -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0 -->
 
 `part_def`
 
-Générateur solaire déployable.
+MCU basse consommation, RTC 32 bits intégrée : tient
+l'heure, gère alarmes/snooze, pilote afficheur et module FM.
 
-- **Satisfait** : `MsatRequirements::Platform::PowerBudget`
-- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::TotalMass`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::BaseDeTemps`, `RadioReveilLogical::RadioReveil::BaseDeTemps::CompteurTemps`, `RadioReveilLogical::RadioReveil::GestionAlarmes`
 
-#### mass
+##### consoVeille
 
-<!-- lm:id=MsatPhysical::SolarArray::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::SolarArray::power -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0::consoVeille -->
 
 `attribute` · type : `Real`
 
-### Battery
+#### QuartzHorloge32kHz
 
-<!-- lm:id=MsatPhysical::Battery -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::QuartzHorloge32kHz -->
 
 `part_def`
 
-Batterie Li-ion 40 Ah.
+Quartz horloger 32 768 Hz ±20 ppm : la référence de temps.
 
-- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::SafeMode`, `MsatRequirements::Platform::ThermalRange`, `MsatRequirements::Platform::PowerBudget`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference`
 
-#### mass
+#### ModuleFmRda5807
 
-<!-- lm:id=MsatPhysical::Battery::mass -->
-
-`attribute` · type : `Real`
-
-### ReactionWheel
-
-<!-- lm:id=MsatPhysical::ReactionWheel -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::ModuleFmRda5807 -->
 
 `part_def`
 
-Roue à réaction 0.1 Nm.
+Récepteur FM intégré (syntoniseur + démodulateur), bus I2C.
 
-- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::PowerBudget`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::ChaineRadio`, `RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur`, `RadioReveilLogical::RadioReveil::ChaineRadio::Demodulateur`
 
-#### mass
+##### consoActive
 
-<!-- lm:id=MsatPhysical::ReactionWheel::mass -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::ModuleFmRda5807::consoActive -->
 
 `attribute` · type : `Real`
 
-### StarTracker
+#### AmplificateurPam8403
 
-<!-- lm:id=MsatPhysical::StarTracker -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AmplificateurPam8403 -->
 
 `part_def`
 
-Senseur stellaire.
+Ampli audio classe D 2×3 W, volume piloté (croissance).
 
-- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::SafeMode`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
 
-#### mass
+##### consoActive
 
-<!-- lm:id=MsatPhysical::StarTracker::mass -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AmplificateurPam8403::consoActive -->
 
 `attribute` · type : `Real`
 
-### Structure
+#### TransformateurSecteur
 
-<!-- lm:id=MsatPhysical::Structure -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::TransformateurSecteur -->
 
 `part_def`
 
-Structure primaire et thermique.
+Transformateur d'isolement 230 V → 9 V, double isolation.
 
-- **Satisfait** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::ThermalRange`
-- **Alloué depuis** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::SafeMode`
+- **Satisfait** : `RadioReveilRequirements::Contraintes::SecuriteElectrique`, `RadioReveilRequirements::Interfaces::AlimentationSecteur`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
 
-#### mass
+##### masse
 
-<!-- lm:id=MsatPhysical::Structure::mass -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::TransformateurSecteur::masse -->
 
 `attribute` · type : `Real`
 
-### camera
+#### PontRedresseur
 
-<!-- lm:id=MsatPhysical::camera -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::PontRedresseur -->
 
-`part` · type : `CameraAssembly`
+`part_def`
 
-- **Alloué depuis** : `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Imaging::DownlinkBand`, `MsatRequirements::Platform::PowerBudget`
+Redressement + filtrage de la tension secondaire.
 
-### obcBoard
+#### RegulateurBuck5V
 
-<!-- lm:id=MsatPhysical::obcBoard -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::RegulateurBuck5V -->
 
-`part` · type : `ObcBoard`
+`part_def`
 
-### transmitter
+Conversion 9 V → 5 V à découpage, haut rendement en veille.
 
-<!-- lm:id=MsatPhysical::transmitter -->
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
 
-`part` · type : `XBandTransmitter`
+#### SupercondensateurSauvegarde
 
-- **Alloué depuis** : `MsatRequirements::Platform::ThermalRange`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::SupercondensateurSauvegarde -->
 
-### solarArray
+`part_def`
 
-<!-- lm:id=MsatPhysical::solarArray -->
+1 F sur le domaine RTC : maintient l'heure plus de 72 h.
 
-`part` · type : `SolarArray`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
 
-### battery
+#### AfficheurLed7Segments
 
-<!-- lm:id=MsatPhysical::battery -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AfficheurLed7Segments -->
 
-`part` · type : `Battery`
+`part_def`
 
-### wheels
+4 digits LED, driver TM1637, 3 niveaux de luminosité.
 
-<!-- lm:id=MsatPhysical::wheels -->
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AffichageTemps`
 
-`part` · type : `ReactionWheel`
+##### consoVeille
 
-- **Alloué depuis** : `MsatRequirements::Platform::PowerBudget`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AfficheurLed7Segments::consoVeille -->
 
-### starTracker
+`attribute` · type : `Real`
 
-<!-- lm:id=MsatPhysical::starTracker -->
+#### mcu
 
-`part` · type : `MsatPhysical::StarTracker`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::mcu -->
 
-### structure
+`part` · type : `MicrocontroleurStm32l0`
 
-<!-- lm:id=MsatPhysical::structure -->
+#### quartz
 
-`part` · type : `Structure`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::quartz -->
+
+`part` · type : `QuartzHorloge32kHz`
+
+#### moduleFm
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::moduleFm -->
+
+`part` · type : `ModuleFmRda5807`
+
+#### ampli
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::ampli -->
+
+`part` · type : `AmplificateurPam8403`
+
+#### transfo
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::transfo -->
+
+`part` · type : `TransformateurSecteur`
+
+#### redresseur
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::redresseur -->
+
+`part` · type : `PontRedresseur`
+
+#### regulateur
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::regulateur -->
+
+`part` · type : `RegulateurBuck5V`
+
+#### supercap
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::supercap -->
+
+`part` · type : `SupercondensateurSauvegarde`
+
+#### afficheur
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::afficheur -->
+
+`part` · type : `AfficheurLed7Segments`
+
+### HautParleur
+
+<!-- lm:id=RadioReveilPhysical::HautParleur -->
+
+`part_def`
+
+Haut-parleur large bande 8 Ω / 2 W.
+
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+
+#### masse
+
+<!-- lm:id=RadioReveilPhysical::HautParleur::masse -->
+
+`attribute` · type : `Real`
+
+### ClavierBoutons
+
+<!-- lm:id=RadioReveilPhysical::ClavierBoutons -->
+
+`part_def`
+
+5 boutons poussoirs dont un grand SNOOZE sur le dessus.
+
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::InterfaceCommande`
+
+### AntenneFilaire
+
+<!-- lm:id=RadioReveilPhysical::AntenneFilaire -->
+
+`part_def`
+
+Antenne FM filaire 75 cm.
+
+### boitier
+
+<!-- lm:id=RadioReveilPhysical::boitier -->
+
+`part` · type : `BoitierAbs`
+
+### carte
+
+<!-- lm:id=RadioReveilPhysical::carte -->
+
+`part` · type : `CartePrincipale`
+
+### hautParleur
+
+<!-- lm:id=RadioReveilPhysical::hautParleur -->
+
+`part` · type : `HautParleur`
+
+### clavier
+
+<!-- lm:id=RadioReveilPhysical::clavier -->
+
+`part` · type : `ClavierBoutons`
+
+### antenne
+
+<!-- lm:id=RadioReveilPhysical::antenne -->
+
+`part` · type : `AntenneFilaire`
 
 ---
 
 # Couche IVVQ (IVVQ)
 
-7 élément(s).
+8 élément(s).
 
-## MsatIvvq
+## RadioReveilIvvq
 
-<!-- lm:id=MsatIvvq -->
+<!-- lm:id=RadioReveilIvvq -->
 
 `package`
 
-Campagne de vérification MSAT.
+Campagne de vérification du produit RR-100.
 
-### MSAT-TC-001 — VerifyImageResolution
+### RR-TC-001 — TestPrecisionHorloge
 
-<!-- lm:id=MsatIvvq::VerifyImageResolution -->
-
-`verification_def`
-
-Mesure de la FTM et du GSD sur banc optique, puis en vol
-sur mire géoréférencée.
-
-- **Vérifie** : `MsatRequirements::Imaging::ImageResolution`
-
-### MSAT-TC-002 — VerifyMassBudget
-
-<!-- lm:id=MsatIvvq::VerifyMassBudget -->
+<!-- lm:id=RadioReveilIvvq::TestPrecisionHorloge -->
 
 `verification_def`
 
-Pesée de l'ensemble intégré, comparaison au budget.
+Banc 7 jours, comparaison à une référence GPS : dérive/jour.
 
-- **Vérifie** : `MsatRequirements::Platform::TotalMass`
+- **Vérifie** : `RadioReveilRequirements::Fonctions::PrecisionHorloge`
 
-### MSAT-TC-003 — VerifyPowerBudget
+### RR-TC-002 — TestAlarmes
 
-<!-- lm:id=MsatIvvq::VerifyPowerBudget -->
-
-`verification_def`
-
-Test de génération en simulation solaire fin de vie.
-
-- **Vérifie** : `MsatRequirements::Platform::PowerBudget`
-
-### MSAT-TC-004 — VerifyDownlink
-
-<!-- lm:id=MsatIvvq::VerifyDownlink -->
+<!-- lm:id=RadioReveilIvvq::TestAlarmes -->
 
 `verification_def`
 
-Liaison RF de bout en bout avec la station sol.
+Programmation des 2 alarmes, vérification du déclenchement à la minute.
 
-- **Vérifie** : `MsatRequirements::Imaging::DownlinkBand`
+- **Vérifie** : `RadioReveilRequirements::Fonctions::AlarmeProgrammable`
 
-### MSAT-TC-005 — VerifySafeMode
+### RR-TC-003 — TestSnooze
 
-<!-- lm:id=MsatIvvq::VerifySafeMode -->
-
-`verification_def`
-
-Injection d'anomalies et vérification de la transition
-autonome en mode sûr.
-
-- **Vérifie** : `MsatRequirements::Platform::SafeMode`
-
-### MSAT-TC-006 — VerifyAttitude
-
-<!-- lm:id=MsatIvvq::VerifyAttitude -->
+<!-- lm:id=RadioReveilIvvq::TestSnooze -->
 
 `verification_def`
 
-Précision de pointage en boucle fermée sur simulateur.
+Trois reports successifs de 9 min chronométrés.
 
-- **Vérifie** : `MsatRequirements::Platform::AttitudeAccuracy`
+- **Vérifie** : `RadioReveilRequirements::Fonctions::Snooze`
+
+### RR-TC-004 — TestSauvegarde72h
+
+<!-- lm:id=RadioReveilIvvq::TestSauvegarde72h -->
+
+`verification_def`
+
+Débranchement 72 h, vérification heure et alarmes au retour.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`
+
+### RR-TC-005 — MesureConsoVeille
+
+<!-- lm:id=RadioReveilIvvq::MesureConsoVeille -->
+
+`verification_def`
+
+Wattmètre de précision, affichage en mode nuit.
+
+- **Vérifie** : `RadioReveilRequirements::Contraintes::ConsommationVeille`
+
+### RR-TC-006 — TestBandeFm
+
+<!-- lm:id=RadioReveilIvvq::TestBandeFm -->
+
+`verification_def`
+
+Balayage 87.5 - 108 MHz sur générateur HF.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::ReceptionFm`
+
+### RR-TC-007 — EssaiSecuriteElectrique
+
+<!-- lm:id=RadioReveilIvvq::EssaiSecuriteElectrique -->
+
+`verification_def`
+
+Essai diélectrique et courant de fuite selon EN 60065.
+
+- **Vérifie** : `RadioReveilRequirements::Contraintes::SecuriteElectrique`

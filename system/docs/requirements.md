@@ -1,156 +1,205 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T12:48:38+00:00
+generated_at: 2026-07-11T13:18:39+00:00
 layer: R
 ---
 
 # Couche Requirements (R)
 
-15 élément(s).
+21 élément(s).
 
-## MsatRequirements
+## RadioReveilRequirements
 
-<!-- lm:id=MsatRequirements -->
+<!-- lm:id=RadioReveilRequirements -->
 
 `package`
 
-Exigences du mini-satellite d'observation MSAT.
+Exigences du radio-réveil grand public RR-100.
 
-### MSAT-REQ-001 — MissionAvailability
+### RR-001 — ReveilFiable
 
-<!-- lm:id=MsatRequirements::MissionAvailability -->
+<!-- lm:id=RadioReveilRequirements::ReveilFiable -->
 
 `requirement_def` · spécialise : `ROFLP::StakeholderRequirement`
 
-Le service d'imagerie doit être disponible 95 % du temps
-sur une année d'exploitation.
+L'utilisateur doit être réveillé à l'heure programmée,
+chaque jour, y compris après une coupure secteur nocturne.
 
-- **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::XBandTransmitter`
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil`
 
-### Imaging
+### Fonctions
 
-<!-- lm:id=MsatRequirements::Imaging -->
+<!-- lm:id=RadioReveilRequirements::Fonctions -->
 
 `package`
 
-#### MSAT-REQ-010 — ImageResolution
+#### RR-010 — AffichageHeure
 
-<!-- lm:id=MsatRequirements::Imaging::ImageResolution -->
-
-`requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
-
-La résolution au sol (GSD) doit être inférieure ou égale
-à 3.5 m au nadir.
-
-- **Satisfaite par** : `MsatPhysical::CameraAssembly`
-- **Vérifiée par** : `MsatIvvq::VerifyImageResolution`
-- **Alloué à** : `MsatPhysical::ReactionWheel`, `MsatPhysical::camera`, `MsatPhysical::StarTracker`
-
-##### gsd
-
-<!-- lm:id=MsatRequirements::Imaging::ImageResolution::gsd -->
-
-`attribute` · type : `Real`
-
-#### MSAT-REQ-011 — DailyImagingCapacity
-
-<!-- lm:id=MsatRequirements::Imaging::DailyImagingCapacity -->
+<!-- lm:id=RadioReveilRequirements::Fonctions::AffichageHeure -->
 
 `requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
 
-Le système doit acquérir au moins 40 scènes par jour.
+L'heure courante doit être visible en permanence et
+lisible à 3 m dans l'obscurité.
 
-- **Satisfaite par** : `MsatLogical::PayloadModule`
-- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::CameraAssembly`
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
 
-#### MSAT-REQ-020 — DownlinkBand
+#### RR-011 — PrecisionHorloge
 
-<!-- lm:id=MsatRequirements::Imaging::DownlinkBand -->
+<!-- lm:id=RadioReveilRequirements::Fonctions::PrecisionHorloge -->
+
+`requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
+
+La dérive de l'heure doit rester inférieure ou égale à
+2 secondes par jour.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::BaseDeTemps`
+- **Vérifiée par** : `RadioReveilIvvq::TestPrecisionHorloge`
+
+##### deriveMaxSecondesParJour
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::PrecisionHorloge::deriveMaxSecondesParJour -->
+
+`attribute` · type : `Real`
+
+#### RR-012 — AlarmeProgrammable
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::AlarmeProgrammable -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Deux alarmes indépendantes doivent être programmables
+à la minute près.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::GestionAlarmes`
+- **Vérifiée par** : `RadioReveilIvvq::TestAlarmes`
+
+#### RR-013 — Snooze
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::Snooze -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Un appui unique doit reporter l'alarme de 9 minutes,
+répétable sans limite.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::InterfaceCommande`
+- **Vérifiée par** : `RadioReveilIvvq::TestSnooze`
+
+#### RR-014 — ReceptionFm
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::ReceptionFm -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Le récepteur doit couvrir la bande FM 87.5 - 108 MHz.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::ChaineRadio`
+- **Vérifiée par** : `RadioReveilIvvq::TestBandeFm`
+
+#### RR-015 — VolumeCroissant
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::VolumeCroissant -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+Le volume de l'alarme doit croître progressivement
+pendant 30 s (réveil non agressif).
+
+#### RR-016 — SauvegardeHeure
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::SauvegardeHeure -->
+
+`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+
+L'heure et les alarmes doivent survivre à une coupure
+secteur d'au moins 72 h.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+- **Vérifiée par** : `RadioReveilIvvq::TestSauvegarde72h`
+
+##### autonomieHeures
+
+<!-- lm:id=RadioReveilRequirements::Fonctions::SauvegardeHeure::autonomieHeures -->
+
+`attribute` · type : `Real`
+
+### Interfaces
+
+<!-- lm:id=RadioReveilRequirements::Interfaces -->
+
+`package`
+
+#### RR-020 — AlimentationSecteur
+
+<!-- lm:id=RadioReveilRequirements::Interfaces::AlimentationSecteur -->
 
 `requirement_def` · spécialise : `ROFLP::InterfaceRequirement`
 
-La télémesure image doit être transmise en bande X
-(8.0 - 8.4 GHz).
+L'appareil doit fonctionner sur secteur 230 V / 50 Hz
+(prise domestique standard).
 
-- **Satisfaite par** : `MsatLogical::CommSubsystem`
-- **Vérifiée par** : `MsatIvvq::VerifyDownlink`
-- **Alloué à** : `MsatPhysical::camera`
+- **Satisfaite par** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`
 
-### Platform
+#### RR-021 — LuminositeReglable
 
-<!-- lm:id=MsatRequirements::Platform -->
+<!-- lm:id=RadioReveilRequirements::Interfaces::LuminositeReglable -->
+
+`requirement_def` · spécialise : `ROFLP::InterfaceRequirement`
+
+La luminosité de l'affichage doit offrir 3 niveaux dont
+un mode nuit.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
+
+### Contraintes
+
+<!-- lm:id=RadioReveilRequirements::Contraintes -->
 
 `package`
 
-#### MSAT-REQ-030 — TotalMass
+#### RR-030 — ConsommationVeille
 
-<!-- lm:id=MsatRequirements::Platform::TotalMass -->
-
-`requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
-
-La masse totale au lancement ne doit pas dépasser 120 kg.
-
-- **Satisfaite par** : `MsatPhysical::Structure`
-- **Vérifiée par** : `MsatIvvq::VerifyMassBudget`
-- **Alloué à** : `MsatPhysical::StarTracker`, `MsatPhysical::ReactionWheel`, `MsatPhysical::SolarArray`, `MsatPhysical::Structure`, `MsatPhysical::XBandTransmitter`, `MsatPhysical::ObcBoard`
-
-##### maxMass
-
-<!-- lm:id=MsatRequirements::Platform::TotalMass::maxMass -->
-
-`attribute` · type : `Real`
-
-#### MSAT-REQ-031 — PowerBudget
-
-<!-- lm:id=MsatRequirements::Platform::PowerBudget -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::ConsommationVeille -->
 
 `requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
-La puissance générée en fin de vie doit être supérieure
-à 400 W.
+La consommation en veille (affichage seul) doit être
+inférieure ou égale à 1 W.
 
-- **Satisfaite par** : `MsatPhysical::SolarArray`
-- **Vérifiée par** : `MsatIvvq::VerifyPowerBudget`
-- **Alloué à** : `MsatPhysical::camera`, `MsatPhysical::wheels`, `MsatPhysical::Battery`, `MsatPhysical::ReactionWheel`
+- **Satisfaite par** : `RadioReveilPhysical::CartePrincipale`
+- **Vérifiée par** : `RadioReveilIvvq::MesureConsoVeille`
 
-##### minPower
+##### consoMaxWatts
 
-<!-- lm:id=MsatRequirements::Platform::PowerBudget::minPower -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::ConsommationVeille::consoMaxWatts -->
 
 `attribute` · type : `Real`
 
-#### MSAT-REQ-050 — AttitudeAccuracy
+#### RR-031 — SecuriteElectrique
 
-<!-- lm:id=MsatRequirements::Platform::AttitudeAccuracy -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::SecuriteElectrique -->
 
-`requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
+`requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
-La précision de pointage doit être meilleure que 0.05 deg.
+L'isolation secteur doit satisfaire l'EN 60065
+(double isolation, pas de partie métallique accessible).
 
-- **Satisfaite par** : `MsatLogical::Aocs`
-- **Vérifiée par** : `MsatIvvq::VerifyAttitude`
-- **Alloué à** : `MsatPhysical::ObcBoard`, `MsatPhysical::CameraAssembly`
+- **Satisfaite par** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`
+- **Vérifiée par** : `RadioReveilIvvq::EssaiSecuriteElectrique`
 
-#### MSAT-REQ-060 — SafeMode
+#### RR-032 — MasseMax
 
-<!-- lm:id=MsatRequirements::Platform::SafeMode -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::MasseMax -->
 
-`requirement_def` · spécialise : `ROFLP::FunctionalRequirement`
+`requirement_def` · spécialise : `ROFLP::PhysicalRequirement`
 
-Le satellite doit rejoindre un mode sûr de façon autonome
-sur détection d'anomalie critique.
+La masse totale ne doit pas dépasser 0.5 kg.
 
-- **Satisfaite par** : `MsatLogical::OnboardComputer`
-- **Vérifiée par** : `MsatIvvq::VerifySafeMode`
-- **Alloué à** : `MsatPhysical::Battery`, `MsatPhysical::StarTracker`, `MsatPhysical::Structure`
+- **Satisfaite par** : `RadioReveilPhysical::BoitierAbs`
 
-#### MSAT-REQ-040 — ThermalRange
+##### masseMaxKg
 
-<!-- lm:id=MsatRequirements::Platform::ThermalRange -->
+<!-- lm:id=RadioReveilRequirements::Contraintes::MasseMax::masseMaxKg -->
 
-`requirement_def` · spécialise : `ROFLP::DesignConstraint`
-
-Les équipements doivent fonctionner entre -20 et +50 °C.
-
-- **Satisfaite par** : `MsatPhysical::Structure`
-- **Alloué à** : `MsatPhysical::transmitter`, `MsatPhysical::Battery`
+`attribute` · type : `Real`

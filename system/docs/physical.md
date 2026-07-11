@@ -1,226 +1,288 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T12:48:38+00:00
+generated_at: 2026-07-11T13:18:40+00:00
 layer: P
 ---
 
 # Couche Physical (P)
 
-29 élément(s).
+37 élément(s).
 
-## MsatPhysical
+## RadioReveilPhysical
 
-<!-- lm:id=MsatPhysical -->
+<!-- lm:id=RadioReveilPhysical -->
 
 `package`
 
-Architecture physique : équipements et budgets.
+SOLUTION TECHNIQUE : électronique grand public sur carte unique,
+descendue au niveau composant.
 
-### CameraAssembly
+### BoitierAbs
 
-<!-- lm:id=MsatPhysical::CameraAssembly -->
-
-`part_def`
-
-Ensemble caméra : télescope + plan focal.
-
-- **Satisfait** : `MsatRequirements::Imaging::ImageResolution`
-- **Alloué depuis** : `MsatLogical::PayloadModule`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Platform::AttitudeAccuracy`
-
-#### mass
-
-<!-- lm:id=MsatPhysical::CameraAssembly::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::CameraAssembly::power -->
-
-`attribute` · type : `Real`
-
-### ObcBoard
-
-<!-- lm:id=MsatPhysical::ObcBoard -->
+<!-- lm:id=RadioReveilPhysical::BoitierAbs -->
 
 `part_def`
 
-Carte calculateur durcie.
+Boîtier plastique ABS deux coques, sans vis apparente.
 
-- **Alloué depuis** : `MsatLogical::OnboardComputer`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::AttitudeAccuracy`, `MsatRequirements::MissionAvailability`
+- **Satisfait** : `RadioReveilRequirements::Contraintes::MasseMax`
 
-#### mass
+#### masse
 
-<!-- lm:id=MsatPhysical::ObcBoard::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::ObcBoard::power -->
+<!-- lm:id=RadioReveilPhysical::BoitierAbs::masse -->
 
 `attribute` · type : `Real`
 
-### XBandTransmitter
+### CartePrincipale
 
-<!-- lm:id=MsatPhysical::XBandTransmitter -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale -->
 
 `part_def`
 
-Émetteur bande X 150 Mbit/s.
+PCB simple face — toute l'électronique du produit.
 
-- **Alloué depuis** : `MsatLogical::CommSubsystem`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::MissionAvailability`
+- **Satisfait** : `RadioReveilRequirements::Contraintes::ConsommationVeille`
 
-#### mass
+#### masse
 
-<!-- lm:id=MsatPhysical::XBandTransmitter::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::XBandTransmitter::power -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::masse -->
 
 `attribute` · type : `Real`
 
-### SolarArray
+#### MicrocontroleurStm32l0
 
-<!-- lm:id=MsatPhysical::SolarArray -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0 -->
 
 `part_def`
 
-Générateur solaire déployable.
+MCU basse consommation, RTC 32 bits intégrée : tient
+l'heure, gère alarmes/snooze, pilote afficheur et module FM.
 
-- **Satisfait** : `MsatRequirements::Platform::PowerBudget`
-- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::TotalMass`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::BaseDeTemps`, `RadioReveilLogical::RadioReveil::BaseDeTemps::CompteurTemps`, `RadioReveilLogical::RadioReveil::GestionAlarmes`
 
-#### mass
+##### consoVeille
 
-<!-- lm:id=MsatPhysical::SolarArray::mass -->
-
-`attribute` · type : `Real`
-
-#### power
-
-<!-- lm:id=MsatPhysical::SolarArray::power -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::MicrocontroleurStm32l0::consoVeille -->
 
 `attribute` · type : `Real`
 
-### Battery
+#### QuartzHorloge32kHz
 
-<!-- lm:id=MsatPhysical::Battery -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::QuartzHorloge32kHz -->
 
 `part_def`
 
-Batterie Li-ion 40 Ah.
+Quartz horloger 32 768 Hz ±20 ppm : la référence de temps.
 
-- **Alloué depuis** : `MsatLogical::PowerSubsystem`, `MsatRequirements::Platform::SafeMode`, `MsatRequirements::Platform::ThermalRange`, `MsatRequirements::Platform::PowerBudget`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference`
 
-#### mass
+#### ModuleFmRda5807
 
-<!-- lm:id=MsatPhysical::Battery::mass -->
-
-`attribute` · type : `Real`
-
-### ReactionWheel
-
-<!-- lm:id=MsatPhysical::ReactionWheel -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::ModuleFmRda5807 -->
 
 `part_def`
 
-Roue à réaction 0.1 Nm.
+Récepteur FM intégré (syntoniseur + démodulateur), bus I2C.
 
-- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::PowerBudget`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::ChaineRadio`, `RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur`, `RadioReveilLogical::RadioReveil::ChaineRadio::Demodulateur`
 
-#### mass
+##### consoActive
 
-<!-- lm:id=MsatPhysical::ReactionWheel::mass -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::ModuleFmRda5807::consoActive -->
 
 `attribute` · type : `Real`
 
-### StarTracker
+#### AmplificateurPam8403
 
-<!-- lm:id=MsatPhysical::StarTracker -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AmplificateurPam8403 -->
 
 `part_def`
 
-Senseur stellaire.
+Ampli audio classe D 2×3 W, volume piloté (croissance).
 
-- **Alloué depuis** : `MsatLogical::Aocs`, `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Imaging::DailyImagingCapacity`, `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Platform::SafeMode`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
 
-#### mass
+##### consoActive
 
-<!-- lm:id=MsatPhysical::StarTracker::mass -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AmplificateurPam8403::consoActive -->
 
 `attribute` · type : `Real`
 
-### Structure
+#### TransformateurSecteur
 
-<!-- lm:id=MsatPhysical::Structure -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::TransformateurSecteur -->
 
 `part_def`
 
-Structure primaire et thermique.
+Transformateur d'isolement 230 V → 9 V, double isolation.
 
-- **Satisfait** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::ThermalRange`
-- **Alloué depuis** : `MsatRequirements::Platform::TotalMass`, `MsatRequirements::Platform::SafeMode`
+- **Satisfait** : `RadioReveilRequirements::Contraintes::SecuriteElectrique`, `RadioReveilRequirements::Interfaces::AlimentationSecteur`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
 
-#### mass
+##### masse
 
-<!-- lm:id=MsatPhysical::Structure::mass -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::TransformateurSecteur::masse -->
 
 `attribute` · type : `Real`
 
-### camera
+#### PontRedresseur
 
-<!-- lm:id=MsatPhysical::camera -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::PontRedresseur -->
 
-`part` · type : `CameraAssembly`
+`part_def`
 
-- **Alloué depuis** : `MsatRequirements::Imaging::ImageResolution`, `MsatRequirements::Imaging::DownlinkBand`, `MsatRequirements::Platform::PowerBudget`
+Redressement + filtrage de la tension secondaire.
 
-### obcBoard
+#### RegulateurBuck5V
 
-<!-- lm:id=MsatPhysical::obcBoard -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::RegulateurBuck5V -->
 
-`part` · type : `ObcBoard`
+`part_def`
 
-### transmitter
+Conversion 9 V → 5 V à découpage, haut rendement en veille.
 
-<!-- lm:id=MsatPhysical::transmitter -->
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
 
-`part` · type : `XBandTransmitter`
+#### SupercondensateurSauvegarde
 
-- **Alloué depuis** : `MsatRequirements::Platform::ThermalRange`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::SupercondensateurSauvegarde -->
 
-### solarArray
+`part_def`
 
-<!-- lm:id=MsatPhysical::solarArray -->
+1 F sur le domaine RTC : maintient l'heure plus de 72 h.
 
-`part` · type : `SolarArray`
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
 
-### battery
+#### AfficheurLed7Segments
 
-<!-- lm:id=MsatPhysical::battery -->
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AfficheurLed7Segments -->
 
-`part` · type : `Battery`
+`part_def`
 
-### wheels
+4 digits LED, driver TM1637, 3 niveaux de luminosité.
 
-<!-- lm:id=MsatPhysical::wheels -->
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::AffichageTemps`
 
-`part` · type : `ReactionWheel`
+##### consoVeille
 
-- **Alloué depuis** : `MsatRequirements::Platform::PowerBudget`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::AfficheurLed7Segments::consoVeille -->
 
-### starTracker
+`attribute` · type : `Real`
 
-<!-- lm:id=MsatPhysical::starTracker -->
+#### mcu
 
-`part` · type : `MsatPhysical::StarTracker`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::mcu -->
 
-### structure
+`part` · type : `MicrocontroleurStm32l0`
 
-<!-- lm:id=MsatPhysical::structure -->
+#### quartz
 
-`part` · type : `Structure`
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::quartz -->
+
+`part` · type : `QuartzHorloge32kHz`
+
+#### moduleFm
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::moduleFm -->
+
+`part` · type : `ModuleFmRda5807`
+
+#### ampli
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::ampli -->
+
+`part` · type : `AmplificateurPam8403`
+
+#### transfo
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::transfo -->
+
+`part` · type : `TransformateurSecteur`
+
+#### redresseur
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::redresseur -->
+
+`part` · type : `PontRedresseur`
+
+#### regulateur
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::regulateur -->
+
+`part` · type : `RegulateurBuck5V`
+
+#### supercap
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::supercap -->
+
+`part` · type : `SupercondensateurSauvegarde`
+
+#### afficheur
+
+<!-- lm:id=RadioReveilPhysical::CartePrincipale::afficheur -->
+
+`part` · type : `AfficheurLed7Segments`
+
+### HautParleur
+
+<!-- lm:id=RadioReveilPhysical::HautParleur -->
+
+`part_def`
+
+Haut-parleur large bande 8 Ω / 2 W.
+
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+
+#### masse
+
+<!-- lm:id=RadioReveilPhysical::HautParleur::masse -->
+
+`attribute` · type : `Real`
+
+### ClavierBoutons
+
+<!-- lm:id=RadioReveilPhysical::ClavierBoutons -->
+
+`part_def`
+
+5 boutons poussoirs dont un grand SNOOZE sur le dessus.
+
+- **Alloué depuis** : `RadioReveilLogical::RadioReveil::InterfaceCommande`
+
+### AntenneFilaire
+
+<!-- lm:id=RadioReveilPhysical::AntenneFilaire -->
+
+`part_def`
+
+Antenne FM filaire 75 cm.
+
+### boitier
+
+<!-- lm:id=RadioReveilPhysical::boitier -->
+
+`part` · type : `BoitierAbs`
+
+### carte
+
+<!-- lm:id=RadioReveilPhysical::carte -->
+
+`part` · type : `CartePrincipale`
+
+### hautParleur
+
+<!-- lm:id=RadioReveilPhysical::hautParleur -->
+
+`part` · type : `HautParleur`
+
+### clavier
+
+<!-- lm:id=RadioReveilPhysical::clavier -->
+
+`part` · type : `ClavierBoutons`
+
+### antenne
+
+<!-- lm:id=RadioReveilPhysical::antenne -->
+
+`part` · type : `AntenneFilaire`

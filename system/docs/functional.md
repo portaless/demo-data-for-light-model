@@ -1,179 +1,299 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T12:48:38+00:00
+generated_at: 2026-07-11T13:18:40+00:00
 layer: F
 ---
 
 # Couche Functional (F)
 
-23 élément(s).
+41 élément(s).
 
-## MsatFunctional
+## RadioReveilFunctional
 
-<!-- lm:id=MsatFunctional -->
+<!-- lm:id=RadioReveilFunctional -->
 
 `package`
 
-Architecture fonctionnelle : chaîne image et fonctions plateforme.
+Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
-### ImagingCommand
+### TopHoraire
 
-<!-- lm:id=MsatFunctional::ImagingCommand -->
-
-`item_def`
-
-### RawImage
-
-<!-- lm:id=MsatFunctional::RawImage -->
+<!-- lm:id=RadioReveilFunctional::TopHoraire -->
 
 `item_def`
 
-### CompressedImage
+### HeureCourante
 
-<!-- lm:id=MsatFunctional::CompressedImage -->
-
-`item_def`
-
-### Telemetry
-
-<!-- lm:id=MsatFunctional::Telemetry -->
+<!-- lm:id=RadioReveilFunctional::HeureCourante -->
 
 `item_def`
 
-### PlanAcquisition
+### ConsigneAlarme
 
-<!-- lm:id=MsatFunctional::PlanAcquisition -->
+<!-- lm:id=RadioReveilFunctional::ConsigneAlarme -->
 
-`action_def`
+`item_def`
 
-Transformer une demande utilisateur en plan d'acquisition.
+### Declenchement
 
-- **Alloué à** : `MsatLogical::OnboardComputer`
+<!-- lm:id=RadioReveilFunctional::Declenchement -->
 
-#### plan
+`item_def`
 
-<!-- lm:id=MsatFunctional::PlanAcquisition::plan -->
+### CommandeUtilisateur
 
-`item` · type : `ImagingCommand`
+<!-- lm:id=RadioReveilFunctional::CommandeUtilisateur -->
 
-### CaptureImage
+`item_def`
 
-<!-- lm:id=MsatFunctional::CaptureImage -->
+### SignalRf
 
-`action_def`
+<!-- lm:id=RadioReveilFunctional::SignalRf -->
 
-Acquérir une scène avec l'instrument optique.
+`item_def`
 
-- **Alloué à** : `MsatLogical::PayloadModule`
+### SignalAudio
 
-#### cmd
+<!-- lm:id=RadioReveilFunctional::SignalAudio -->
 
-<!-- lm:id=MsatFunctional::CaptureImage::cmd -->
+`item_def`
 
-`item` · type : `ImagingCommand`
+### EnergieRegulee
 
-#### raw
+<!-- lm:id=RadioReveilFunctional::EnergieRegulee -->
 
-<!-- lm:id=MsatFunctional::CaptureImage::raw -->
+`item_def`
 
-`item` · type : `RawImage`
+### GenererBaseDeTemps
 
-### CompressImage
-
-<!-- lm:id=MsatFunctional::CompressImage -->
+<!-- lm:id=RadioReveilFunctional::GenererBaseDeTemps -->
 
 `action_def`
 
-Compresser l'image brute (CCSDS 122).
+Produire la référence de temps stable du système.
 
-- **Alloué à** : `MsatLogical::OnboardComputer`
+- **Alloué à** : `RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference`
 
-#### raw
+#### top
 
-<!-- lm:id=MsatFunctional::CompressImage::raw -->
+<!-- lm:id=RadioReveilFunctional::GenererBaseDeTemps::top -->
 
-`item` · type : `RawImage`
+`item` · type : `TopHoraire`
 
-#### compressed
+### MaintenirHeure
 
-<!-- lm:id=MsatFunctional::CompressImage::compressed -->
-
-`item` · type : `CompressedImage`
-
-### StoreImage
-
-<!-- lm:id=MsatFunctional::StoreImage -->
+<!-- lm:id=RadioReveilFunctional::MaintenirHeure -->
 
 `action_def`
 
-Stocker l'image compressée en mémoire de masse.
+Compter le temps et tenir l'heure courante à jour.
 
-- **Alloué à** : `MsatLogical::OnboardComputer`
+- **Alloué à** : `RadioReveilLogical::RadioReveil::BaseDeTemps::CompteurTemps`
 
-### TransmitData
+#### top
 
-<!-- lm:id=MsatFunctional::TransmitData -->
+<!-- lm:id=RadioReveilFunctional::MaintenirHeure::top -->
 
-`action_def`
+`item` · type : `TopHoraire`
 
-Transmettre images et télémesure vers le sol.
+#### heure
 
-- **Alloué à** : `MsatLogical::CommSubsystem`
+<!-- lm:id=RadioReveilFunctional::MaintenirHeure::heure -->
 
-### MonitorHealth
+`item` · type : `HeureCourante`
 
-<!-- lm:id=MsatFunctional::MonitorHealth -->
+### AfficherHeure
 
-`action_def`
-
-Surveiller la santé du satellite et détecter les anomalies.
-
-- **Alloué à** : `MsatLogical::OnboardComputer`
-
-#### tm
-
-<!-- lm:id=MsatFunctional::MonitorHealth::tm -->
-
-`item` · type : `Telemetry`
-
-### MaintainAttitude
-
-<!-- lm:id=MsatFunctional::MaintainAttitude -->
+<!-- lm:id=RadioReveilFunctional::AfficherHeure -->
 
 `action_def`
 
-Maintenir le pointage requis pendant l'acquisition.
+Rendre l'heure lisible en permanence.
 
-- **Alloué à** : `MsatLogical::Aocs`
+- **Alloué à** : `RadioReveilLogical::RadioReveil::AffichageTemps`
 
-### OperationalModes
+#### heure
 
-<!-- lm:id=MsatFunctional::OperationalModes -->
+<!-- lm:id=RadioReveilFunctional::AfficherHeure::heure -->
+
+`item` · type : `HeureCourante`
+
+### SurveillerAlarme
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme -->
+
+`action_def`
+
+Comparer l'heure courante aux consignes d'alarme.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::GestionAlarmes`
+
+#### heure
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme::heure -->
+
+`item` · type : `HeureCourante`
+
+#### consigne
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme::consigne -->
+
+`item` · type : `ConsigneAlarme`
+
+#### declenchement
+
+<!-- lm:id=RadioReveilFunctional::SurveillerAlarme::declenchement -->
+
+`item` · type : `Declenchement`
+
+### GenererSonAlarme
+
+<!-- lm:id=RadioReveilFunctional::GenererSonAlarme -->
+
+`action_def`
+
+Produire le signal d'alarme, volume croissant.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::GestionAlarmes`
+
+#### declenchement
+
+<!-- lm:id=RadioReveilFunctional::GenererSonAlarme::declenchement -->
+
+`item` · type : `Declenchement`
+
+#### audio
+
+<!-- lm:id=RadioReveilFunctional::GenererSonAlarme::audio -->
+
+`item` · type : `SignalAudio`
+
+### RecevoirFm
+
+<!-- lm:id=RadioReveilFunctional::RecevoirFm -->
+
+`action_def`
+
+Capter et démoduler la bande FM.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::ChaineRadio`
+
+#### rf
+
+<!-- lm:id=RadioReveilFunctional::RecevoirFm::rf -->
+
+`item` · type : `SignalRf`
+
+#### audio
+
+<!-- lm:id=RadioReveilFunctional::RecevoirFm::audio -->
+
+`item` · type : `SignalAudio`
+
+### AmplifierAudio
+
+<!-- lm:id=RadioReveilFunctional::AmplifierAudio -->
+
+`action_def`
+
+Amplifier le signal audio vers le transducteur.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+
+#### audio
+
+<!-- lm:id=RadioReveilFunctional::AmplifierAudio::audio -->
+
+`item` · type : `SignalAudio`
+
+### AcquerirCommandes
+
+<!-- lm:id=RadioReveilFunctional::AcquerirCommandes -->
+
+`action_def`
+
+Lire les actions utilisateur (boutons, snooze).
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::InterfaceCommande`
+
+#### commande
+
+<!-- lm:id=RadioReveilFunctional::AcquerirCommandes::commande -->
+
+`item` · type : `CommandeUtilisateur`
+
+### DistribuerEnergie
+
+<!-- lm:id=RadioReveilFunctional::DistribuerEnergie -->
+
+`action_def`
+
+Convertir le secteur et alimenter toutes les fonctions.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+
+#### energie
+
+<!-- lm:id=RadioReveilFunctional::DistribuerEnergie::energie -->
+
+`item` · type : `EnergieRegulee`
+
+### SauvegarderHeure
+
+<!-- lm:id=RadioReveilFunctional::SauvegarderHeure -->
+
+`action_def`
+
+Maintenir l'heure sur source de secours pendant une coupure.
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+
+### ModesFonctionnement
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement -->
 
 `state_def`
 
-Modes opérationnels du satellite.
+Modes du radio-réveil.
 
-#### standby
+#### veille
 
-<!-- lm:id=MsatFunctional::OperationalModes::standby -->
-
-`state`
-
-#### imaging
-
-<!-- lm:id=MsatFunctional::OperationalModes::imaging -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::veille -->
 
 `state`
 
-#### downlink
+#### alarme
 
-<!-- lm:id=MsatFunctional::OperationalModes::downlink -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::alarme -->
+
+`state`
+
+#### radio
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radio -->
 
 `state`
 
-#### safe
+#### coupureSecteur
 
-<!-- lm:id=MsatFunctional::OperationalModes::safe -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::coupureSecteur -->
 
 `state`
+
+### surveiller
+
+<!-- lm:id=RadioReveilFunctional::surveiller -->
+
+`action` · type : `SurveillerAlarme`
+
+### sonner
+
+<!-- lm:id=RadioReveilFunctional::sonner -->
+
+`action` · type : `GenererSonAlarme`
+
+### amplifier
+
+<!-- lm:id=RadioReveilFunctional::amplifier -->
+
+`action` · type : `AmplifierAudio`

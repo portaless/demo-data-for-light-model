@@ -1,95 +1,109 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T12:48:38+00:00
+generated_at: 2026-07-11T13:18:39+00:00
 layer: O
 ---
 
 # Couche Operational (O)
 
-12 élément(s).
+14 élément(s).
 
-## MsatOperational
+## RadioReveilOperational
 
-<!-- lm:id=MsatOperational -->
+<!-- lm:id=RadioReveilOperational -->
 
 `package`
 
-Contexte opérationnel : acteurs et cas d'usage de la mission.
+Contexte opérationnel : qui utilise le radio-réveil et pour quoi.
 
-### GroundOperator
+### Dormeur
 
-<!-- lm:id=MsatOperational::GroundOperator -->
-
-`part_def`
-
-Opérateur du segment sol.
-
-### ImageAnalyst
-
-<!-- lm:id=MsatOperational::ImageAnalyst -->
+<!-- lm:id=RadioReveilOperational::Dormeur -->
 
 `part_def`
 
-Analyste exploitant les images livrées.
+L'utilisateur principal : programme, dort, est réveillé.
 
-### AcquireImagery
+### ReseauElectrique
 
-<!-- lm:id=MsatOperational::AcquireImagery -->
+<!-- lm:id=RadioReveilOperational::ReseauElectrique -->
 
-`use_case_def`
+`part_def`
 
-Programmer et acquérir des images d'une zone d'intérêt.
+Le secteur domestique — disponible... sauf la nuit de l'examen.
 
-#### operator
+### EtreReveille
 
-<!-- lm:id=MsatOperational::AcquireImagery::operator -->
-
-`actor` · type : `GroundOperator`
-
-#### satellite
-
-<!-- lm:id=MsatOperational::AcquireImagery::satellite -->
-
-`subject` · type : `Satellite`
-
-### DownlinkImagery
-
-<!-- lm:id=MsatOperational::DownlinkImagery -->
+<!-- lm:id=RadioReveilOperational::EtreReveille -->
 
 `use_case_def`
 
-Transmettre les images acquises vers la station sol.
+Être tiré du sommeil à l'heure programmée, volume croissant.
 
-#### operator
+#### dormeur
 
-<!-- lm:id=MsatOperational::DownlinkImagery::operator -->
+<!-- lm:id=RadioReveilOperational::EtreReveille::dormeur -->
 
-`actor` · type : `GroundOperator`
+`actor` · type : `Dormeur`
 
-### ExploitImagery
+#### radioReveil
 
-<!-- lm:id=MsatOperational::ExploitImagery -->
+<!-- lm:id=RadioReveilOperational::EtreReveille::radioReveil -->
 
-`use_case_def`
+`subject` · type : `RadioReveil`
 
-Analyser et distribuer les produits image.
+### ProgrammerAlarme
 
-#### analyst
-
-<!-- lm:id=MsatOperational::ExploitImagery::analyst -->
-
-`actor` · type : `ImageAnalyst`
-
-### RecoverFromAnomaly
-
-<!-- lm:id=MsatOperational::RecoverFromAnomaly -->
+<!-- lm:id=RadioReveilOperational::ProgrammerAlarme -->
 
 `use_case_def`
 
-Ramener le satellite en service après une anomalie.
+Régler l'heure de réveil et activer/désactiver les alarmes.
 
-#### operator
+#### dormeur
 
-<!-- lm:id=MsatOperational::RecoverFromAnomaly::operator -->
+<!-- lm:id=RadioReveilOperational::ProgrammerAlarme::dormeur -->
 
-`actor` · type : `GroundOperator`
+`actor` · type : `Dormeur`
+
+### Snoozer
+
+<!-- lm:id=RadioReveilOperational::Snoozer -->
+
+`use_case_def`
+
+Reporter l'alarme de 9 minutes d'un seul geste, sans ouvrir les yeux.
+
+#### dormeur
+
+<!-- lm:id=RadioReveilOperational::Snoozer::dormeur -->
+
+`actor` · type : `Dormeur`
+
+### EcouterRadio
+
+<!-- lm:id=RadioReveilOperational::EcouterRadio -->
+
+`use_case_def`
+
+Écouter un programme FM, notamment pour s'endormir (minuterie).
+
+#### dormeur
+
+<!-- lm:id=RadioReveilOperational::EcouterRadio::dormeur -->
+
+`actor` · type : `Dormeur`
+
+### SurvivreCoupure
+
+<!-- lm:id=RadioReveilOperational::SurvivreCoupure -->
+
+`use_case_def`
+
+Conserver heure et alarmes pendant une coupure secteur.
+
+#### reseau
+
+<!-- lm:id=RadioReveilOperational::SurvivreCoupure::reseau -->
+
+`actor` · type : `ReseauElectrique`
