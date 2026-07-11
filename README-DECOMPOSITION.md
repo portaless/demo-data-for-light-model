@@ -55,7 +55,7 @@ Conséquences (les 3 problèmes de la copie disparaissent PAR CONSTRUCTION) :
 - **renommer** `PayloadModule` ou `CameraUnit` : l'ancre et les références
   sont réécrites (propagation des références), rien d'autre à synchroniser ;
 - **ajouter** un sous-élément au part def : visible immédiatement dans la
-  vue de l'étage (« Structure (niveau parent) ») ET au niveau système ;
+  couche Logical de l'étage ET au niveau système ;
 - **plus d'homonymes** : un seul `CameraUnit` dans tout le modèle.
 
 L'étage garde son DOSSIER avec ce qui lui appartient en propre :
@@ -73,16 +73,20 @@ profondeur N se lit dans l'encapsulation, plus dans des copies).
 ### Parcours de test conseillé
 
 1. **Explorateur → toggle « Systèmes »** : la racine avec ses couches, puis
-   `payload-module` imbriqué (badge « ← PayloadModule ») avec son nœud
-   **« Structure (niveau parent) »** = le sous-arbre RÉEL et VIVANT du
-   part def, puis `camera-unit` imbriqué dedans.
+   `payload-module` imbriqué (badge « ← PayloadModule »). Sa couche
+   **Logical** porte l'élément étudié : le part def RÉEL du niveau parent
+   (le même élément — l'étage re-scope la vue, il ne copie rien), à côté
+   du package d'ancrage. `camera-unit` imbriqué dedans, même principe.
 2. **Architecturer soi-même** : clic droit sur un `part def` L/P
    (explorateur ou diagramme) → « Architecturer le sous-système… ». La
    couche logique créée ne contient QUE l'ancre — vérifiez dans Source.
 3. **Tester la non-copie** : ajoutez un sous-élément à
-   `MsatLogical::PayloadModule` (au niveau système) → il apparaît sous
-   « Structure (niveau parent) » de l'étage. Renommez `CameraUnit` → l'ancre
-   de camera-unit suit (onglet Source pour le constater).
+   `MsatLogical::PayloadModule` (au niveau système) → il apparaît dans la
+   couche Logical de l'étage. Renommez `CameraUnit` → l'ancre de
+   camera-unit suit (onglet Source pour le constater). Le NOM DU DOSSIER
+   d'étage (camera-unit) ne change pas : c'est un identifiant technique
+   stable (chemins git, packages <Pascal><Couche>, .lm) — le badge de
+   l'étage affiche toujours le nom VIVANT de l'élément étudié.
 4. **Re-architecturer le même composant** : refusé (409) — le menu et le
    backend savent qu'un étage existe déjà.
 5. **Matrice / Dashboard** : la couverture reste GLOBALE pour l'instant —
