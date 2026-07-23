@@ -54,11 +54,27 @@ package RadioReveilFunctional {
     }
     state def ModesFonctionnement {
         doc /* Modes du radio-réveil. */
+        state arret;
         state veille;
         state alarme;
-        state radio;
+        state radioActive;
         state coupureSecteur;
+
+        // Transitions entre modes (successions entre états). `arret` n'est
+        // jamais cible → état initial ; `coupureSecteur` bascule sur secours
+        // et revient en `veille` au retour du secteur.
+        succession first arret then veille;
+        succession first veille then alarme;
+        succession first alarme then veille;
+        succession first veille then radioActive;
+        succession first radioActive then veille;
+        succession first radioActive then alarme;
+        succession first veille then coupureSecteur;
+        succession first alarme then coupureSecteur;
+        succession first radioActive then coupureSecteur;
+        succession first coupureSecteur then veille;
     }
+    // Flux de données (matière/information) — items échangés entre actions.
     flow from GenererBaseDeTemps.top to MaintenirHeure.top;
     flow from MaintenirHeure.heure to AfficherHeure.heure;
     flow from MaintenirHeure.heure to SurveillerAlarme.heure;
@@ -66,11 +82,23 @@ package RadioReveilFunctional {
     flow from GenererSonAlarme.audio to AmplifierAudio.audio;
     flow from RecevoirFm.audio to AmplifierAudio.audio;
     flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
-    action surveiller : SurveillerAlarme;
-    action sonner : GenererSonAlarme;
-    action amplifier : AmplifierAudio;
-    first surveiller then sonner;
-    first sonner then amplifier;
+
+    // Flot de contrôle (successions) — séquencement des fonctions du réveil :
+    // l'énergie conditionne le démarrage ; l'heure alimente affichage ET
+    // surveillance (fork) ; la surveillance a besoin de l'heure ET de la
+    // consigne utilisateur (join) ; l'alarme et la réception radio convergent
+    // sur l'amplification (join). Converti en réseau de Petri, ce flot donne
+    // un net borné et sauf, avec plusieurs jetons concurrents et un marquage
+    // terminal (blocage détecté). SauvegarderHeure reste une fonction
+    // indépendante (source concurrente non séquencée).
+    succession first DistribuerEnergie then GenererBaseDeTemps;
+    succession first GenererBaseDeTemps then MaintenirHeure;
+    succession first MaintenirHeure then AfficherHeure;
+    succession first MaintenirHeure then SurveillerAlarme;
+    succession first AcquerirCommandes then SurveillerAlarme;
+    succession first SurveillerAlarme then GenererSonAlarme;
+    succession first GenererSonAlarme then AmplifierAudio;
+    succession first RecevoirFm then AmplifierAudio;
 }
 
 package ChaineRadioFunctional {

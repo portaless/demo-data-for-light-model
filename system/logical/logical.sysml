@@ -1,6 +1,7 @@
 package RadioReveilLogical {
     doc /* Architecture LOGIQUE : le système SANS solution technique —
-         des responsabilités et des interfaces, aucun choix de composant. */
+     * des responsabilités et des interfaces, aucun choix de composant.
+     */
     port def TempsPort;
     port def AudioPort;
     port def EnergiePort;
@@ -64,7 +65,7 @@ package RadioReveilLogical {
         }
         part def InterfaceCommande {
             doc /* Capte les actions utilisateur : réglages, alarmes, snooze. */
-            port commandes : CommandePort;
+            port cmd : CommandePort;
             port energie : EnergiePort;
         }
         part def AlimentationSauvegarde {
@@ -91,7 +92,7 @@ package RadioReveilLogical {
         connect baseTemps.temps to alarmes.temps;
         connect alarmes.declenche to son.commande;
         connect radio.audio to son.audio;
-        connect commandes.commandes to alarmes.declenche;
+        connect commandes.cmd to alarmes.declenche;
     }
     part radioReveil : RadioReveil;
     allocate RadioReveilFunctional::GenererBaseDeTemps to RadioReveil::BaseDeTemps::OscillateurReference;
@@ -113,11 +114,11 @@ package RadioReveilLogical {
     satisfy RadioReveilRequirements::Fonctions::SauvegardeHeure by RadioReveil::AlimentationSauvegarde;
     satisfy RadioReveilRequirements::Interfaces::LuminositeReglable by RadioReveil::AffichageTemps;
 }
-
 package ChaineRadioLogical {
     doc /* Étage chaine-radio, ancré sur le sous-système logique ChaineRadio —
-         la structure vit au niveau parent, ce package porte l'ancre et les
-         liens propres à l'étage. */
+     * la structure vit au niveau parent, ce package porte l'ancre et les
+     * liens propres à l'étage.
+     */
     ref part root : RadioReveilLogical::RadioReveil::ChaineRadio;
     satisfy ChaineRadioRequirements::CrSensibilite by RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
     satisfy ChaineRadioRequirements::CrRejetCanalAdjacent by RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
@@ -125,17 +126,17 @@ package ChaineRadioLogical {
     allocate ChaineRadioFunctional::Syntoniser to RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
     allocate ChaineRadioFunctional::Demoduler to RadioReveilLogical::RadioReveil::ChaineRadio::Demodulateur;
 }
-
 package BaseDeTempsLogical {
     doc /* Étage base-de-temps, ancré sur le sous-système logique BaseDeTemps. */
     ref part root : RadioReveilLogical::RadioReveil::BaseDeTemps;
+    part def test;
     satisfy BaseDeTempsRequirements::BtDerive by RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference;
     allocate BaseDeTempsFunctional::CompenserDerive to RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference;
     allocate BaseDeTempsFunctional::BasculerSurSecours to RadioReveilLogical::RadioReveil::AlimentationSauvegarde;
 }
-
 package SyntoniseurLogical {
     doc /* Étage syntoniseur (niveau 3), ancré sur le part def imbriqué
-         Syntoniseur — la profondeur se lit dans l'encapsulation. */
+     * Syntoniseur — la profondeur se lit dans l'encapsulation.
+     */
     ref part root : RadioReveilLogical::RadioReveil::ChaineRadio::Syntoniseur;
 }
