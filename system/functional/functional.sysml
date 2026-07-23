@@ -83,22 +83,37 @@ package RadioReveilFunctional {
     flow from RecevoirFm.audio to AmplifierAudio.audio;
     flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
 
-    // Flot de contrôle (successions) — séquencement des fonctions du réveil :
-    // l'énergie conditionne le démarrage ; l'heure alimente affichage ET
-    // surveillance (fork) ; la surveillance a besoin de l'heure ET de la
-    // consigne utilisateur (join) ; l'alarme et la réception radio convergent
-    // sur l'amplification (join). Converti en réseau de Petri, ce flot donne
-    // un net borné et sauf, avec plusieurs jetons concurrents et un marquage
-    // terminal (blocage détecté). SauvegarderHeure reste une fonction
-    // indépendante (source concurrente non séquencée).
-    succession first DistribuerEnergie then GenererBaseDeTemps;
-    succession first GenererBaseDeTemps then MaintenirHeure;
-    succession first MaintenirHeure then AfficherHeure;
-    succession first MaintenirHeure then SurveillerAlarme;
-    succession first AcquerirCommandes then SurveillerAlarme;
-    succession first SurveillerAlarme then GenererSonAlarme;
-    succession first GenererSonAlarme then AmplifierAudio;
-    succession first RecevoirFm then AmplifierAudio;
+    // Scénario nominal du réveil comme action COMPOSITE : les étapes sont des
+    // usages `action` typés par les fonctions ci-dessus, reliés par un flot de
+    // contrôle (successions). C'est ce def composite qui porte le diagramme
+    // d'ACTIVITÉ et le RÉSEAU DE PETRI (un flot vit dans une def, pas dans le
+    // package). L'énergie conditionne le démarrage ; l'heure alimente affichage
+    // ET surveillance (fork) ; la surveillance attend heure ET consigne (join) ;
+    // alarme et réception radio convergent sur l'amplification (join).
+    // Converti en Petri : net borné et sauf, plusieurs jetons concurrents,
+    // marquage terminal (blocage détecté). Successions qualifiées ScenarioReveil::
+    // pour lever les homonymes avec les ports (`energie`, …).
+    action def ScenarioReveil {
+        doc /* Scénario nominal : de la mise sous tension au réveil sonore. */
+        action energie : DistribuerEnergie;
+        action base : GenererBaseDeTemps;
+        action heure : MaintenirHeure;
+        action affichage : AfficherHeure;
+        action saisie : AcquerirCommandes;
+        action surveillance : SurveillerAlarme;
+        action sonnerie : GenererSonAlarme;
+        action reception : RecevoirFm;
+        action ampli : AmplifierAudio;
+
+        succession first ScenarioReveil::energie then ScenarioReveil::base;
+        succession first ScenarioReveil::base then ScenarioReveil::heure;
+        succession first ScenarioReveil::heure then ScenarioReveil::affichage;
+        succession first ScenarioReveil::heure then ScenarioReveil::surveillance;
+        succession first ScenarioReveil::saisie then ScenarioReveil::surveillance;
+        succession first ScenarioReveil::surveillance then ScenarioReveil::sonnerie;
+        succession first ScenarioReveil::sonnerie then ScenarioReveil::ampli;
+        succession first ScenarioReveil::reception then ScenarioReveil::ampli;
+    }
 }
 
 package ChaineRadioFunctional {
