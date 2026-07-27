@@ -1,147 +1,279 @@
 {
- "Architecture logique": {
-  "inherited_ports": [],
-  "layer": "L",
-  "mode": "all",
-  "name": "Architecture logique",
-  "nested_containers": [
-   "RadioReveilLogical",
-   "RadioReveilLogical::RadioReveil"
-  ],
-  "nesting": false,
-  "nesting_depth": null,
-  "nodes": [],
-  "pan": {
-   "x": 40.0,
-   "y": 20.0
+  "Architecture logique": {
+    "inherited_ports": [],
+    "layer": "L",
+    "mode": "all",
+    "name": "Architecture logique",
+    "nested_containers": [
+      "RadioReveilLogical",
+      "RadioReveilLogical::RadioReveil"
+    ],
+    "nesting": false,
+    "nesting_depth": null,
+    "nodes": [],
+    "pan": {
+      "x": 40.0,
+      "y": 20.0
+    },
+    "port_positions": {},
+    "positions": {
+      "RadioReveilLogical::RadioReveil": {
+        "x": 60.0,
+        "y": 40.0
+      }
+    },
+    "updated_at": "",
+    "zoom": 0.85
   },
-  "port_positions": {},
-  "positions": {
-   "RadioReveilLogical::RadioReveil": {
-    "x": 60.0,
-    "y": 40.0
-   }
+  "Chaîne fonctionnelle réveil": {
+    "inherited_ports": [],
+    "layer": "F",
+    "mode": "arch",
+    "name": "Chaîne fonctionnelle réveil",
+    "nested_containers": [
+      "RadioReveilFunctional"
+    ],
+    "nesting": false,
+    "nesting_depth": null,
+    "nodes": [],
+    "pan": {
+      "x": 40.0,
+      "y": 20.0
+    },
+    "port_positions": {},
+    "positions": {
+      "RadioReveilFunctional::AcquerirCommandes": {
+        "x": 40.0,
+        "y": 240.0
+      },
+      "RadioReveilFunctional::AfficherHeure": {
+        "x": 560.0,
+        "y": 40.0
+      },
+      "RadioReveilFunctional::AmplifierAudio": {
+        "x": 820.0,
+        "y": 240.0
+      },
+      "RadioReveilFunctional::DistribuerEnergie": {
+        "x": 40.0,
+        "y": 440.0
+      },
+      "RadioReveilFunctional::GenererBaseDeTemps": {
+        "x": 40.0,
+        "y": 40.0
+      },
+      "RadioReveilFunctional::GenererSonAlarme": {
+        "x": 560.0,
+        "y": 240.0
+      },
+      "RadioReveilFunctional::MaintenirHeure": {
+        "x": 300.0,
+        "y": 40.0
+      },
+      "RadioReveilFunctional::RecevoirFm": {
+        "x": 820.0,
+        "y": 40.0
+      },
+      "RadioReveilFunctional::SauvegarderHeure": {
+        "x": 300.0,
+        "y": 440.0
+      },
+      "RadioReveilFunctional::SurveillerAlarme": {
+        "x": 300.0,
+        "y": 240.0
+      }
+    },
+    "updated_at": "",
+    "zoom": 0.85
   },
-  "updated_at": "",
-  "zoom": 0.85
- },
- "Chaîne fonctionnelle réveil": {
-  "inherited_ports": [],
-  "layer": "F",
-  "mode": "arch",
-  "name": "Chaîne fonctionnelle réveil",
-  "nested_containers": [
-   "RadioReveilFunctional"
-  ],
-  "nesting": false,
-  "nesting_depth": null,
-  "nodes": [],
-  "pan": {
-   "x": 40.0,
-   "y": 20.0
+  "Solution physique (carte)": {
+    "inherited_ports": [],
+    "layer": "P",
+    "mode": "all",
+    "name": "Solution physique (carte)",
+    "nested_containers": [
+      "RadioReveilPhysical",
+      "RadioReveilPhysical::CartePrincipale"
+    ],
+    "nesting": false,
+    "nesting_depth": null,
+    "nodes": [],
+    "pan": {
+      "x": 40.0,
+      "y": 20.0
+    },
+    "port_positions": {},
+    "positions": {
+      "RadioReveilPhysical::CartePrincipale": {
+        "x": 60.0,
+        "y": 40.0
+      }
+    },
+    "updated_at": "",
+    "zoom": 0.85
   },
-  "port_positions": {},
-  "positions": {
-   "RadioReveilFunctional::AcquerirCommandes": {
-    "x": 40.0,
-    "y": 240.0
-   },
-   "RadioReveilFunctional::AfficherHeure": {
-    "x": 560.0,
-    "y": 40.0
-   },
-   "RadioReveilFunctional::AmplifierAudio": {
-    "x": 820.0,
-    "y": 240.0
-   },
-   "RadioReveilFunctional::DistribuerEnergie": {
-    "x": 40.0,
-    "y": 440.0
-   },
-   "RadioReveilFunctional::GenererBaseDeTemps": {
-    "x": 40.0,
-    "y": 40.0
-   },
-   "RadioReveilFunctional::GenererSonAlarme": {
-    "x": 560.0,
-    "y": 240.0
-   },
-   "RadioReveilFunctional::MaintenirHeure": {
-    "x": 300.0,
-    "y": 40.0
-   },
-   "RadioReveilFunctional::RecevoirFm": {
-    "x": 820.0,
-    "y": 40.0
-   },
-   "RadioReveilFunctional::SauvegarderHeure": {
-    "x": 300.0,
-    "y": 440.0
-   },
-   "RadioReveilFunctional::SurveillerAlarme": {
-    "x": 300.0,
-    "y": 240.0
-   }
+  "test": {
+    "inherited_ports": [],
+    "kind": "petri",
+    "layer": null,
+    "mode": "all",
+    "name": "test",
+    "nested_containers": [],
+    "nesting": false,
+    "nesting_depth": null,
+    "nodes": [
+      "p1",
+      "p2",
+      "p3",
+      "p4",
+      "p5",
+      "p6",
+      "p7",
+      "p8",
+      "start-energie",
+      "start-saisie",
+      "start-reception",
+      "start-NewAction1",
+      "RadioReveilFunctional::ScenarioReveil::energie",
+      "RadioReveilFunctional::ScenarioReveil::base",
+      "RadioReveilFunctional::ScenarioReveil::heure",
+      "RadioReveilFunctional::ScenarioReveil::affichage",
+      "RadioReveilFunctional::ScenarioReveil::saisie",
+      "RadioReveilFunctional::ScenarioReveil::surveillance",
+      "RadioReveilFunctional::ScenarioReveil::sonnerie",
+      "RadioReveilFunctional::ScenarioReveil::reception",
+      "RadioReveilFunctional::ScenarioReveil::ampli",
+      "RadioReveilFunctional::ScenarioReveil::NewAction1"
+    ],
+    "pan": {
+      "x": 35.0,
+      "y": 105.97118301314458
+    },
+    "port_positions": {},
+    "positions": {
+      "RadioReveilFunctional::ScenarioReveil::NewAction1": {
+        "x": 295.1898734177215,
+        "y": 308.34599156118145
+      },
+      "RadioReveilFunctional::ScenarioReveil::affichage": {
+        "x": 1190.0,
+        "y": 0.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::ampli": {
+        "x": 1870.0,
+        "y": 0.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::base": {
+        "x": 510.0,
+        "y": 0.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::energie": {
+        "x": 170.0,
+        "y": 0.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::heure": {
+        "x": 850.0,
+        "y": 0.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::reception": {
+        "x": 170.0,
+        "y": 200.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::saisie": {
+        "x": 170.0,
+        "y": 100.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::sonnerie": {
+        "x": 1530.0,
+        "y": 0.0
+      },
+      "RadioReveilFunctional::ScenarioReveil::surveillance": {
+        "x": 1190.0,
+        "y": 100.0
+      },
+      "p1": {
+        "x": 340.0,
+        "y": 0.0
+      },
+      "p2": {
+        "x": 680.0,
+        "y": 0.0
+      },
+      "p3": {
+        "x": 1020.0,
+        "y": 0.0
+      },
+      "p4": {
+        "x": 1020.0,
+        "y": 100.0
+      },
+      "p5": {
+        "x": 340.0,
+        "y": 100.0
+      },
+      "p6": {
+        "x": 1360.0,
+        "y": 0.0
+      },
+      "p7": {
+        "x": 1700.0,
+        "y": 0.0
+      },
+      "p8": {
+        "x": 340.0,
+        "y": 200.0
+      },
+      "start-NewAction1": {
+        "x": 105.71589310829816,
+        "y": 313.9099859353024
+      },
+      "start-energie": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "start-reception": {
+        "x": 0.0,
+        "y": 200.0
+      },
+      "start-saisie": {
+        "x": 0.0,
+        "y": 100.0
+      }
+    },
+    "subject": "RadioReveilFunctional::ScenarioReveil",
+    "updated_at": "2026-07-23T20:31:04+00:00",
+    "zoom": 0.35945399393326594
   },
-  "updated_at": "",
-  "zoom": 0.85
- },
- "Solution physique (carte)": {
-  "inherited_ports": [],
-  "layer": "P",
-  "mode": "all",
-  "name": "Solution physique (carte)",
-  "nested_containers": [
-   "RadioReveilPhysical",
-   "RadioReveilPhysical::CartePrincipale"
-  ],
-  "nesting": false,
-  "nesting_depth": null,
-  "nodes": [],
-  "pan": {
-   "x": 40.0,
-   "y": 20.0
-  },
-  "port_positions": {},
-  "positions": {
-   "RadioReveilPhysical::CartePrincipale": {
-    "x": 60.0,
-    "y": 40.0
-   }
-  },
-  "updated_at": "",
-  "zoom": 0.85
- },
- "Étage chaîne radio": {
-  "inherited_ports": [],
-  "layer": "L",
-  "mode": "all",
-  "name": "Étage chaîne radio",
-  "nested_containers": [
-   "ChaineRadioLogical"
-  ],
-  "nesting": false,
-  "nesting_depth": null,
-  "nodes": [
-   "ChaineRadioLogical",
-   "ChaineRadioLogical::root"
-  ],
-  "pan": {
-   "x": 40.0,
-   "y": 20.0
-  },
-  "port_positions": {},
-  "positions": {
-   "ChaineRadioLogical": {
-    "x": 60.0,
-    "y": 40.0
-   },
-   "ChaineRadioLogical::root": {
-    "x": 60.0,
-    "y": 240.0
-   }
-  },
-  "updated_at": "",
-  "zoom": 0.85
- }
+  "Étage chaîne radio": {
+    "inherited_ports": [],
+    "layer": "L",
+    "mode": "all",
+    "name": "Étage chaîne radio",
+    "nested_containers": [
+      "ChaineRadioLogical"
+    ],
+    "nesting": false,
+    "nesting_depth": null,
+    "nodes": [
+      "ChaineRadioLogical",
+      "ChaineRadioLogical::root"
+    ],
+    "pan": {
+      "x": 40.0,
+      "y": 20.0
+    },
+    "port_positions": {},
+    "positions": {
+      "ChaineRadioLogical": {
+        "x": 60.0,
+        "y": 40.0
+      },
+      "ChaineRadioLogical::root": {
+        "x": 60.0,
+        "y": 240.0
+      }
+    },
+    "updated_at": "",
+    "zoom": 0.85
+  }
 }

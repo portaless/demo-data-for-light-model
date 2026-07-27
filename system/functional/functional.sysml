@@ -57,42 +57,24 @@ package RadioReveilFunctional {
         state arret;
         state veille;
         state alarme;
-        state radioActive;
+        state radioActive {
+            doc /* Écoute radio : syntonisation puis écoute stable. */
+            state syntonisation;
+            state ecoute;
+            first syntonisation then ecoute;
+        }
         state coupureSecteur;
-
-        // Transitions entre modes (successions entre états). `arret` n'est
-        // jamais cible → état initial ; `coupureSecteur` bascule sur secours
-        // et revient en `veille` au retour du secteur.
-        succession first arret then veille;
-        succession first veille then alarme;
-        succession first alarme then veille;
-        succession first veille then radioActive;
-        succession first radioActive then veille;
-        succession first radioActive then alarme;
-        succession first veille then coupureSecteur;
-        succession first alarme then coupureSecteur;
-        succession first radioActive then coupureSecteur;
-        succession first coupureSecteur then veille;
+        first arret then veille;
+        first veille then alarme;
+        first alarme then veille;
+        first veille then radioActive;
+        first radioActive then veille;
+        first radioActive then alarme;
+        first veille then coupureSecteur;
+        first alarme then coupureSecteur;
+        first radioActive then coupureSecteur;
+        first coupureSecteur then veille;
     }
-    // Flux de données (matière/information) — items échangés entre actions.
-    flow from GenererBaseDeTemps.top to MaintenirHeure.top;
-    flow from MaintenirHeure.heure to AfficherHeure.heure;
-    flow from MaintenirHeure.heure to SurveillerAlarme.heure;
-    flow from SurveillerAlarme.declenchement to GenererSonAlarme.declenchement;
-    flow from GenererSonAlarme.audio to AmplifierAudio.audio;
-    flow from RecevoirFm.audio to AmplifierAudio.audio;
-    flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
-
-    // Scénario nominal du réveil comme action COMPOSITE : les étapes sont des
-    // usages `action` typés par les fonctions ci-dessus, reliés par un flot de
-    // contrôle (successions). C'est ce def composite qui porte le diagramme
-    // d'ACTIVITÉ et le RÉSEAU DE PETRI (un flot vit dans une def, pas dans le
-    // package). L'énergie conditionne le démarrage ; l'heure alimente affichage
-    // ET surveillance (fork) ; la surveillance attend heure ET consigne (join) ;
-    // alarme et réception radio convergent sur l'amplification (join).
-    // Converti en Petri : net borné et sauf, plusieurs jetons concurrents,
-    // marquage terminal (blocage détecté). Successions qualifiées ScenarioReveil::
-    // pour lever les homonymes avec les ports (`energie`, …).
     action def ScenarioReveil {
         doc /* Scénario nominal : de la mise sous tension au réveil sonore. */
         action energie : DistribuerEnergie;
@@ -102,20 +84,31 @@ package RadioReveilFunctional {
         action saisie : AcquerirCommandes;
         action surveillance : SurveillerAlarme;
         action sonnerie : GenererSonAlarme;
-        action reception : RecevoirFm;
+        action reception : RecevoirFm {
+            doc /* Réception FM : capter le signal puis le démoduler. */
+            action capter;
+            action demoduler;
+            first capter then demoduler;
+        }
         action ampli : AmplifierAudio;
-
-        succession first ScenarioReveil::energie then ScenarioReveil::base;
-        succession first ScenarioReveil::base then ScenarioReveil::heure;
-        succession first ScenarioReveil::heure then ScenarioReveil::affichage;
-        succession first ScenarioReveil::heure then ScenarioReveil::surveillance;
-        succession first ScenarioReveil::saisie then ScenarioReveil::surveillance;
-        succession first ScenarioReveil::surveillance then ScenarioReveil::sonnerie;
-        succession first ScenarioReveil::sonnerie then ScenarioReveil::ampli;
-        succession first ScenarioReveil::reception then ScenarioReveil::ampli;
+        action NewAction1;
+        first ScenarioReveil::energie then ScenarioReveil::base;
+        first ScenarioReveil::base then ScenarioReveil::heure;
+        first ScenarioReveil::heure then ScenarioReveil::affichage;
+        first ScenarioReveil::heure then ScenarioReveil::surveillance;
+        first ScenarioReveil::saisie then ScenarioReveil::surveillance;
+        first ScenarioReveil::surveillance then ScenarioReveil::sonnerie;
+        first ScenarioReveil::sonnerie then ScenarioReveil::ampli;
+        first ScenarioReveil::reception then ScenarioReveil::ampli;
     }
+    flow from GenererBaseDeTemps.top to MaintenirHeure.top;
+    flow from MaintenirHeure.heure to AfficherHeure.heure;
+    flow from MaintenirHeure.heure to SurveillerAlarme.heure;
+    flow from SurveillerAlarme.declenchement to GenererSonAlarme.declenchement;
+    flow from GenererSonAlarme.audio to AmplifierAudio.audio;
+    flow from RecevoirFm.audio to AmplifierAudio.audio;
+    flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
 }
-
 package ChaineRadioFunctional {
     doc /* Fonctions propres à l'étage chaine-radio. */
     action def CapterRf {
@@ -130,7 +123,6 @@ package ChaineRadioFunctional {
     flow from CapterRf to Syntoniser;
     flow from Syntoniser to Demoduler;
 }
-
 package BaseDeTempsFunctional {
     doc /* Fonctions propres à l'étage base-de-temps. */
     action def CompenserDerive {
@@ -140,7 +132,6 @@ package BaseDeTempsFunctional {
         doc /* Détecter la coupure secteur et basculer la source d'énergie. */
     }
 }
-
 package SyntoniseurFunctional {
     doc /* Couche Functional de l'étage syntoniseur. */
 }
