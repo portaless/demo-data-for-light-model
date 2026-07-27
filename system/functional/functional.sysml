@@ -64,6 +64,9 @@ package RadioReveilFunctional {
             first syntonisation then ecoute;
         }
         state coupureSecteur;
+        // Transitions entre modes (successions entre états). `arret` n'est
+        // jamais cible → état initial ; `coupureSecteur` bascule sur secours
+        // et revient en `veille` au retour du secteur.
         first arret then veille;
         first veille then alarme;
         first alarme then veille;
@@ -75,6 +78,16 @@ package RadioReveilFunctional {
         first radioActive then coupureSecteur;
         first coupureSecteur then veille;
     }
+    // Scénario nominal du réveil comme action COMPOSITE : les étapes sont des
+    // usages `action` typés par les fonctions ci-dessus, reliés par un flot de
+    // contrôle (successions). C'est ce def composite qui porte le diagramme
+    // d'ACTIVITÉ et le RÉSEAU DE PETRI (un flot vit dans une def, pas dans le
+    // package). L'énergie conditionne le démarrage ; l'heure alimente affichage
+    // ET surveillance (fork) ; la surveillance attend heure ET consigne (join) ;
+    // alarme et réception radio convergent sur l'amplification (join).
+    // Converti en Petri : net borné et sauf, plusieurs jetons concurrents,
+    // marquage terminal (blocage détecté). Successions qualifiées ScenarioReveil::
+    // pour lever les homonymes avec les ports (`energie`, …).
     action def ScenarioReveil {
         doc /* Scénario nominal : de la mise sous tension au réveil sonore. */
         action energie : DistribuerEnergie;
@@ -101,6 +114,7 @@ package RadioReveilFunctional {
         first ScenarioReveil::sonnerie then ScenarioReveil::ampli;
         first ScenarioReveil::reception then ScenarioReveil::ampli;
     }
+    // Flux de données (matière/information) — items échangés entre actions.
     flow from GenererBaseDeTemps.top to MaintenirHeure.top;
     flow from MaintenirHeure.heure to AfficherHeure.heure;
     flow from MaintenirHeure.heure to SurveillerAlarme.heure;
