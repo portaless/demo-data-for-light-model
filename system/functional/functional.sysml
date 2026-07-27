@@ -105,14 +105,24 @@ package RadioReveilFunctional {
         }
         action ampli : AmplifierAudio;
         action NewAction1;
+        // Choix EXCLUSIF du mode de réveil (decide → gardes) : sonnerie si
+        // déclenchement d'alarme, radio si réveil en musique programmé ; les
+        // deux branches CONVERGENT (merge) vers l'amplification — sans le
+        // merge, ampli attendrait les DEUX branches (join) et l'analyse RdP
+        // la déclarerait morte.
+        decide choixReveil;
+        merge versAmpli;
         first ScenarioReveil::energie then ScenarioReveil::base;
         first ScenarioReveil::base then ScenarioReveil::heure;
         first ScenarioReveil::heure then ScenarioReveil::affichage;
         first ScenarioReveil::heure then ScenarioReveil::surveillance;
         first ScenarioReveil::saisie then ScenarioReveil::surveillance;
-        first ScenarioReveil::surveillance then ScenarioReveil::sonnerie;
-        first ScenarioReveil::sonnerie then ScenarioReveil::ampli;
-        first ScenarioReveil::reception then ScenarioReveil::ampli;
+        first ScenarioReveil::surveillance then ScenarioReveil::choixReveil;
+        first ScenarioReveil::choixReveil if declenchement then ScenarioReveil::sonnerie;
+        first ScenarioReveil::choixReveil if reveilEnMusique then ScenarioReveil::reception;
+        first ScenarioReveil::sonnerie then ScenarioReveil::versAmpli;
+        first ScenarioReveil::reception then ScenarioReveil::versAmpli;
+        first ScenarioReveil::versAmpli then ScenarioReveil::ampli;
     }
     // Flux de données (matière/information) — items échangés entre actions.
     flow from GenererBaseDeTemps.top to MaintenirHeure.top;
