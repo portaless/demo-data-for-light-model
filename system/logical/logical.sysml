@@ -27,6 +27,9 @@ package RadioReveilLogical {
             }
             part oscillateur : OscillateurReference;
             part compteur : CompteurTemps;
+            // Réalisateur des actions du scénario (couloirs, REQ-DIAG-016)
+            perform RadioReveilFunctional::ScenarioReveil::base;
+            perform RadioReveilFunctional::ScenarioReveil::heure;
         }
         part def GestionAlarmes {
             doc /* Compare l'heure aux consignes, déclenche et gère le
@@ -35,6 +38,8 @@ package RadioReveilLogical {
             port temps : TempsPort;
             port declenche : CommandePort;
             port energie : EnergiePort;
+            perform RadioReveilFunctional::ScenarioReveil::surveillance;
+            perform RadioReveilFunctional::ScenarioReveil::sonnerie;
         }
         part def ChaineRadio {
             doc /* Capte la bande FM et restitue un signal audio — sans
@@ -51,6 +56,7 @@ package RadioReveilLogical {
             }
             part syntoniseur : Syntoniseur;
             part demodulateur : Demodulateur;
+            perform RadioReveilFunctional::ScenarioReveil::reception;
         }
         part def RestitutionSonore {
             doc /* Transforme un signal audio en son audible, volume piloté. */
@@ -62,11 +68,13 @@ package RadioReveilLogical {
             doc /* Rend l'heure lisible, luminosité réglable, mode nuit. */
             port temps : TempsPort;
             port energie : EnergiePort;
+            perform RadioReveilFunctional::ScenarioReveil::affichage;
         }
         part def InterfaceCommande {
             doc /* Capte les actions utilisateur : réglages, alarmes, snooze. */
             port cmd : CommandePort;
             port energie : EnergiePort;
+            perform RadioReveilFunctional::ScenarioReveil::saisie;
         }
         part def AlimentationSauvegarde {
             doc /* Convertit le secteur, distribue l'énergie et maintient
@@ -74,6 +82,7 @@ package RadioReveilLogical {
              */
             port secteur : EnergiePort;
             port energie : EnergiePort;
+            perform RadioReveilFunctional::ScenarioReveil::energie;
         }
         part baseTemps : BaseDeTemps;
         part alarmes : GestionAlarmes;

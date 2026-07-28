@@ -132,6 +132,10 @@ package RadioReveilFunctional {
     flow from GenererSonAlarme.audio to AmplifierAudio.audio;
     flow from RecevoirFm.audio to AmplifierAudio.audio;
     flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
+    // Réalisateur par ALLOCATION (couloirs, REQ-DIAG-016) : repli quand
+    // aucun perform ne vise l'action — ampli est réalisé par la restitution
+    // sonore ; NewAction1 et les nœuds de contrôle restent « non affectés ».
+    allocate ScenarioReveil::ampli to RadioReveilLogical::RadioReveil::RestitutionSonore;
 }
 package ChaineRadioFunctional {
     doc /* Fonctions propres à l'étage chaine-radio. */
