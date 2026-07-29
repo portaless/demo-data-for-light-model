@@ -1,4 +1,4 @@
-# Branche demo-decomposition — décomposition & analyse récursive
+# Décomposition & analyse récursive
 
 > Jeu de données courant : **radio-réveil RR-100** (voir
 > [README-RADIO-REVEIL.md](README-RADIO-REVEIL.md)) — étages
@@ -128,5 +128,5 @@ restent reconnus en lecture.
 
 ## Utilisation
 
-    git checkout demo-decomposition
-    # l'application réindexe toute seule (watcher) — F5 pour recharger l'UI
+    # (jeu de données de main — l'application réindexe toute seule
+    # via le watcher, F5 pour recharger l'UI)

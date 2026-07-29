@@ -41,11 +41,11 @@ L'arbre a deux façons de raconter le même modèle :
 artefacts. Bon pour : « montre-moi toutes les exigences », travail mono-étage.
 
 ```
-▾ msat  ⎇ demo-decomposition
+▾ rr100  ⎇ main
   ▾ Requirements          ← couche (pastille rouge, + création)
     ▾ requirements.sysml  ← fichier
-      ▾ package MsatRequirements
-        ▸ requirement def ImageResolution
+      ▾ package RadioReveilRequirements
+        ▸ requirement def ConsommationVeille
   ▸ Operational … ▸ IVVQ
 ```
 
@@ -53,11 +53,11 @@ artefacts. Bon pour : « montre-moi toutes les exigences », travail mono-étage
 « montre-moi l'analyse du payload », navigation multi-étages.
 
 ```
-▾ msat
+▾ rr100
   ▸ Requirements … IVVQ            ← les couches du système de tête
-  ▾ 🟣 système payload-module  ← PayloadModule
+  ▾ 🟣 système chaine-radio  ← ChaineRadio
     ▸ Requirements … IVVQ          ← SES couches
-    ▾ 🟣 système camera-unit  ← CameraUnit   ← imbriqué (chaîne refine)
+    ▾ 🟣 système syntoniseur  ← Syntoniseur   ← imbriqué (chaîne d'ancres)
       ▸ Requirements … IVVQ
 ```
 
