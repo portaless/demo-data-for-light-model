@@ -1,0 +1,13 @@
+{
+ "format": "lm-trace/1",
+ "name": "petri-ScenarioReveil-exemple",
+ "scope": "RadioReveilFunctional::ScenarioReveil",
+ "view": "petri",
+ "created": "2026-07-30T12:30:00+00:00",
+ "events": [
+  {"at": "2026-07-30T12:30:01+00:00", "kind": "fire", "element": "RadioReveilFunctional::ScenarioReveil::energie"},
+  {"at": "2026-07-30T12:30:02+00:00", "kind": "fire", "element": "RadioReveilFunctional::ScenarioReveil::base"},
+  {"at": "2026-07-30T12:30:03+00:00", "kind": "fire", "element": "RadioReveilFunctional::ScenarioReveil::heure"},
+  {"at": "2026-07-30T12:30:04+00:00", "kind": "fire", "element": "RadioReveilFunctional::ScenarioReveil::saisie"}
+ ]
+}
