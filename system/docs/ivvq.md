@@ -1,12 +1,12 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T13:18:40+00:00
+generated_at: 2026-08-06T15:08:03+00:00
 layer: IVVQ
 ---
 
 # Couche IVVQ (IVVQ)
 
-8 élément(s).
+13 élément(s).
 
 ## RadioReveilIvvq
 
@@ -85,3 +85,57 @@ Balayage 87.5 - 108 MHz sur générateur HF.
 Essai diélectrique et courant de fuite selon EN 60065.
 
 - **Vérifie** : `RadioReveilRequirements::Contraintes::SecuriteElectrique`
+
+### RR-TC-008 — EssaiReveilBoutEnBout
+
+<!-- lm:id=RadioReveilIvvq::EssaiReveilBoutEnBout -->
+
+`verification_def`
+
+Scénario complet : programmation la veille, coupure secteur
+nocturne de 2 h, réveil sonore à l'heure programmée au matin.
+
+- **Vérifie** : `RadioReveilRequirements::ReveilFiable`
+
+### RR-TC-009 — ControleAffichage
+
+<!-- lm:id=RadioReveilIvvq::ControleAffichage -->
+
+`verification_def`
+
+Lecture de l'heure à 3 m dans l'obscurité, contrôle des
+3 niveaux de luminosité et du mode nuit.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::AffichageHeure`, `RadioReveilRequirements::Interfaces::LuminositeReglable`
+
+### RR-TC-010 — TestVolumeCroissant
+
+<!-- lm:id=RadioReveilIvvq::TestVolumeCroissant -->
+
+`verification_def`
+
+Sonomètre : croissance monotone du niveau sonore sur 30 s
+au déclenchement de l'alarme.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::VolumeCroissant`
+
+### RR-TC-011 — EssaiAlimentationSecteur
+
+<!-- lm:id=RadioReveilIvvq::EssaiAlimentationSecteur -->
+
+`verification_def`
+
+Fonctionnement nominal sous 230 V / 50 Hz, tenue aux
+variations +/- 10 % sur alimentation stabilisée.
+
+- **Vérifie** : `RadioReveilRequirements::Interfaces::AlimentationSecteur`
+
+### RR-TC-012 — PeseeProduit
+
+<!-- lm:id=RadioReveilIvvq::PeseeProduit -->
+
+`verification_def`
+
+Pesée du produit complet emballé hors notice : <= 0.5 kg.
+
+- **Vérifie** : `RadioReveilRequirements::Contraintes::MasseMax`

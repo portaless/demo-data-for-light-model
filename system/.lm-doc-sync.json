@@ -1,26 +1,98 @@
 {
   "F": {
-    "md_hash": "f3da41bef217431f",
-    "model_hash": "42df41674acb8b4a"
+    "md_hash": "7bfc3d00e94066bb",
+    "model_hash": "94871ba1f630005d"
+  },
+  "F@base-de-temps": {
+    "md_hash": "8960f5f40a8662b8",
+    "model_hash": "0fbbfd5337ce6f22"
+  },
+  "F@chaine-radio": {
+    "md_hash": "3ad47d47807f6a0a",
+    "model_hash": "84c2afb4b767a438"
+  },
+  "F@syntoniseur": {
+    "md_hash": "fcd721a60f043f85",
+    "model_hash": "89cda0ad1cdefef9"
   },
   "IVVQ": {
-    "md_hash": "ee566921db533235",
-    "model_hash": "34d01131179230a8"
+    "md_hash": "c388053cd812827c",
+    "model_hash": "9e593dff7bf1de7a"
+  },
+  "IVVQ@base-de-temps": {
+    "md_hash": "63d14a9d188c1a12",
+    "model_hash": "ef3b50b20d5fca25"
+  },
+  "IVVQ@chaine-radio": {
+    "md_hash": "db54c32776c582d0",
+    "model_hash": "681c89603e768fb1"
+  },
+  "IVVQ@syntoniseur": {
+    "md_hash": "ddb16b03c9b8989d",
+    "model_hash": "ac16b02b138cd20c"
   },
   "L": {
-    "md_hash": "d7cd715977481518",
-    "model_hash": "32629fb9bc1faae4"
+    "md_hash": "13be571e6ad0ea96",
+    "model_hash": "2ce51974e3d76913"
+  },
+  "L@base-de-temps": {
+    "md_hash": "2edaa215f16d9516",
+    "model_hash": "8229937f61182621"
+  },
+  "L@chaine-radio": {
+    "md_hash": "f61316a2752a3a60",
+    "model_hash": "ec686a00a4f523cb"
+  },
+  "L@syntoniseur": {
+    "md_hash": "79782f4179440663",
+    "model_hash": "dfaf746bf1e3d5e3"
   },
   "O": {
-    "md_hash": "daedde13038fc7fa",
-    "model_hash": "ccf3b30c55611763"
+    "md_hash": "662f990f54ae7fb1",
+    "model_hash": "3674b5d18b00b6d8"
+  },
+  "O@base-de-temps": {
+    "md_hash": "3d926876c00323bc",
+    "model_hash": "c96bf4f8e3d151d6"
+  },
+  "O@chaine-radio": {
+    "md_hash": "bf03139a7ce3ecf6",
+    "model_hash": "6aad9f7c726d0c04"
+  },
+  "O@syntoniseur": {
+    "md_hash": "c995103f0fecbfc9",
+    "model_hash": "b9e2578b0041ec4c"
   },
   "P": {
-    "md_hash": "3e655686cc7fef59",
+    "md_hash": "c02f4d5124a8155e",
     "model_hash": "907d4667e120688a"
   },
+  "P@base-de-temps": {
+    "md_hash": "27e2a15a31f7e132",
+    "model_hash": "3b1dc37ff958f2fb"
+  },
+  "P@chaine-radio": {
+    "md_hash": "f619732d0467ce8a",
+    "model_hash": "eb6a398446f0d018"
+  },
+  "P@syntoniseur": {
+    "md_hash": "4218307d8ed8e9c8",
+    "model_hash": "bef78a8faa908376"
+  },
   "R": {
-    "md_hash": "3c807235af6e7b90",
+    "md_hash": "9b54039c4783a7df",
     "model_hash": "f522f4c657b59551"
+  },
+  "R@base-de-temps": {
+    "md_hash": "ff414ed3e2740ae1",
+    "model_hash": "8fb63562be07e740"
+  },
+  "R@chaine-radio": {
+    "md_hash": "0284c64abf3795de",
+    "model_hash": "bc3ed687d9cf06c2"
+  },
+  "R@syntoniseur": {
+    "md_hash": "d4a61a83741fb9f3",
+    "model_hash": "02b114114d038c0b"
   }
 }

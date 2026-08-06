@@ -1,12 +1,12 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T13:18:40+00:00
+generated_at: 2026-08-06T15:08:03+00:00
 layer: F
 ---
 
 # Couche Functional (F)
 
-41 élément(s).
+55 élément(s).
 
 ## RadioReveilFunctional
 
@@ -22,11 +22,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Impulsion de cadence issue de la base de temps (1 Hz).
+
 ### HeureCourante
 
 <!-- lm:id=RadioReveilFunctional::HeureCourante -->
 
 `item_def`
+
+Heure/minute/seconde tenues à jour par le comptage.
 
 ### ConsigneAlarme
 
@@ -34,11 +38,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Heure de réveil programmée et état actif/inactif.
+
 ### Declenchement
 
 <!-- lm:id=RadioReveilFunctional::Declenchement -->
 
 `item_def`
+
+Événement de réveil émis quand l'heure atteint la consigne.
 
 ### CommandeUtilisateur
 
@@ -46,11 +54,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Action utilisateur : réglage, activation, snooze.
+
 ### SignalRf
 
 <!-- lm:id=RadioReveilFunctional::SignalRf -->
 
 `item_def`
+
+Champ électromagnétique capté dans la bande FM 87.5-108 MHz.
 
 ### SignalAudio
 
@@ -58,11 +70,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Signal audio en bande de base, prêt à amplifier.
+
 ### EnergieRegulee
 
 <!-- lm:id=RadioReveilFunctional::EnergieRegulee -->
 
 `item_def`
+
+Alimentation continue régulée distribuée aux fonctions.
 
 ### GenererBaseDeTemps
 
@@ -256,6 +272,12 @@ Maintenir l'heure sur source de secours pendant une coupure.
 
 Modes du radio-réveil.
 
+#### arret
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::arret -->
+
+`state`
+
 #### veille
 
 <!-- lm:id=RadioReveilFunctional::ModesFonctionnement::veille -->
@@ -268,9 +290,23 @@ Modes du radio-réveil.
 
 `state`
 
-#### radio
+#### radioActive
 
-<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radio -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radioActive -->
+
+`state`
+
+Écoute radio : syntonisation puis écoute stable.
+
+##### syntonisation
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radioActive::syntonisation -->
+
+`state`
+
+##### ecoute
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radioActive::ecoute -->
 
 `state`
 
@@ -280,20 +316,92 @@ Modes du radio-réveil.
 
 `state`
 
-### surveiller
+### ScenarioReveil
 
-<!-- lm:id=RadioReveilFunctional::surveiller -->
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil -->
+
+`action_def`
+
+Scénario nominal : de la mise sous tension au réveil sonore.
+
+#### energie
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::energie -->
+
+`action` · type : `DistribuerEnergie`
+
+#### base
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::base -->
+
+`action` · type : `GenererBaseDeTemps`
+
+#### heure
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::heure -->
+
+`action` · type : `MaintenirHeure`
+
+#### affichage
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::affichage -->
+
+`action` · type : `AfficherHeure`
+
+#### saisie
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::saisie -->
+
+`action` · type : `AcquerirCommandes`
+
+#### surveillance
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::surveillance -->
 
 `action` · type : `SurveillerAlarme`
 
-### sonner
+#### sonnerie
 
-<!-- lm:id=RadioReveilFunctional::sonner -->
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::sonnerie -->
 
 `action` · type : `GenererSonAlarme`
 
-### amplifier
+#### reception
 
-<!-- lm:id=RadioReveilFunctional::amplifier -->
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::reception -->
+
+`action` · type : `RecevoirFm`
+
+Réception FM : capter le signal puis le démoduler.
+
+##### capter
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::reception::capter -->
+
+`action`
+
+##### demoduler
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::reception::demoduler -->
+
+`action`
+
+#### ampli
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::ampli -->
 
 `action` · type : `AmplifierAudio`
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+
+#### choixReveil
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::choixReveil -->
+
+`decide`
+
+#### versAmpli
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::versAmpli -->
+
+`merge`

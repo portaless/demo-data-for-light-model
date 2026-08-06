@@ -28,6 +28,35 @@ package RadioReveilIvvq {
         doc /* Essai diélectrique et courant de fuite selon EN 60065. */
         verify RadioReveilRequirements::Contraintes::SecuriteElectrique;
     }
+    verification def <'RR-TC-008'> EssaiReveilBoutEnBout {
+        doc /* Scénario complet : programmation la veille, coupure secteur
+         * nocturne de 2 h, réveil sonore à l'heure programmée au matin.
+         */
+        verify RadioReveilRequirements::ReveilFiable;
+    }
+    verification def <'RR-TC-009'> ControleAffichage {
+        doc /* Lecture de l'heure à 3 m dans l'obscurité, contrôle des
+         * 3 niveaux de luminosité et du mode nuit.
+         */
+        verify RadioReveilRequirements::Fonctions::AffichageHeure;
+        verify RadioReveilRequirements::Interfaces::LuminositeReglable;
+    }
+    verification def <'RR-TC-010'> TestVolumeCroissant {
+        doc /* Sonomètre : croissance monotone du niveau sonore sur 30 s
+         * au déclenchement de l'alarme.
+         */
+        verify RadioReveilRequirements::Fonctions::VolumeCroissant;
+    }
+    verification def <'RR-TC-011'> EssaiAlimentationSecteur {
+        doc /* Fonctionnement nominal sous 230 V / 50 Hz, tenue aux
+         * variations +/- 10 % sur alimentation stabilisée.
+         */
+        verify RadioReveilRequirements::Interfaces::AlimentationSecteur;
+    }
+    verification def <'RR-TC-012'> PeseeProduit {
+        doc /* Pesée du produit complet emballé hors notice : <= 0.5 kg. */
+        verify RadioReveilRequirements::Contraintes::MasseMax;
+    }
 }
 
 package ChaineRadioIvvq {
@@ -36,6 +65,10 @@ package ChaineRadioIvvq {
         doc /* Mesure de sensibilité à 2 µV, S/N 26 dB, trois fréquences. */
         verify ChaineRadioRequirements::CrSensibilite;
     }
+    verification def <'CR-TC-002'> TestRejetCanalAdjacent {
+        doc /* Deux porteuses à +/- 200 kHz, mesure du rejet : > 40 dB. */
+        verify ChaineRadioRequirements::CrRejetCanalAdjacent;
+    }
 }
 
 package BaseDeTempsIvvq {
@@ -43,6 +76,12 @@ package BaseDeTempsIvvq {
     verification def <'BT-TC-001'> TestDerive {
         doc /* Étuve 0-40 °C, mesure de dérive sur 48 h. */
         verify BaseDeTempsRequirements::BtDerive;
+    }
+    verification def <'BT-TC-002'> TestTenueSauvegarde {
+        doc /* Coupure secteur 72 h sur source de secours chargée :
+         * heure conservée à +/- 2 s au retour du secteur.
+         */
+        verify BaseDeTempsRequirements::BtTenueSauvegarde;
     }
 }
 

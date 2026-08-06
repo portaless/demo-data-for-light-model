@@ -72,32 +72,30 @@ package RadioReveilRequirements {
         }
     }
 }
-
 package ChaineRadioRequirements {
     doc /* Exigences DÉRIVÉES de l'étage chaine-radio (refine vers les
-         exigences système). */
+     * exigences système).
+     */
     requirement def <'CR-001'> CrSensibilite :> ROFLP::PerformanceRequirement {
         doc /* Sensibilité utilisable : 2 µV (S/N 26 dB) sur toute la bande. */
-        refine RadioReveilRequirements::Fonctions::ReceptionFm;
+        #refinement dependency ChaineRadioRequirements::CrSensibilite to RadioReveilRequirements::Fonctions::ReceptionFm;
     }
     requirement def <'CR-002'> CrRejetCanalAdjacent :> ROFLP::PerformanceRequirement {
         doc /* Réjection du canal adjacent supérieure à 40 dB. */
-        refine RadioReveilRequirements::Fonctions::ReceptionFm;
+        #refinement dependency ChaineRadioRequirements::CrRejetCanalAdjacent to RadioReveilRequirements::Fonctions::ReceptionFm;
     }
 }
-
 package BaseDeTempsRequirements {
     doc /* Exigences DÉRIVÉES de l'étage base-de-temps. */
     requirement def <'BT-001'> BtDerive :> ROFLP::PerformanceRequirement {
         doc /* Dérive de l'oscillateur inférieure à 20 ppm entre 0 et 40 °C. */
-        refine RadioReveilRequirements::Fonctions::PrecisionHorloge;
+        #refinement dependency BaseDeTempsRequirements::BtDerive to RadioReveilRequirements::Fonctions::PrecisionHorloge;
     }
     requirement def <'BT-002'> BtTenueSauvegarde :> ROFLP::PerformanceRequirement {
         doc /* Le maintien de l'heure sur source de secours doit couvrir 72 h. */
-        refine RadioReveilRequirements::Fonctions::SauvegardeHeure;
+        #refinement dependency BaseDeTempsRequirements::BtTenueSauvegarde to RadioReveilRequirements::Fonctions::SauvegardeHeure;
     }
 }
-
 package SyntoniseurRequirements {
     doc /* Étage syntoniseur (niveau 3) : à dériver au fil de l'analyse. */
 }

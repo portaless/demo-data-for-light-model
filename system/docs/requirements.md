@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T13:18:39+00:00
+generated_at: 2026-08-06T15:08:03+00:00
 layer: R
 ---
 
@@ -26,6 +26,7 @@ L'utilisateur doit être réveillé à l'heure programmée,
 chaque jour, y compris après une coupure secteur nocturne.
 
 - **Satisfaite par** : `RadioReveilLogical::RadioReveil`
+- **Vérifiée par** : `RadioReveilIvvq::EssaiReveilBoutEnBout`
 
 ### Fonctions
 
@@ -43,6 +44,7 @@ L'heure courante doit être visible en permanence et
 lisible à 3 m dans l'obscurité.
 
 - **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
+- **Vérifiée par** : `RadioReveilIvvq::ControleAffichage`
 
 #### RR-011 — PrecisionHorloge
 
@@ -106,6 +108,9 @@ Le récepteur doit couvrir la bande FM 87.5 - 108 MHz.
 Le volume de l'alarme doit croître progressivement
 pendant 30 s (réveil non agressif).
 
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+- **Vérifiée par** : `RadioReveilIvvq::TestVolumeCroissant`
+
 #### RR-016 — SauvegardeHeure
 
 <!-- lm:id=RadioReveilRequirements::Fonctions::SauvegardeHeure -->
@@ -140,6 +145,7 @@ L'appareil doit fonctionner sur secteur 230 V / 50 Hz
 (prise domestique standard).
 
 - **Satisfaite par** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`
+- **Vérifiée par** : `RadioReveilIvvq::EssaiAlimentationSecteur`
 
 #### RR-021 — LuminositeReglable
 
@@ -151,6 +157,7 @@ La luminosité de l'affichage doit offrir 3 niveaux dont
 un mode nuit.
 
 - **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
+- **Vérifiée par** : `RadioReveilIvvq::ControleAffichage`
 
 ### Contraintes
 
@@ -197,6 +204,7 @@ L'isolation secteur doit satisfaire l'EN 60065
 La masse totale ne doit pas dépasser 0.5 kg.
 
 - **Satisfaite par** : `RadioReveilPhysical::BoitierAbs`
+- **Vérifiée par** : `RadioReveilIvvq::PeseeProduit`
 
 ##### masseMaxKg
 

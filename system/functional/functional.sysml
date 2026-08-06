@@ -1,13 +1,29 @@
 package RadioReveilFunctional {
     doc /* Architecture fonctionnelle : chaînes du temps, de l'alarme et du son. */
-    item def TopHoraire;
-    item def HeureCourante;
-    item def ConsigneAlarme;
-    item def Declenchement;
-    item def CommandeUtilisateur;
-    item def SignalRf;
-    item def SignalAudio;
-    item def EnergieRegulee;
+    item def TopHoraire {
+        doc /* Impulsion de cadence issue de la base de temps (1 Hz). */
+    }
+    item def HeureCourante {
+        doc /* Heure/minute/seconde tenues à jour par le comptage. */
+    }
+    item def ConsigneAlarme {
+        doc /* Heure de réveil programmée et état actif/inactif. */
+    }
+    item def Declenchement {
+        doc /* Événement de réveil émis quand l'heure atteint la consigne. */
+    }
+    item def CommandeUtilisateur {
+        doc /* Action utilisateur : réglage, activation, snooze. */
+    }
+    item def SignalRf {
+        doc /* Champ électromagnétique capté dans la bande FM 87.5-108 MHz. */
+    }
+    item def SignalAudio {
+        doc /* Signal audio en bande de base, prêt à amplifier. */
+    }
+    item def EnergieRegulee {
+        doc /* Alimentation continue régulée distribuée aux fonctions. */
+    }
     action def GenererBaseDeTemps {
         doc /* Produire la référence de temps stable du système. */
         out item top : TopHoraire;
@@ -104,7 +120,6 @@ package RadioReveilFunctional {
             first capter then demoduler;
         }
         action ampli : AmplifierAudio;
-        action NewAction1;
         // Choix EXCLUSIF du mode de réveil (decide → gardes) : sonnerie si
         // déclenchement d'alarme, radio si réveil en musique programmé ; les
         // deux branches CONVERGENT (merge) vers l'amplification — sans le
@@ -134,8 +149,20 @@ package RadioReveilFunctional {
     flow from AcquerirCommandes.commande to SurveillerAlarme.consigne;
     // Réalisateur par ALLOCATION (couloirs, REQ-DIAG-016) : repli quand
     // aucun perform ne vise l'action — ampli est réalisé par la restitution
-    // sonore ; NewAction1 et les nœuds de contrôle restent « non affectés ».
+    // sonore ; les nœuds de contrôle restent « non affectés ».
     allocate ScenarioReveil::ampli to RadioReveilLogical::RadioReveil::RestitutionSonore;
+    // RdP COLORÉ (REQ-DIAG-020) : le type d'item du flow apparié à une
+    // succession colore l'arc et ses jetons dans la simulation (REQ-SIM-004)
+    flow of EnergieRegulee from ScenarioReveil::energie to ScenarioReveil::base;
+    flow of TopHoraire from ScenarioReveil::base to ScenarioReveil::heure;
+    flow of HeureCourante from ScenarioReveil::heure to ScenarioReveil::affichage;
+    flow of HeureCourante from ScenarioReveil::heure to ScenarioReveil::surveillance;
+    flow of CommandeUtilisateur from ScenarioReveil::saisie to ScenarioReveil::surveillance;
+    // Le CONTRÔLE converge par le merge (versAmpli), la DONNÉE audio va
+    // directement des sources à l'amplification — deux branches du choix
+    // exclusif (cadre « alt » de la séquence, REQ-DIAG-021).
+    flow of SignalAudio from ScenarioReveil::sonnerie to ScenarioReveil::ampli;
+    flow of SignalAudio from ScenarioReveil::reception to ScenarioReveil::ampli;
 }
 package ChaineRadioFunctional {
     doc /* Fonctions propres à l'étage chaine-radio. */

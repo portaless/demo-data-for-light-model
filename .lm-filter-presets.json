@@ -1,0 +1,16 @@
+{
+  "presets": [
+    {
+      "filters": {
+        "groupMode": "layer",
+        "kindFilter": "instance",
+        "levelFilter": null,
+        "search": "radio",
+        "subFilter": null,
+        "variantFilter": null
+      },
+      "name": "Instances radio",
+      "view": "explorer"
+    }
+  ]
+}

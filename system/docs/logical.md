@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T13:18:40+00:00
+generated_at: 2026-08-06T15:08:03+00:00
 layer: L
 ---
 
@@ -23,11 +23,15 @@ des responsabilités et des interfaces, aucun choix de composant.
 
 `port_def`
 
+Interface de temps : tops de cadence et heure courante.
+
 ### AudioPort
 
 <!-- lm:id=RadioReveilLogical::AudioPort -->
 
 `port_def`
+
+Interface audio en bande de base (source → restitution).
 
 ### EnergiePort
 
@@ -35,17 +39,23 @@ des responsabilités et des interfaces, aucun choix de composant.
 
 `port_def`
 
+Interface d'alimentation régulée distribuée aux sous-systèmes.
+
 ### CommandePort
 
 <!-- lm:id=RadioReveilLogical::CommandePort -->
 
 `port_def`
 
+Interface de commande : consignes, déclenchements, réglages.
+
 ### RfPort
 
 <!-- lm:id=RadioReveilLogical::RfPort -->
 
 `port_def`
+
+Interface radiofréquence : bande FM captée par l'antenne.
 
 ### RadioReveil
 
@@ -223,9 +233,12 @@ Extrait l'audio de la porteuse.
 `part_def`
 
 Transforme un signal audio en son audible, volume piloté.
+Réalise l'amplification du scénario par ALLOCATION (repli des
+couloirs) — voir functional.sysml.
 
+- **Satisfait** : `RadioReveilRequirements::Fonctions::VolumeCroissant`
 - **Alloué à** : `RadioReveilPhysical::CartePrincipale::AmplificateurPam8403`, `RadioReveilPhysical::HautParleur`
-- **Alloué depuis** : `RadioReveilFunctional::AmplifierAudio`
+- **Alloué depuis** : `RadioReveilFunctional::ScenarioReveil::ampli`, `RadioReveilFunctional::AmplifierAudio`
 
 ##### audio
 
@@ -281,9 +294,9 @@ Capte les actions utilisateur : réglages, alarmes, snooze.
 - **Alloué à** : `RadioReveilPhysical::ClavierBoutons`
 - **Alloué depuis** : `RadioReveilFunctional::AcquerirCommandes`
 
-##### commandes
+##### cmd
 
-<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande::commandes -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande::cmd -->
 
 `port` · type : `CommandePort`
 
@@ -302,7 +315,7 @@ Capte les actions utilisateur : réglages, alarmes, snooze.
 Convertit le secteur, distribue l'énergie et maintient
 l'heure pendant une coupure (source de secours).
 
-- **Satisfait** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`
+- **Satisfait** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`, `BaseDeTempsRequirements::BtTenueSauvegarde`
 - **Alloué à** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`, `RadioReveilPhysical::CartePrincipale::RegulateurBuck5V`, `RadioReveilPhysical::CartePrincipale::SupercondensateurSauvegarde`
 - **Alloué depuis** : `RadioReveilFunctional::DistribuerEnergie`, `RadioReveilFunctional::SauvegarderHeure`, `BaseDeTempsFunctional::BasculerSurSecours`
 

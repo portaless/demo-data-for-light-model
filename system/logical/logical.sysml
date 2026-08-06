@@ -2,11 +2,21 @@ package RadioReveilLogical {
     doc /* Architecture LOGIQUE : le système SANS solution technique —
      * des responsabilités et des interfaces, aucun choix de composant.
      */
-    port def TempsPort;
-    port def AudioPort;
-    port def EnergiePort;
-    port def CommandePort;
-    port def RfPort;
+    port def TempsPort {
+        doc /* Interface de temps : tops de cadence et heure courante. */
+    }
+    port def AudioPort {
+        doc /* Interface audio en bande de base (source → restitution). */
+    }
+    port def EnergiePort {
+        doc /* Interface d'alimentation régulée distribuée aux sous-systèmes. */
+    }
+    port def CommandePort {
+        doc /* Interface de commande : consignes, déclenchements, réglages. */
+    }
+    port def RfPort {
+        doc /* Interface radiofréquence : bande FM captée par l'antenne. */
+    }
     part def RadioReveil {
         doc /* Le radio-réveil vu comme un assemblage de sous-systèmes
          * logiques. Chaque part def interne est candidate à
@@ -59,7 +69,10 @@ package RadioReveilLogical {
             perform RadioReveilFunctional::ScenarioReveil::reception;
         }
         part def RestitutionSonore {
-            doc /* Transforme un signal audio en son audible, volume piloté. */
+            doc /* Transforme un signal audio en son audible, volume piloté.
+             * Réalise l'amplification du scénario par ALLOCATION (repli des
+             * couloirs) — voir functional.sysml.
+             */
             port audio : AudioPort;
             port commande : CommandePort;
             port energie : EnergiePort;
@@ -121,6 +134,7 @@ package RadioReveilLogical {
     satisfy RadioReveilRequirements::Fonctions::Snooze by RadioReveil::InterfaceCommande;
     satisfy RadioReveilRequirements::Fonctions::ReceptionFm by RadioReveil::ChaineRadio;
     satisfy RadioReveilRequirements::Fonctions::SauvegardeHeure by RadioReveil::AlimentationSauvegarde;
+    satisfy RadioReveilRequirements::Fonctions::VolumeCroissant by RadioReveil::RestitutionSonore;
     satisfy RadioReveilRequirements::Interfaces::LuminositeReglable by RadioReveil::AffichageTemps;
 }
 package ChaineRadioLogical {
@@ -138,8 +152,8 @@ package ChaineRadioLogical {
 package BaseDeTempsLogical {
     doc /* Étage base-de-temps, ancré sur le sous-système logique BaseDeTemps. */
     ref part root : RadioReveilLogical::RadioReveil::BaseDeTemps;
-    part def test;
     satisfy BaseDeTempsRequirements::BtDerive by RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference;
+    satisfy BaseDeTempsRequirements::BtTenueSauvegarde by RadioReveilLogical::RadioReveil::AlimentationSauvegarde;
     allocate BaseDeTempsFunctional::CompenserDerive to RadioReveilLogical::RadioReveil::BaseDeTemps::OscillateurReference;
     allocate BaseDeTempsFunctional::BasculerSurSecours to RadioReveilLogical::RadioReveil::AlimentationSauvegarde;
 }

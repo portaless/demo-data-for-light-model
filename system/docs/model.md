@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T13:18:40+00:00
+generated_at: 2026-08-06T15:08:03+00:00
 ---
 
 # Modèle — document global
@@ -27,6 +27,7 @@ L'utilisateur doit être réveillé à l'heure programmée,
 chaque jour, y compris après une coupure secteur nocturne.
 
 - **Satisfaite par** : `RadioReveilLogical::RadioReveil`
+- **Vérifiée par** : `RadioReveilIvvq::EssaiReveilBoutEnBout`
 
 ### Fonctions
 
@@ -44,6 +45,7 @@ L'heure courante doit être visible en permanence et
 lisible à 3 m dans l'obscurité.
 
 - **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
+- **Vérifiée par** : `RadioReveilIvvq::ControleAffichage`
 
 #### RR-011 — PrecisionHorloge
 
@@ -107,6 +109,9 @@ Le récepteur doit couvrir la bande FM 87.5 - 108 MHz.
 Le volume de l'alarme doit croître progressivement
 pendant 30 s (réveil non agressif).
 
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+- **Vérifiée par** : `RadioReveilIvvq::TestVolumeCroissant`
+
 #### RR-016 — SauvegardeHeure
 
 <!-- lm:id=RadioReveilRequirements::Fonctions::SauvegardeHeure -->
@@ -141,6 +146,7 @@ L'appareil doit fonctionner sur secteur 230 V / 50 Hz
 (prise domestique standard).
 
 - **Satisfaite par** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`
+- **Vérifiée par** : `RadioReveilIvvq::EssaiAlimentationSecteur`
 
 #### RR-021 — LuminositeReglable
 
@@ -152,6 +158,7 @@ La luminosité de l'affichage doit offrir 3 niveaux dont
 un mode nuit.
 
 - **Satisfaite par** : `RadioReveilLogical::RadioReveil::AffichageTemps`
+- **Vérifiée par** : `RadioReveilIvvq::ControleAffichage`
 
 ### Contraintes
 
@@ -198,6 +205,7 @@ L'isolation secteur doit satisfaire l'EN 60065
 La masse totale ne doit pas dépasser 0.5 kg.
 
 - **Satisfaite par** : `RadioReveilPhysical::BoitierAbs`
+- **Vérifiée par** : `RadioReveilIvvq::PeseeProduit`
 
 ##### masseMaxKg
 
@@ -209,7 +217,7 @@ La masse totale ne doit pas dépasser 0.5 kg.
 
 # Couche Operational (O)
 
-14 élément(s).
+18 élément(s).
 
 ## RadioReveilOperational
 
@@ -218,22 +226,6 @@ La masse totale ne doit pas dépasser 0.5 kg.
 `package`
 
 Contexte opérationnel : qui utilise le radio-réveil et pour quoi.
-
-### Dormeur
-
-<!-- lm:id=RadioReveilOperational::Dormeur -->
-
-`part_def`
-
-L'utilisateur principal : programme, dort, est réveillé.
-
-### ReseauElectrique
-
-<!-- lm:id=RadioReveilOperational::ReseauElectrique -->
-
-`part_def`
-
-Le secteur domestique — disponible... sauf la nuit de l'examen.
 
 ### EtreReveille
 
@@ -253,7 +245,7 @@ Le secteur domestique — disponible... sauf la nuit de l'examen.
 
 <!-- lm:id=RadioReveilOperational::EtreReveille::radioReveil -->
 
-`subject` · type : `RadioReveil`
+`subject` · type : `RadioReveilLogical::RadioReveil`
 
 ### ProgrammerAlarme
 
@@ -269,6 +261,12 @@ Régler l'heure de réveil et activer/désactiver les alarmes.
 
 `actor` · type : `Dormeur`
 
+#### radioReveil
+
+<!-- lm:id=RadioReveilOperational::ProgrammerAlarme::radioReveil -->
+
+`subject` · type : `RadioReveilLogical::RadioReveil`
+
 ### Snoozer
 
 <!-- lm:id=RadioReveilOperational::Snoozer -->
@@ -282,6 +280,12 @@ Reporter l'alarme de 9 minutes d'un seul geste, sans ouvrir les yeux.
 <!-- lm:id=RadioReveilOperational::Snoozer::dormeur -->
 
 `actor` · type : `Dormeur`
+
+#### radioReveil
+
+<!-- lm:id=RadioReveilOperational::Snoozer::radioReveil -->
+
+`subject` · type : `RadioReveilLogical::RadioReveil`
 
 ### EcouterRadio
 
@@ -297,6 +301,12 @@ Reporter l'alarme de 9 minutes d'un seul geste, sans ouvrir les yeux.
 
 `actor` · type : `Dormeur`
 
+#### radioReveil
+
+<!-- lm:id=RadioReveilOperational::EcouterRadio::radioReveil -->
+
+`subject` · type : `RadioReveilLogical::RadioReveil`
+
 ### SurvivreCoupure
 
 <!-- lm:id=RadioReveilOperational::SurvivreCoupure -->
@@ -311,11 +321,34 @@ Conserver heure et alarmes pendant une coupure secteur.
 
 `actor` · type : `ReseauElectrique`
 
+#### radioReveil
+
+<!-- lm:id=RadioReveilOperational::SurvivreCoupure::radioReveil -->
+
+`subject` · type : `RadioReveilLogical::RadioReveil`
+
+### Dormeur
+
+<!-- lm:id=RadioReveilOperational::Dormeur -->
+
+`part_def`
+
+L'utilisateur du radio-réveil : il programme, dort, se
+réveille — et snooze. L'acteur principal de tous les cas.
+
+### ReseauElectrique
+
+<!-- lm:id=RadioReveilOperational::ReseauElectrique -->
+
+`part_def`
+
+Le secteur domestique — disponible... sauf la nuit de l'examen.
+
 ---
 
 # Couche Functional (F)
 
-41 élément(s).
+55 élément(s).
 
 ## RadioReveilFunctional
 
@@ -331,11 +364,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Impulsion de cadence issue de la base de temps (1 Hz).
+
 ### HeureCourante
 
 <!-- lm:id=RadioReveilFunctional::HeureCourante -->
 
 `item_def`
+
+Heure/minute/seconde tenues à jour par le comptage.
 
 ### ConsigneAlarme
 
@@ -343,11 +380,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Heure de réveil programmée et état actif/inactif.
+
 ### Declenchement
 
 <!-- lm:id=RadioReveilFunctional::Declenchement -->
 
 `item_def`
+
+Événement de réveil émis quand l'heure atteint la consigne.
 
 ### CommandeUtilisateur
 
@@ -355,11 +396,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Action utilisateur : réglage, activation, snooze.
+
 ### SignalRf
 
 <!-- lm:id=RadioReveilFunctional::SignalRf -->
 
 `item_def`
+
+Champ électromagnétique capté dans la bande FM 87.5-108 MHz.
 
 ### SignalAudio
 
@@ -367,11 +412,15 @@ Architecture fonctionnelle : chaînes du temps, de l'alarme et du son.
 
 `item_def`
 
+Signal audio en bande de base, prêt à amplifier.
+
 ### EnergieRegulee
 
 <!-- lm:id=RadioReveilFunctional::EnergieRegulee -->
 
 `item_def`
+
+Alimentation continue régulée distribuée aux fonctions.
 
 ### GenererBaseDeTemps
 
@@ -565,6 +614,12 @@ Maintenir l'heure sur source de secours pendant une coupure.
 
 Modes du radio-réveil.
 
+#### arret
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::arret -->
+
+`state`
+
 #### veille
 
 <!-- lm:id=RadioReveilFunctional::ModesFonctionnement::veille -->
@@ -577,9 +632,23 @@ Modes du radio-réveil.
 
 `state`
 
-#### radio
+#### radioActive
 
-<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radio -->
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radioActive -->
+
+`state`
+
+Écoute radio : syntonisation puis écoute stable.
+
+##### syntonisation
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radioActive::syntonisation -->
+
+`state`
+
+##### ecoute
+
+<!-- lm:id=RadioReveilFunctional::ModesFonctionnement::radioActive::ecoute -->
 
 `state`
 
@@ -589,23 +658,95 @@ Modes du radio-réveil.
 
 `state`
 
-### surveiller
+### ScenarioReveil
 
-<!-- lm:id=RadioReveilFunctional::surveiller -->
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil -->
+
+`action_def`
+
+Scénario nominal : de la mise sous tension au réveil sonore.
+
+#### energie
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::energie -->
+
+`action` · type : `DistribuerEnergie`
+
+#### base
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::base -->
+
+`action` · type : `GenererBaseDeTemps`
+
+#### heure
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::heure -->
+
+`action` · type : `MaintenirHeure`
+
+#### affichage
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::affichage -->
+
+`action` · type : `AfficherHeure`
+
+#### saisie
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::saisie -->
+
+`action` · type : `AcquerirCommandes`
+
+#### surveillance
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::surveillance -->
 
 `action` · type : `SurveillerAlarme`
 
-### sonner
+#### sonnerie
 
-<!-- lm:id=RadioReveilFunctional::sonner -->
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::sonnerie -->
 
 `action` · type : `GenererSonAlarme`
 
-### amplifier
+#### reception
 
-<!-- lm:id=RadioReveilFunctional::amplifier -->
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::reception -->
+
+`action` · type : `RecevoirFm`
+
+Réception FM : capter le signal puis le démoduler.
+
+##### capter
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::reception::capter -->
+
+`action`
+
+##### demoduler
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::reception::demoduler -->
+
+`action`
+
+#### ampli
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::ampli -->
 
 `action` · type : `AmplifierAudio`
+
+- **Alloué à** : `RadioReveilLogical::RadioReveil::RestitutionSonore`
+
+#### choixReveil
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::choixReveil -->
+
+`decide`
+
+#### versAmpli
+
+<!-- lm:id=RadioReveilFunctional::ScenarioReveil::versAmpli -->
+
+`merge`
 
 ---
 
@@ -628,11 +769,15 @@ des responsabilités et des interfaces, aucun choix de composant.
 
 `port_def`
 
+Interface de temps : tops de cadence et heure courante.
+
 ### AudioPort
 
 <!-- lm:id=RadioReveilLogical::AudioPort -->
 
 `port_def`
+
+Interface audio en bande de base (source → restitution).
 
 ### EnergiePort
 
@@ -640,17 +785,23 @@ des responsabilités et des interfaces, aucun choix de composant.
 
 `port_def`
 
+Interface d'alimentation régulée distribuée aux sous-systèmes.
+
 ### CommandePort
 
 <!-- lm:id=RadioReveilLogical::CommandePort -->
 
 `port_def`
 
+Interface de commande : consignes, déclenchements, réglages.
+
 ### RfPort
 
 <!-- lm:id=RadioReveilLogical::RfPort -->
 
 `port_def`
+
+Interface radiofréquence : bande FM captée par l'antenne.
 
 ### RadioReveil
 
@@ -828,9 +979,12 @@ Extrait l'audio de la porteuse.
 `part_def`
 
 Transforme un signal audio en son audible, volume piloté.
+Réalise l'amplification du scénario par ALLOCATION (repli des
+couloirs) — voir functional.sysml.
 
+- **Satisfait** : `RadioReveilRequirements::Fonctions::VolumeCroissant`
 - **Alloué à** : `RadioReveilPhysical::CartePrincipale::AmplificateurPam8403`, `RadioReveilPhysical::HautParleur`
-- **Alloué depuis** : `RadioReveilFunctional::AmplifierAudio`
+- **Alloué depuis** : `RadioReveilFunctional::ScenarioReveil::ampli`, `RadioReveilFunctional::AmplifierAudio`
 
 ##### audio
 
@@ -886,9 +1040,9 @@ Capte les actions utilisateur : réglages, alarmes, snooze.
 - **Alloué à** : `RadioReveilPhysical::ClavierBoutons`
 - **Alloué depuis** : `RadioReveilFunctional::AcquerirCommandes`
 
-##### commandes
+##### cmd
 
-<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande::commandes -->
+<!-- lm:id=RadioReveilLogical::RadioReveil::InterfaceCommande::cmd -->
 
 `port` · type : `CommandePort`
 
@@ -907,7 +1061,7 @@ Capte les actions utilisateur : réglages, alarmes, snooze.
 Convertit le secteur, distribue l'énergie et maintient
 l'heure pendant une coupure (source de secours).
 
-- **Satisfait** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`
+- **Satisfait** : `RadioReveilRequirements::Fonctions::SauvegardeHeure`, `BaseDeTempsRequirements::BtTenueSauvegarde`
 - **Alloué à** : `RadioReveilPhysical::CartePrincipale::TransformateurSecteur`, `RadioReveilPhysical::CartePrincipale::RegulateurBuck5V`, `RadioReveilPhysical::CartePrincipale::SupercondensateurSauvegarde`
 - **Alloué depuis** : `RadioReveilFunctional::DistribuerEnergie`, `RadioReveilFunctional::SauvegarderHeure`, `BaseDeTempsFunctional::BasculerSurSecours`
 
@@ -1260,7 +1414,7 @@ Antenne FM filaire 75 cm.
 
 # Couche IVVQ (IVVQ)
 
-8 élément(s).
+13 élément(s).
 
 ## RadioReveilIvvq
 
@@ -1339,3 +1493,57 @@ Balayage 87.5 - 108 MHz sur générateur HF.
 Essai diélectrique et courant de fuite selon EN 60065.
 
 - **Vérifie** : `RadioReveilRequirements::Contraintes::SecuriteElectrique`
+
+### RR-TC-008 — EssaiReveilBoutEnBout
+
+<!-- lm:id=RadioReveilIvvq::EssaiReveilBoutEnBout -->
+
+`verification_def`
+
+Scénario complet : programmation la veille, coupure secteur
+nocturne de 2 h, réveil sonore à l'heure programmée au matin.
+
+- **Vérifie** : `RadioReveilRequirements::ReveilFiable`
+
+### RR-TC-009 — ControleAffichage
+
+<!-- lm:id=RadioReveilIvvq::ControleAffichage -->
+
+`verification_def`
+
+Lecture de l'heure à 3 m dans l'obscurité, contrôle des
+3 niveaux de luminosité et du mode nuit.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::AffichageHeure`, `RadioReveilRequirements::Interfaces::LuminositeReglable`
+
+### RR-TC-010 — TestVolumeCroissant
+
+<!-- lm:id=RadioReveilIvvq::TestVolumeCroissant -->
+
+`verification_def`
+
+Sonomètre : croissance monotone du niveau sonore sur 30 s
+au déclenchement de l'alarme.
+
+- **Vérifie** : `RadioReveilRequirements::Fonctions::VolumeCroissant`
+
+### RR-TC-011 — EssaiAlimentationSecteur
+
+<!-- lm:id=RadioReveilIvvq::EssaiAlimentationSecteur -->
+
+`verification_def`
+
+Fonctionnement nominal sous 230 V / 50 Hz, tenue aux
+variations +/- 10 % sur alimentation stabilisée.
+
+- **Vérifie** : `RadioReveilRequirements::Interfaces::AlimentationSecteur`
+
+### RR-TC-012 — PeseeProduit
+
+<!-- lm:id=RadioReveilIvvq::PeseeProduit -->
+
+`verification_def`
+
+Pesée du produit complet emballé hors notice : <= 0.5 kg.
+
+- **Vérifie** : `RadioReveilRequirements::Contraintes::MasseMax`

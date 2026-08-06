@@ -1,6 +1,6 @@
 ---
 generated_by: light-model
-generated_at: 2026-07-11T13:18:40+00:00
+generated_at: 2026-08-06T15:08:03+00:00
 ---
 
 # Sous-système base-de-temps — document global
@@ -35,6 +35,9 @@ Dérive de l'oscillateur inférieure à 20 ppm entre 0 et 40 °C.
 `requirement_def` · spécialise : `ROFLP::PerformanceRequirement`
 
 Le maintien de l'heure sur source de secours doit couvrir 72 h.
+
+- **Satisfaite par** : `RadioReveilLogical::RadioReveil::AlimentationSauvegarde`
+- **Vérifiée par** : `BaseDeTempsIvvq::TestTenueSauvegarde`
 
 ---
 
@@ -122,7 +125,7 @@ Couche Physical de l'étage base-de-temps (quartz + RTC du MCU).
 
 # Couche IVVQ (IVVQ)
 
-2 élément(s).
+3 élément(s).
 
 ## BaseDeTempsIvvq
 
@@ -141,3 +144,14 @@ Recette propre à l'étage base-de-temps.
 Étuve 0-40 °C, mesure de dérive sur 48 h.
 
 - **Vérifie** : `BaseDeTempsRequirements::BtDerive`
+
+### BT-TC-002 — TestTenueSauvegarde
+
+<!-- lm:id=BaseDeTempsIvvq::TestTenueSauvegarde -->
+
+`verification_def`
+
+Coupure secteur 72 h sur source de secours chargée :
+heure conservée à +/- 2 s au retour du secteur.
+
+- **Vérifie** : `BaseDeTempsRequirements::BtTenueSauvegarde`
